@@ -1,8 +1,8 @@
-<html lang="en">
+<html lang="en" id="htmlRoot">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ProDialer Pro - Enterprise Free Suite</title>
+    <title>ProDialer Pro - Ultimate Enterprise Suite</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Lucide Icons -->
@@ -12,23 +12,23 @@
         .custom-scrollbar::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
     </style>
 </head>
-<body class="bg-slate-100 text-slate-800 font-sans antialiased">
+<body class="bg-slate-100 text-slate-800 font-sans antialiased transition-colors duration-300" id="bodyTheme">
 
     <!-- ================= LOGIN SCREEN ================= -->
     <div id="loginScreen" class="fixed inset-0 bg-slate-900 z-50 flex items-center justify-center p-4">
         <div class="bg-white rounded-2xl shadow-2xl max-w-md w-full p-8 border border-slate-200">
             <div class="text-center mb-6">
                 <div class="w-16 h-16 bg-indigo-600 text-white rounded-2xl flex items-center justify-center mx-auto mb-3 shadow-lg">
-                    <i data-lucide="shield-check" class="w-8 h-8"></i>
+                    <i data-lucide="phone-forwarded" class="w-8 h-8"></i>
                 </div>
-                <h2 class="text-2xl font-bold text-slate-800">ProDialer Secure Login</h2>
-                <p class="text-xs text-slate-500 mt-1">100% Free Enterprise Telephony Suite</p>
+                <h2 class="text-2xl font-bold text-slate-800">ProDialer Enterprise Login</h2>
+                <p class="text-xs text-slate-500 mt-1">Ultimate Outbound Telephony & CRM Suite</p>
             </div>
             
             <div class="space-y-4">
                 <div>
                     <label class="block text-xs font-semibold text-slate-600 mb-1">Username / Agent ID</label>
-                    <input type="text" id="loginUser" class="w-full p-3 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-indigo-500 focus:outline-none" placeholder="e.g. agent or admin">
+                    <input type="text" id="loginUser" class="w-full p-3 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-indigo-500 focus:outline-none" placeholder="Enter your username">
                 </div>
                 <div>
                     <label class="block text-xs font-semibold text-slate-600 mb-1">Password</label>
@@ -37,316 +37,384 @@
                 <button onclick="handleLogin()" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-3 rounded-lg text-sm shadow transition">
                     Login to Dialer
                 </button>
-                <p class="text-[11px] text-center text-slate-400 mt-2">Default Admin: admin / 5426 | Agent: agent / 1234</p>
+                <p class="text-[11px] text-center text-slate-400 mt-2">Default Master Admin: admin / 5426</p>
             </div>
         </div>
     </div>
 
-    <!-- ================= EAGLE EYE ADMIN PANEL ================= -->
-    <div id="adminPanel" class="hidden fixed inset-0 bg-slate-900/95 z-50 overflow-y-auto p-4 md:p-8">
-        <div class="max-w-6xl mx-auto bg-white rounded-2xl shadow-2xl p-6 border border-slate-200">
-            <div class="flex justify-between items-center pb-4 border-b border-slate-200 mb-6">
+    <!-- ================= ADMIN CONTROL CENTER ================= -->
+    <div id="adminDashboard" class="hidden min-h-screen bg-slate-900 text-slate-100 p-4 md:p-8">
+        <div class="max-w-7xl mx-auto space-y-6">
+            <div class="bg-slate-800 p-6 rounded-2xl border border-slate-700 flex justify-between items-center shadow-xl">
                 <div class="flex items-center gap-3">
-                    <div class="w-10 h-10 bg-rose-600 text-white rounded-xl flex items-center justify-center">
-                        <i data-lucide="eye" class="w-6 h-6"></i>
+                    <div class="w-12 h-12 bg-rose-600 text-white rounded-xl flex items-center justify-center">
+                        <i data-lucide="shield-alert" class="w-7 h-7"></i>
                     </div>
                     <div>
-                        <h2 class="text-xl font-bold text-slate-800">Eagle Eye Admin Control Center</h2>
-                        <p class="text-xs text-slate-500">Live Team Telemetry & Free Campaign Management</p>
+                        <h1 class="text-2xl font-bold text-white">Eagle Eye Admin Control Center</h1>
+                        <p class="text-xs text-slate-400">Team Telemetry, Agent Leaderboard & Master Controls</p>
                     </div>
                 </div>
-                <button onclick="closeAdminPanel()" class="bg-slate-200 hover:bg-slate-300 text-slate-700 px-4 py-2 rounded-lg text-xs font-semibold transition">
-                    Close Panel
-                </button>
-            </div>
-
-            <!-- Stats -->
-            <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
-                <div class="bg-indigo-50 p-4 rounded-xl border border-indigo-100">
-                    <p class="text-xs text-indigo-600 font-medium">Active Agent Status</p>
-                    <p class="text-xl font-bold text-indigo-900 mt-1 uppercase" id="adminAgentStatusDisplay">Available</p>
-                </div>
-                <div class="bg-emerald-50 p-4 rounded-xl border border-emerald-100">
-                    <p class="text-xs text-emerald-600 font-medium">Total Leads Loaded</p>
-                    <p class="text-2xl font-bold text-emerald-950 mt-1" id="adminTotalLeads">0</p>
-                </div>
-                <div class="bg-amber-50 p-4 rounded-xl border border-amber-100">
-                    <p class="text-xs text-amber-600 font-medium">Interested Conversions</p>
-                    <p class="text-2xl font-bold text-amber-900 mt-1" id="adminInterestedCount">0</p>
-                </div>
-                <div class="bg-rose-50 p-4 rounded-xl border border-rose-100">
-                    <p class="text-xs text-rose-600 font-medium">Security PIN Status</p>
-                    <p class="text-sm font-bold text-rose-700 mt-2">🔒 Secure (5426)</p>
-                </div>
-            </div>
-
-            <!-- Global Actions -->
-            <div class="bg-slate-50 p-5 rounded-xl border border-slate-200 flex flex-wrap justify-between items-center gap-4">
-                <div>
-                    <h3 class="font-bold text-slate-800 text-sm">Free Master Database Operations</h3>
-                    <p class="text-xs text-slate-500">Export master reports or perform secure system resets.</p>
-                </div>
-                <div class="flex gap-3">
-                    <button onclick="exportCSVResults()" class="bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-semibold px-4 py-2.5 rounded-lg shadow transition">
-                        Export Master CSV Report
+                <div class="flex items-center gap-3">
+                    <button onclick="switchViewToAgent()" class="bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-semibold px-4 py-2.5 rounded-lg transition shadow">
+                        Switch to Agent View
                     </button>
-                    <button onclick="clearAllData()" class="bg-rose-600 hover:bg-rose-700 text-white text-xs font-semibold px-4 py-2.5 rounded-lg shadow transition">
-                        Wipe All System Data
+                    <button onclick="handleLogout()" class="bg-rose-600 hover:bg-rose-700 text-white text-xs font-semibold px-4 py-2.5 rounded-lg transition shadow">
+                        Logout
+                    </button>
+                </div>
+            </div>
+
+            <!-- Metrics -->
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                <div class="bg-slate-800 p-5 rounded-xl border border-slate-700">
+                    <p class="text-xs text-slate-400 font-medium">Registered Agents</p>
+                    <p class="text-3xl font-bold text-indigo-400 mt-1" id="adminAgentCount">0</p>
+                </div>
+                <div class="bg-slate-800 p-5 rounded-xl border border-slate-700">
+                    <p class="text-xs text-slate-400 font-medium">Total Leads Loaded</p>
+                    <p class="text-3xl font-bold text-emerald-400 mt-1" id="adminTotalLeads">0</p>
+                </div>
+                <div class="bg-slate-800 p-5 rounded-xl border border-slate-700">
+                    <p class="text-xs text-slate-400 font-medium">Interested Conversions</p>
+                    <p class="text-3xl font-bold text-amber-400 mt-1" id="adminInterestedCount">0</p>
+                </div>
+                <div class="bg-slate-800 p-5 rounded-xl border border-slate-700">
+                    <p class="text-xs text-slate-400 font-medium">System Status</p>
+                    <p class="text-sm font-bold text-emerald-400 mt-2">🟢 Ultimate Suite Active</p>
+                </div>
+            </div>
+
+            <!-- Agent Creator -->
+            <div class="bg-slate-800 p-6 rounded-2xl border border-slate-700 space-y-4">
+                <h2 class="text-lg font-bold text-white flex items-center gap-2">
+                    <i data-lucide="user-plus" class="w-5 h-5 text-indigo-400"></i> Create Agent Credential
+                </h2>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div>
+                        <label class="block text-xs font-medium text-slate-400 mb-1">Agent Username</label>
+                        <input type="text" id="newAgentUser" class="w-full p-2.5 bg-slate-900 border border-slate-700 rounded-lg text-sm text-white focus:outline-none focus:ring-2 focus:ring-indigo-500" placeholder="e.g. agent_nazim">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-medium text-slate-400 mb-1">Agent Password</label>
+                        <input type="text" id="newAgentPass" class="w-full p-2.5 bg-slate-900 border border-slate-700 rounded-lg text-sm text-white focus:outline-none focus:ring-2 focus:ring-indigo-500" placeholder="e.g. pass123">
+                    </div>
+                    <div class="flex items-end">
+                        <button onclick="createNewAgent()" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-semibold py-2.5 px-4 rounded-lg text-xs transition shadow">
+                            Save Agent Account
+                        </button>
+                    </div>
+                </div>
+
+                <div class="mt-4 pt-4 border-t border-slate-700">
+                    <h3 class="text-sm font-bold text-slate-300 mb-3">Active Authorized Agents</h3>
+                    <div class="overflow-x-auto max-h-40 overflow-y-auto custom-scrollbar">
+                        <table class="w-full text-left text-xs">
+                            <thead class="bg-slate-900 text-slate-400 uppercase">
+                                <tr>
+                                    <th class="p-2.5">#</th>
+                                    <th class="p-2.5">Username</th>
+                                    <th class="p-2.5">Password</th>
+                                    <th class="p-2.5 text-right">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody id="agentListTableBody" class="divide-y divide-slate-700 text-slate-300"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Master Controls -->
+            <div class="bg-slate-800 p-6 rounded-2xl border border-slate-700 space-y-4">
+                <h2 class="text-lg font-bold text-white flex items-center gap-2">
+                    <i data-lucide="database" class="w-5 h-5 text-indigo-400"></i> Master Database Operations
+                </h2>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <button onclick="loadRetryQueue()" class="bg-amber-600 hover:bg-amber-700 text-white text-xs font-semibold p-4 rounded-xl shadow transition text-left flex flex-col justify-between">
+                        <span class="text-sm font-bold mb-1">Load Retry Queue</span>
+                        <span class="text-[11px] text-amber-100 opacity-80">Reload No-Answer / Callback leads</span>
+                    </button>
+                    <button onclick="downloadCSVTemplate()" class="bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-semibold p-4 rounded-xl shadow transition text-left flex flex-col justify-between">
+                        <span class="text-sm font-bold mb-1">Download CSV Template</span>
+                        <span class="text-[11px] text-emerald-100 opacity-80">Get sample format file for bulk import</span>
+                    </button>
+                    <button onclick="clearAllData()" class="bg-rose-600 hover:bg-rose-700 text-white text-xs font-semibold p-4 rounded-xl shadow transition text-left flex flex-col justify-between">
+                        <span class="text-sm font-bold mb-1">Wipe System Data</span>
+                        <span class="text-[11px] text-rose-100 opacity-80">Clear all queues and restart database</span>
                     </button>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- ================= TOP NAVBAR ================= -->
-    <header class="bg-indigo-900 text-white shadow-md sticky top-0 z-40">
-        <div class="max-w-7xl mx-auto px-4 py-3 flex justify-between items-center">
-            <div class="flex items-center space-x-3 cursor-pointer" onclick="handleLogoTap()" title="Tap 5 times for Admin">
-                <i data-lucide="phone-call" class="w-8 h-8 text-emerald-400"></i>
-                <h1 class="text-xl font-bold tracking-wide">ProDialer <span class="text-xs bg-emerald-500 text-white px-2 py-0.5 rounded-full font-normal" id="userRoleBadge">Agent</span></h1>
-            </div>
-            <div class="flex items-center space-x-4">
-                <!-- Agent Break Status Selector -->
-                <div class="hidden md:flex items-center gap-2">
-                    <span class="text-xs text-indigo-200">Status:</span>
-                    <select id="agentStatusSelect" onchange="changeAgentStatus(this.value)" class="bg-indigo-800 text-white text-xs px-2 py-1.5 rounded border border-indigo-700 focus:outline-none">
-                        <option value="Available">🟢 Available</option>
-                        <option value="Tea Break">☕ Tea Break</option>
-                        <option value="Lunch Break">🍔 Lunch Break</option>
-                        <option value="Meeting">📋 Meeting</option>
-                    </select>
+    <!-- ================= AGENT DASHBOARD ================= -->
+    <div id="agentDashboard">
+        <header class="bg-indigo-900 text-white shadow-md sticky top-0 z-40">
+            <div class="max-w-7xl mx-auto px-4 py-3 flex justify-between items-center">
+                <div class="flex items-center space-x-3 cursor-pointer" onclick="handleLogoTap()" title="Tap 5 times for Admin">
+                    <i data-lucide="phone-call" class="w-8 h-8 text-emerald-400"></i>
+                    <h1 class="text-xl font-bold tracking-wide">ProDialer <span class="text-xs bg-emerald-500 text-white px-2 py-0.5 rounded-full font-normal">Ultimate Suite</span></h1>
                 </div>
-                <div class="text-right text-sm hidden sm:block">
-                    <p class="font-semibold" id="currentAgentName">Agent</p>
-                    <p class="text-xs text-indigo-200">Firebase: <span id="firebaseStatus" class="text-amber-300 font-medium">Connecting...</span></p>
-                </div>
-                <button onclick="handleLogout()" class="bg-indigo-800 hover:bg-indigo-700 p-2 rounded-lg text-xs transition" title="Logout">
-                    <i data-lucide="log-out" class="w-4 h-4"></i>
-                </button>
-            </div>
-        </div>
-    </header>
-
-    <!-- ================= MAIN CONTAINER ================= -->
-    <div class="max-w-7xl mx-auto px-4 py-6 grid grid-cols-1 lg:grid-cols-12 gap-6">
-
-        <!-- Left Column: Dialer & Active Call Control (5 cols) -->
-        <div class="lg:col-span-5 space-y-6">
-            <div class="bg-white rounded-xl shadow-md border border-slate-200 p-6 relative overflow-hidden">
-                <div class="flex justify-between items-center mb-4">
-                    <span class="bg-indigo-100 text-indigo-700 font-medium text-xs px-3 py-1 rounded-full flex items-center gap-1">
-                        <i data-lucide="zap" class="w-3.5 h-3.5"></i> Power SIM Auto-Dialer
-                    </span>
-                    <span id="progressCounter" class="text-sm font-semibold text-slate-500">Contact 0 / 0</span>
-                </div>
-
-                <div class="text-center py-6 border-y border-slate-100 my-2">
-                    <div class="w-20 h-20 bg-indigo-50 text-indigo-600 rounded-full flex items-center justify-center mx-auto text-2xl font-bold mb-3 shadow-inner" id="avatarLetter">
-                        ?
+                <div class="flex items-center space-x-4">
+                    <!-- Dialing Mode -->
+                    <div class="hidden lg:flex items-center gap-1.5">
+                        <span class="text-xs text-indigo-200">Mode:</span>
+                        <select id="dialingModeSelect" onchange="changeDialingMode(this.value)" class="bg-indigo-800 text-white text-xs px-2 py-1.5 rounded border border-indigo-700 focus:outline-none">
+                            <option value="power">⚡ Power Auto-Dialer</option>
+                            <option value="preview">👁️ Preview Dialer</option>
+                        </select>
                     </div>
-                    <h2 class="text-xl font-bold text-slate-800 mb-1" id="activeName">No Leads Loaded</h2>
-                    <p class="text-lg font-mono text-indigo-600 font-semibold mb-2" id="activePhone">0300 0000000</p>
-                    <span id="activeNotes" class="inline-block text-xs text-slate-500 bg-slate-100 px-3 py-1 rounded-md">Import contacts to begin calling</span>
-                </div>
 
-                <div id="autoTimerContainer" class="hidden mb-4">
-                    <div class="flex justify-between text-xs text-slate-500 mb-1">
-                        <span>Auto-dialing next contact via SIM in...</span>
-                        <span id="timerSeconds" class="font-bold text-indigo-600">5s</span>
+                    <!-- Delay -->
+                    <div class="hidden xl:flex items-center gap-1.5">
+                        <span class="text-xs text-indigo-200">Delay:</span>
+                        <select id="delaySelector" onchange="updateAutoDelay(this.value)" class="bg-indigo-800 text-white text-xs px-2 py-1.5 rounded border border-indigo-700 focus:outline-none">
+                            <option value="3">3s</option>
+                            <option value="5" selected>5s</option>
+                            <option value="10">10s</option>
+                        </select>
                     </div>
-                    <div class="w-full bg-slate-100 h-2 rounded-full overflow-hidden">
-                        <div id="timerBar" class="bg-emerald-500 h-full w-full transition-all duration-1000 ease-linear"></div>
-                    </div>
-                </div>
 
-                <div class="grid grid-cols-2 gap-3 mb-4">
-                    <a id="mainDialBtn" href="#" class="bg-emerald-600 hover:bg-emerald-700 text-white font-semibold py-3 px-4 rounded-lg flex items-center justify-center gap-2 shadow-md transition">
-                        <i data-lucide="phone" class="w-5 h-5"></i> Call via SIM
-                    </a>
-                    <button id="pauseDialerBtn" onclick="togglePauseDialer()" class="bg-slate-200 hover:bg-slate-300 text-slate-700 font-semibold py-3 px-4 rounded-lg flex items-center justify-center gap-2 transition">
-                        <i data-lucide="pause" class="w-5 h-5"></i> Pause Queue
+                    <!-- Status -->
+                    <div class="hidden md:flex items-center gap-2">
+                        <span class="text-xs text-indigo-200">Status:</span>
+                        <select id="agentStatusSelect" onchange="changeAgentStatus(this.value)" class="bg-indigo-800 text-white text-xs px-2 py-1.5 rounded border border-indigo-700 focus:outline-none">
+                            <option value="Available">🟢 Available</option>
+                            <option value="Tea Break">☕ Tea Break</option>
+                            <option value="Lunch Break">🍔 Lunch Break</option>
+                        </select>
+                    </div>
+
+                    <!-- Theme Toggle -->
+                    <button onclick="toggleTheme()" class="bg-indigo-800 hover:bg-indigo-700 p-2 rounded-lg text-xs transition" title="Toggle Theme">
+                        <i data-lucide="moon" class="w-4 h-4" id="themeIcon"></i>
                     </button>
-                </div>
 
-                <div class="mb-4">
-                    <label class="block text-xs font-semibold text-slate-600 mb-1">Call Notes / Remarks:</label>
-                    <textarea id="callNotesInput" rows="2" class="w-full p-2.5 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:outline-none" placeholder="Enter notes from call..."></textarea>
-                </div>
-
-                <!-- Disposition Buttons -->
-                <div>
-                    <label class="block text-xs font-semibold text-slate-600 mb-2">Select Disposition (Auto-Advances):</label>
-                    <div class="grid grid-cols-2 gap-2">
-                        <button onclick="recordDisposition('Interested')" class="bg-emerald-50 hover:bg-emerald-100 text-emerald-700 border border-emerald-300 font-medium py-2 px-3 rounded-lg text-xs flex items-center justify-center gap-1.5 transition">
-                            <i data-lucide="check-circle" class="w-4 h-4 text-emerald-600"></i> Interested
-                        </button>
-                        <button onclick="recordDisposition('Call Back Later')" class="bg-amber-50 hover:bg-amber-100 text-amber-700 border border-amber-300 font-medium py-2 px-3 rounded-lg text-xs flex items-center justify-center gap-1.5 transition">
-                            <i data-lucide="clock" class="w-4 h-4 text-amber-600"></i> Call Back
-                        </button>
-                        <button onclick="recordDisposition('Not Interested')" class="bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-300 font-medium py-2 px-3 rounded-lg text-xs flex items-center justify-center gap-1.5 transition">
-                            <i data-lucide="x-circle" class="w-4 h-4 text-rose-600"></i> Not Interested
-                        </button>
-                        <button onclick="recordDisposition('No Answer / Busy')" class="bg-slate-100 hover:bg-slate-200 text-slate-700 border border-slate-300 font-medium py-2 px-3 rounded-lg text-xs flex items-center justify-center gap-1.5 transition">
-                            <i data-lucide="phone-off" class="w-4 h-4 text-slate-500"></i> No Answer
-                        </button>
+                    <div class="text-right text-sm hidden sm:block">
+                        <p class="font-semibold" id="currentAgentName">Agent</p>
+                        <p class="text-xs text-indigo-200">Live Stopwatch: <span id="callStopwatch" class="text-emerald-300 font-mono font-bold">00:00</span></p>
                     </div>
-                </div>
-
-                <!-- Free Follow-up & Reminder Section -->
-                <div class="mt-4 pt-4 border-t border-slate-100 grid grid-cols-2 gap-2">
-                    <button onclick="sendQuickWhatsApp()" class="bg-green-500 hover:bg-green-600 text-white font-medium py-2 rounded-lg text-xs flex items-center justify-center gap-1 transition">
-                        <i data-lucide="message-square" class="w-4 h-4"></i> WhatsApp
-                    </button>
-                    <button onclick="setCallbackReminder()" class="bg-slate-800 hover:bg-slate-900 text-white font-medium py-2 rounded-lg text-xs flex items-center justify-center gap-1 transition">
-                        <i data-lucide="bell" class="w-4 h-4"></i> Set Reminder
+                    <button onclick="handleLogout()" class="bg-indigo-800 hover:bg-indigo-700 p-2 rounded-lg text-xs transition" title="Logout">
+                        <i data-lucide="log-out" class="w-4 h-4"></i>
                     </button>
                 </div>
             </div>
+        </header>
 
-            <!-- Analytics -->
-            <div class="bg-white rounded-xl shadow-md border border-slate-200 p-5">
-                <h3 class="font-bold text-slate-800 mb-3 text-sm flex items-center gap-2">
-                    <i data-lucide="bar-chart-2" class="w-4 h-4 text-indigo-600"></i> Campaign Analytics
-                </h3>
-                <div class="grid grid-cols-4 gap-2 text-center">
-                    <div class="bg-slate-50 p-2 rounded-lg border border-slate-100">
-                        <p class="text-xs text-slate-500">Total</p>
-                        <p class="text-lg font-bold text-slate-800" id="statTotal">0</p>
-                    </div>
-                    <div class="bg-emerald-50 p-2 rounded-lg border border-emerald-100">
-                        <p class="text-xs text-emerald-600">Interested</p>
-                        <p class="text-lg font-bold text-emerald-700" id="statInterested">0</p>
-                    </div>
-                    <div class="bg-amber-50 p-2 rounded-lg border border-amber-100">
-                        <p class="text-xs text-amber-600">Call Back</p>
-                        <p class="text-lg font-bold text-amber-700" id="statCallback">0</p>
-                    </div>
-                    <div class="bg-rose-50 p-2 rounded-lg border border-rose-100">
-                        <p class="text-xs text-rose-600">Rejected</p>
-                        <p class="text-lg font-bold text-rose-700" id="statRejected">0</p>
-                    </div>
-                </div>
-            </div>
-        </div>
+        <!-- Main Workspace -->
+        <div class="max-w-7xl mx-auto px-4 py-6 grid grid-cols-1 lg:grid-cols-12 gap-6">
 
-        <!-- Right Column: Queue Management & Data Import -->
-        <div class="lg:col-span-7 space-y-6">
-            <div class="bg-white rounded-xl shadow-md border border-slate-200 p-6">
-                <div class="flex flex-wrap justify-between items-center mb-4 gap-2">
+            <!-- Left: Active Dialer Control -->
+            <div class="lg:col-span-5 space-y-6">
+                <div class="bg-white rounded-xl shadow-md border border-slate-200 p-6 relative overflow-hidden" id="dialerCardTheme">
+                    <div class="flex justify-between items-center mb-4">
+                        <span class="bg-indigo-100 text-indigo-700 font-medium text-xs px-3 py-1 rounded-full flex items-center gap-1">
+                            <i data-lucide="phone-forwarded" class="w-3.5 h-3.5"></i> Active Call Control
+                        </span>
+                        <span id="progressCounter" class="text-sm font-semibold text-slate-500">Contact 0 / 0</span>
+                    </div>
+
+                    <div class="text-center py-6 border-y border-slate-100 my-2 relative">
+                        <!-- VIP Badge Container -->
+                        <div id="vipBadgeContainer" class="absolute top-2 right-2"></div>
+                        
+                        <div class="w-20 h-20 bg-indigo-50 text-indigo-600 rounded-full flex items-center justify-center mx-auto text-2xl font-bold mb-3 shadow-inner" id="avatarLetter">
+                            ?
+                        </div>
+                        <h2 class="text-xl font-bold text-slate-800 mb-1" id="activeName">No Leads Loaded</h2>
+                        <p class="text-lg font-mono text-indigo-600 font-semibold mb-2" id="activePhone">0300 0000000</p>
+                        <span id="activeNotes" class="inline-block text-xs text-slate-500 bg-slate-100 px-3 py-1 rounded-md">Import CSV list to begin</span>
+                    </div>
+
+                    <div id="previewNotice" class="hidden mb-4 bg-amber-50 border border-amber-200 p-3 rounded-lg text-xs text-amber-800 text-center font-medium">
+                        👁️ Preview Mode Active: Review lead info before pressing Call button.
+                    </div>
+
+                    <div id="autoTimerContainer" class="hidden mb-4">
+                        <div class="flex justify-between text-xs text-slate-500 mb-1">
+                            <span>Auto-dialing next lead via SIM in...</span>
+                            <span id="timerSeconds" class="font-bold text-indigo-600">5s</span>
+                        </div>
+                        <div class="w-full bg-slate-100 h-2 rounded-full overflow-hidden">
+                            <div id="timerBar" class="bg-emerald-500 h-full w-full transition-all duration-1000 ease-linear"></div>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-3 mb-4">
+                        <a id="mainDialBtn" href="#" onclick="startCallStopwatch()" class="bg-emerald-600 hover:bg-emerald-700 text-white font-semibold py-3 px-4 rounded-lg flex items-center justify-center gap-2 shadow-md transition">
+                            <i data-lucide="phone" class="w-5 h-5"></i> Call via SIM
+                        </a>
+                        <button id="pauseDialerBtn" onclick="togglePauseDialer()" class="bg-slate-200 hover:bg-slate-300 text-slate-700 font-semibold py-3 px-4 rounded-lg flex items-center justify-center gap-2 transition">
+                            <i data-lucide="pause" class="w-5 h-5"></i> Pause Queue
+                        </button>
+                    </div>
+
+                    <div class="mb-4">
+                        <label class="block text-xs font-semibold text-slate-600 mb-1">Call Notes / Remarks:</label>
+                        <textarea id="callNotesInput" rows="2" class="w-full p-2.5 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:outline-none" placeholder="Enter notes from call..."></textarea>
+                    </div>
+
+                    <!-- Dispositions -->
                     <div>
-                        <h3 class="font-bold text-slate-800 text-base">Lead Queue Management</h3>
-                        <p class="text-xs text-slate-500">100% Free LocalStorage & Firebase Realtime Database Sync</p>
+                        <label class="block text-xs font-semibold text-slate-600 mb-2">Select Disposition (Auto-Advances):</label>
+                        <div class="grid grid-cols-2 gap-2">
+                            <button onclick="recordDisposition('Interested')" class="bg-emerald-50 hover:bg-emerald-100 text-emerald-700 border border-emerald-300 font-medium py-2 px-3 rounded-lg text-xs flex items-center justify-center gap-1.5 transition">
+                                <i data-lucide="check-circle" class="w-4 h-4 text-emerald-600"></i> Interested
+                            </button>
+                            <button onclick="recordDisposition('Call Back Later')" class="bg-amber-50 hover:bg-amber-100 text-amber-700 border border-amber-300 font-medium py-2 px-3 rounded-lg text-xs flex items-center justify-center gap-1.5 transition">
+                                <i data-lucide="clock" class="w-4 h-4 text-amber-600"></i> Call Back
+                            </button>
+                            <button onclick="recordDisposition('Not Interested')" class="bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-300 font-medium py-2 px-3 rounded-lg text-xs flex items-center justify-center gap-1.5 transition">
+                                <i data-lucide="x-circle" class="w-4 h-4 text-rose-600"></i> Not Interested
+                            </button>
+                            <button onclick="recordDisposition('No Answer / Busy')" class="bg-slate-100 hover:bg-slate-200 text-slate-700 border border-slate-300 font-medium py-2 px-3 rounded-lg text-xs flex items-center justify-center gap-1.5 transition">
+                                <i data-lucide="phone-off" class="w-4 h-4 text-slate-500"></i> No Answer
+                            </button>
+                        </div>
                     </div>
-                    <div class="flex gap-2">
-                        <button onclick="exportCSVResults()" class="bg-indigo-50 hover:bg-indigo-100 text-indigo-700 border border-indigo-200 px-3 py-1.5 rounded-lg text-xs font-semibold flex items-center gap-1 transition">
-                            <i data-lucide="download" class="w-3.5 h-3.5"></i> Export Report
+
+                    <!-- Quick Triggers -->
+                    <div class="mt-4 pt-4 border-t border-slate-100 grid grid-cols-2 gap-2">
+                        <button onclick="sendQuickWhatsApp()" class="bg-green-500 hover:bg-green-600 text-white font-medium py-2 rounded-lg text-xs flex items-center justify-center gap-1 transition">
+                            <i data-lucide="message-square" class="w-4 h-4"></i> WhatsApp
                         </button>
-                        <button onclick="clearAllData()" class="bg-rose-50 hover:bg-rose-100 text-rose-600 border border-rose-200 px-3 py-1.5 rounded-lg text-xs font-semibold transition">
-                            Reset
+                        <button onclick="setCallbackReminder()" class="bg-slate-800 hover:bg-slate-900 text-white font-medium py-2 rounded-lg text-xs flex items-center justify-center gap-1 transition">
+                            <i data-lucide="bell" class="w-4 h-4"></i> Set Reminder
                         </button>
                     </div>
                 </div>
 
-                <div class="mb-3">
-                    <textarea id="rawCsvInput" rows="3" class="w-full p-3 text-xs font-mono border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:outline-none" placeholder="Paste CSV (Name, Phone, Notes) e.g:&#10;Nomad Travels, 03390037475, Ufone Lead&#10;Pearl Luxury Suites, 03335613383, Guest House"></textarea>
-                </div>
-                <div class="flex justify-between items-center">
-                    <div class="flex items-center gap-2">
-                        <label class="text-xs text-slate-600 font-medium">Auto-filter duplicates:</label>
-                        <input type="checkbox" id="dedupeCheck" checked class="rounded border-slate-300 text-indigo-600 focus:ring-indigo-500">
-                    </div>
-                    <button onclick="parseAndLoadCSV()" class="bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-semibold px-5 py-2 rounded-lg flex items-center gap-1.5 shadow transition">
-                        <i data-lucide="upload-cloud" class="w-4 h-4"></i> Load & Start Campaign
-                    </button>
-                </div>
-            </div>
-
-            <!-- Queue Table -->
-            <div class="bg-white rounded-xl shadow-md border border-slate-200 p-6">
-                <div class="flex justify-between items-center mb-4">
-                    <h3 class="font-bold text-slate-800 text-sm flex items-center gap-2">
-                        <i data-lucide="list-ordered" class="w-4 h-4 text-indigo-600"></i> Active Contacts Queue
+                <!-- Analytics & Leaderboard Scorecard -->
+                <div class="bg-white rounded-xl shadow-md border border-slate-200 p-5">
+                    <h3 class="font-bold text-slate-800 mb-3 text-sm flex items-center justify-between">
+                        <span class="flex items-center gap-2"><i data-lucide="award" class="w-4 h-4 text-indigo-600"></i> Agent Scorecard</span>
+                        <span class="text-xs text-indigo-600 font-semibold" id="scorecardUser">Agent</span>
                     </h3>
-                    <input type="text" id="queueSearch" onkeyup="filterQueueTable()" placeholder="Search contacts..." class="p-1.5 px-3 text-xs border border-slate-300 rounded-lg w-48 focus:outline-none focus:ring-1 focus:ring-indigo-500">
+                    <div class="grid grid-cols-4 gap-2 text-center mb-4">
+                        <div class="bg-slate-50 p-2 rounded-lg border border-slate-100">
+                            <p class="text-xs text-slate-500">Total</p>
+                            <p class="text-lg font-bold text-slate-800" id="statTotal">0</p>
+                        </div>
+                        <div class="bg-emerald-50 p-2 rounded-lg border border-emerald-100">
+                            <p class="text-xs text-emerald-600">Interested</p>
+                            <p class="text-lg font-bold text-emerald-700" id="statInterested">0</p>
+                        </div>
+                        <div class="bg-amber-50 p-2 rounded-lg border border-amber-100">
+                            <p class="text-xs text-amber-600">Call Back</p>
+                            <p class="text-lg font-bold text-amber-700" id="statCallback">0</p>
+                        </div>
+                        <div class="bg-rose-50 p-2 rounded-lg border border-rose-100">
+                            <p class="text-xs text-rose-600">Rejected</p>
+                            <p class="text-lg font-bold text-rose-700" id="statRejected">0</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right: Queue Management & CSV Uploader -->
+            <div class="lg:col-span-7 space-y-6">
+                <div class="bg-white rounded-xl shadow-md border border-slate-200 p-6">
+                    <div class="flex flex-wrap justify-between items-center mb-4 gap-2">
+                        <div>
+                            <h3 class="font-bold text-slate-800 text-base">Lead Queue Management</h3>
+                            <p class="text-xs text-slate-500">Import CSV or paste records with VIP tags supported</p>
+                        </div>
+                        <div class="flex gap-2">
+                            <button onclick="exportCSVResults()" class="bg-indigo-50 hover:bg-indigo-100 text-indigo-700 border border-indigo-200 px-3 py-1.5 rounded-lg text-xs font-semibold flex items-center gap-1 transition">
+                                <i data-lucide="download" class="w-3.5 h-3.5"></i> Export Report
+                            </button>
+                            <button onclick="clearAllData()" class="bg-rose-50 hover:bg-rose-100 text-rose-600 border border-rose-200 px-3 py-1.5 rounded-lg text-xs font-semibold transition">
+                                Reset
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <textarea id="rawCsvInput" rows="3" class="w-full p-3 text-xs font-mono border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:outline-none" placeholder="Paste CSV (Name, Phone, Notes) e.g:&#10;Ali Khan, 03001234567, VIP Client&#10;Bilal Ahmed, 03339876543, Urgent Follow-up"></textarea>
+                    </div>
+                    <div class="flex justify-between items-center">
+                        <div class="flex items-center gap-2">
+                            <label class="text-xs text-slate-600 font-medium">Auto-filter duplicates:</label>
+                            <input type="checkbox" id="dedupeCheck" checked class="rounded border-slate-300 text-indigo-600 focus:ring-indigo-500">
+                        </div>
+                        <button onclick="parseAndLoadCSV()" class="bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-semibold px-5 py-2 rounded-lg flex items-center gap-1.5 shadow transition">
+                            <i data-lucide="upload-cloud" class="w-4 h-4"></i> Load & Start Campaign
+                        </button>
+                    </div>
                 </div>
 
-                <div class="overflow-x-auto max-h-[380px] overflow-y-auto custom-scrollbar border border-slate-100 rounded-lg">
-                    <table class="w-full text-left text-xs">
-                        <thead class="bg-slate-50 text-slate-600 font-semibold uppercase sticky top-0 border-b border-slate-200">
-                            <tr>
-                                <th class="p-3">#</th>
-                                <th class="p-3">Name</th>
-                                <th class="p-3">Phone</th>
-                                <th class="p-3">Disposition</th>
-                                <th class="p-3 text-right">Action</th>
-                            </tr>
-                        </thead>
-                        <tbody id="queueTableBody" class="divide-y divide-slate-100 text-slate-700">
-                            <tr>
-                                <td colspan="5" class="p-6 text-center text-slate-400">No contacts loaded in dialer queue.</td>
-                            </tr>
-                        </tbody>
-                    </table>
+                <!-- Queue Table -->
+                <div class="bg-white rounded-xl shadow-md border border-slate-200 p-6">
+                    <div class="flex justify-between items-center mb-4">
+                        <h3 class="font-bold text-slate-800 text-sm flex items-center gap-2">
+                            <i data-lucide="list-ordered" class="w-4 h-4 text-indigo-600"></i> Active Contacts Queue
+                        </h3>
+                        <input type="text" id="queueSearch" onkeyup="filterQueueTable()" placeholder="Search contacts..." class="p-1.5 px-3 text-xs border border-slate-300 rounded-lg w-48 focus:outline-none focus:ring-1 focus:ring-indigo-500">
+                    </div>
+
+                    <div class="overflow-x-auto max-h-[380px] overflow-y-auto custom-scrollbar border border-slate-100 rounded-lg">
+                        <table class="w-full text-left text-xs">
+                            <thead class="bg-slate-50 text-slate-600 font-semibold uppercase sticky top-0 border-b border-slate-200">
+                                <tr>
+                                    <th class="p-3">#</th>
+                                    <th class="p-3">Name</th>
+                                    <th class="p-3">Phone</th>
+                                    <th class="p-3">Disposition</th>
+                                    <th class="p-3 text-right">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody id="queueTableBody" class="divide-y divide-slate-100 text-slate-700">
+                                <tr>
+                                    <td colspan="5" class="p-6 text-center text-slate-400">No contacts loaded in dialer queue.</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Firebase SDKs -->
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-        import { getDatabase, ref, set } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
-
-        const firebaseConfig = {
-            apiKey: "AIzaSyCLFzI1dWn36_b3E9pzb_GU1Q3EyoRdnn0",
-            authDomain: "primex-e8090.firebaseapp.com",
-            databaseURL: "https://primex-e8090-default-rtdb.firebaseio.com",
-            projectId: "primex-e8090",
-            storageBucket: "primex-e8090.firebasestorage.app",
-            messagingSenderId: "465444221491",
-            appId: "1:465444221491:web:9824b4f1f9f592f76ce946",
-            measurementId: "G-9LRYXH2D6E"
-        };
-
-        const app = initializeApp(firebaseConfig);
-        const db = getDatabase(app);
-
-        document.getElementById('firebaseStatus').innerText = "Connected (Online)";
-        document.getElementById('firebaseStatus').className = "text-emerald-300 font-medium";
-
-        window.syncToFirebase = function(leads, index, status) {
-            set(ref(db, 'campaigns/ufone_outreach'), { leads, activeIndex: index, agentStatus: status })
-                .then(() => console.log("Cloud synced!"))
-                .catch(err => console.error("Cloud sync error:", err));
-        };
-    </script>
-
-    <!-- App & Free Advanced Features Script -->
+    <!-- Script Logic -->
     <script>
         let leadsQueue = [];
         let activeIndex = 0;
         let autoDelaySeconds = 5;
         let timerInterval = null;
+        let stopwatchInterval = null;
+        let stopwatchSeconds = 0;
         let isPaused = false;
         let logoTapCount = 0;
         let currentAgentStatus = 'Available';
+        let isDarkMode = false;
+        let dialingMode = 'power';
+        let loggedInUser = '';
+
+        let agentsList = JSON.parse(localStorage.getItem('prodialer_agents')) || [
+            { user: "admin", pass: "5426" },
+            { user: "agent", pass: "1234" }
+        ];
 
         lucide.createIcons();
 
-        // Startup Check
         window.addEventListener('DOMContentLoaded', () => {
             const currentUser = localStorage.getItem('prodialer_user');
             if(currentUser) {
+                loggedInUser = currentUser;
                 document.getElementById('loginScreen').classList.add('hidden');
                 document.getElementById('currentAgentName').innerText = currentUser;
+                document.getElementById('scorecardUser').innerText = currentUser;
                 if(currentUser === 'admin') {
-                    document.getElementById('userRoleBadge').innerText = "Administrator";
-                    document.getElementById('userRoleBadge').className = "text-xs bg-rose-500 text-white px-2 py-0.5 rounded-full font-normal";
+                    showAdminDashboard();
                 }
             }
 
             const savedLeads = localStorage.getItem('prodialer_leads');
             const savedIndex = localStorage.getItem('prodialer_index');
+            const savedTheme = localStorage.getItem('prodialer_theme');
+            
+            if(savedTheme === 'dark') toggleTheme();
+
             if(savedLeads) {
                 leadsQueue = JSON.parse(savedLeads);
                 activeIndex = savedIndex ? parseInt(savedIndex) : 0;
@@ -355,6 +423,7 @@
                 updateStats();
             }
 
+            renderAgentList();
             if (Notification && Notification.permission !== "granted") {
                 Notification.requestPermission();
             }
@@ -363,19 +432,81 @@
         function handleLogin() {
             const user = document.getElementById('loginUser').value.trim().toLowerCase();
             const pass = document.getElementById('loginPass').value.trim();
+            const foundAgent = agentsList.find(a => a.user === user && a.pass === pass);
 
-            if((user === 'admin' && pass === '5426') || (user === 'agent' && pass === '1234') || (user === 'nazim' && pass === '7860')) {
+            if(foundAgent) {
                 localStorage.setItem('prodialer_user', user);
+                loggedInUser = user;
                 document.getElementById('loginScreen').classList.add('hidden');
-                document.getElementById('currentAgentName').innerText = user;
+                playBeep(600, 150);
+
                 if(user === 'admin') {
-                    document.getElementById('userRoleBadge').innerText = "Administrator";
-                    document.getElementById('userRoleBadge').className = "text-xs bg-rose-500 text-white px-2 py-0.5 rounded-full font-normal";
+                    showAdminDashboard();
+                } else {
+                    document.getElementById('currentAgentName').innerText = user;
+                    document.getElementById('scorecardUser').innerText = user;
+                    document.getElementById('agentDashboard').classList.remove('hidden');
+                    document.getElementById('adminDashboard').classList.add('hidden');
                 }
-                lucide.createIcons();
             } else {
-                alert('Invalid Username or Password! (Hint: admin / 5426)');
+                alert('Invalid Username or Password!');
             }
+        }
+
+        function createNewAgent() {
+            const newUser = document.getElementById('newAgentUser').value.trim().toLowerCase();
+            const newPass = document.getElementById('newAgentPass').value.trim();
+
+            if(!newUser || !newPass) { alert('Enter username & password.'); return; }
+            if(agentsList.some(a => a.user === newUser)) { alert('Username already exists!'); return; }
+
+            agentsList.push({ user: newUser, pass: newPass });
+            localStorage.setItem('prodialer_agents', JSON.stringify(agentsList));
+            document.getElementById('newAgentUser').value = '';
+            document.getElementById('newAgentPass').value = '';
+            renderAgentList();
+            updateAdminStats();
+            alert(`Created agent: ${newUser}`);
+        }
+
+        function deleteAgent(index) {
+            if(agentsList[index].user === 'admin') { alert('Cannot delete master admin!'); return; }
+            if(confirm(`Delete agent "${agentsList[index].user}"?`)) {
+                agentsList.splice(index, 1);
+                localStorage.setItem('prodialer_agents', JSON.stringify(agentsList));
+                renderAgentList();
+                updateAdminStats();
+            }
+        }
+
+        function renderAgentList() {
+            const tbody = document.getElementById('agentListTableBody');
+            if(!tbody) return;
+            tbody.innerHTML = agentsList.map((agent, idx) => `
+                <tr class="hover:bg-slate-900 transition">
+                    <td class="p-2.5 text-slate-500">${idx + 1}</td>
+                    <td class="p-2.5 font-semibold text-white">${agent.user}</td>
+                    <td class="p-2.5 font-mono text-indigo-300">${agent.pass}</td>
+                    <td class="p-2.5 text-right">
+                        ${agent.user !== 'admin' ? `<button onclick="deleteAgent(${idx})" class="text-rose-400 hover:text-rose-300 text-xs underline">Delete</button>` : `<span class="text-slate-500 text-[10px]">Protected</span>`}
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        function showAdminDashboard() {
+            document.getElementById('loginScreen').classList.add('hidden');
+            document.getElementById('agentDashboard').classList.add('hidden');
+            document.getElementById('adminDashboard').classList.remove('hidden');
+            updateAdminStats();
+            renderAgentList();
+            lucide.createIcons();
+        }
+
+        function switchViewToAgent() {
+            document.getElementById('adminDashboard').classList.add('hidden');
+            document.getElementById('agentDashboard').classList.remove('hidden');
+            lucide.createIcons();
         }
 
         function handleLogout() {
@@ -392,65 +523,106 @@
             } else {
                 isPaused = false;
             }
+            playBeep(400, 100);
             saveSession();
         }
 
-        function setCallbackReminder() {
-            if(leadsQueue.length === 0 || activeIndex >= leadsQueue.length) return;
-            const current = leadsQueue[activeIndex];
-            const minutes = prompt(`Set reminder for ${current.name} in how many minutes?`, "15");
-            if(minutes && !isNaN(minutes)) {
-                const ms = parseInt(minutes) * 60 * 1000;
-                alert(`⏰ Reminder set for ${current.name} in ${minutes} minutes!`);
-                setTimeout(() => {
-                    if (Notification.permission === "granted") {
-                        new Notification("Call Reminder!", { body: `Time to call back ${current.name} (${current.phone})` });
-                    } else {
-                        alert(`⏰ CALLBACK REMINDER: Time to call back ${current.name} (${current.phone})!`);
-                    }
-                }, ms);
+        function changeDialingMode(mode) {
+            dialingMode = mode;
+            const previewNotice = document.getElementById('previewNotice');
+            if(mode === 'preview') {
+                previewNotice.classList.remove('hidden');
+                isPaused = true;
+            } else {
+                previewNotice.classList.add('hidden');
+                isPaused = false;
             }
+        }
+
+        function updateAutoDelay(val) { autoDelaySeconds = parseInt(val); }
+
+        function playBeep(freq, duration) {
+            try {
+                const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+                const oscillator = audioCtx.createOscillator();
+                const gainNode = audioCtx.createGain();
+                oscillator.type = 'sine';
+                oscillator.frequency.value = freq;
+                gainNode.gain.setValueAtTime(0.1, audioCtx.currentTime);
+                oscillator.connect(gainNode);
+                gainNode.connect(audioCtx.destination);
+                oscillator.start();
+                setTimeout(() => { oscillator.stop(); }, duration);
+            } catch(e) {}
+        }
+
+        function toggleTheme() {
+            isDarkMode = !isDarkMode;
+            const body = document.getElementById('bodyTheme');
+            const themeIcon = document.getElementById('themeIcon');
+            if(isDarkMode) {
+                body.className = "bg-slate-900 text-slate-100 font-sans antialiased transition-colors duration-300";
+                themeIcon.setAttribute("data-lucide", "sun");
+                localStorage.setItem('prodialer_theme', 'dark');
+            } else {
+                body.className = "bg-slate-100 text-slate-800 font-sans antialiased transition-colors duration-300";
+                themeIcon.setAttribute("data-lucide", "moon");
+                localStorage.setItem('prodialer_theme', 'light');
+            }
+            lucide.createIcons();
+        }
+
+        function loadRetryQueue() {
+            const retryLeads = leadsQueue.filter(i => i.status === 'No Answer / Busy' || i.status === 'Call Back Later' || i.status === 'Pending');
+            if(retryLeads.length === 0) { alert('No retry leads found.'); return; }
+            leadsQueue = retryLeads;
+            activeIndex = 0;
+            saveSession();
+            renderQueueTable();
+            loadActiveContact();
+            updateStats();
+            switchViewToAgent();
+            alert(`Loaded retry queue with ${retryLeads.length} leads!`);
+        }
+
+        function downloadCSVTemplate() {
+            const csvContent = "data:text/csv;charset=utf-8,Name,Phone,Notes\nAli Khan,03001234567,VIP Client\nBilal Ahmed,03339876543,Urgent Follow-up";
+            const encodedUri = encodeURI(csvContent);
+            const link = document.createElement("a");
+            link.setAttribute("href", encodedUri);
+            link.setAttribute("download", "calley_sample_template.csv");
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
         }
 
         function handleLogoTap() {
             logoTapCount++;
             if(logoTapCount >= 5) {
                 logoTapCount = 0;
-                const pin = prompt("🔐 Enter Eagle Eye Admin Security Key (PIN):");
-                if(pin === "5426") {
-                    document.getElementById('adminPanel').classList.remove('hidden');
-                    updateAdminStats();
-                } else if(pin !== null) {
-                    alert("❌ Incorrect Security Key!");
-                }
+                const pin = prompt("🔐 Enter Master Admin Security PIN:");
+                const adminCred = agentsList.find(a => a.user === 'admin');
+                if(pin === (adminCred ? adminCred.pass : "5426")) {
+                    showAdminDashboard();
+                } else if(pin !== null) { alert('Incorrect PIN!'); }
             }
             setTimeout(() => { logoTapCount = 0; }, 3000);
         }
 
-        function closeAdminPanel() {
-            document.getElementById('adminPanel').classList.add('hidden');
-        }
-
         function updateAdminStats() {
+            document.getElementById('adminAgentCount').innerText = agentsList.length;
             document.getElementById('adminTotalLeads').innerText = leadsQueue.length;
             document.getElementById('adminInterestedCount').innerText = leadsQueue.filter(i => i.status === 'Interested').length;
-            document.getElementById('adminAgentStatusDisplay').innerText = currentAgentStatus;
         }
 
         function saveSession() {
             localStorage.setItem('prodialer_leads', JSON.stringify(leadsQueue));
             localStorage.setItem('prodialer_index', activeIndex);
-            if(window.syncToFirebase) {
-                window.syncToFirebase(leadsQueue, activeIndex, currentAgentStatus);
-            }
         }
 
         function parseAndLoadCSV() {
             const rawText = document.getElementById('rawCsvInput').value.trim();
-            if(!rawText) {
-                alert('Please enter CSV data first.');
-                return;
-            }
+            if(!rawText) { alert('Please enter CSV data.'); return; }
 
             const lines = rawText.split('\n');
             const dedupe = document.getElementById('dedupeCheck').checked;
@@ -461,28 +633,17 @@
                 if(!line.trim()) return;
                 const parts = line.split(',');
                 const name = parts[0] ? parts[0].trim() : `Contact ${index + 1}`;
-                const phone = parts[1] ? parts[1].replace(/[^0-9]/g, '') : (parts[0] ? parts[0].replace(/[^0-9]/g, '') : '');
+                const phone = parts[1] ? parts[1].replace(/[^0-9]/g, '') : '';
                 const note = parts[2] ? parts[2].trim() : 'CSV Import';
 
                 if(phone) {
                     if(dedupe && seenPhones.has(phone)) return;
                     seenPhones.add(phone);
-
-                    loaded.push({
-                        id: index + 1,
-                        name: name,
-                        phone: phone,
-                        notes: note,
-                        status: 'Pending',
-                        callNotes: ''
-                    });
+                    loaded.push({ id: index + 1, name, phone, notes: note, status: 'Pending', callNotes: '' });
                 }
             });
 
-            if(loaded.length === 0) {
-                alert('No valid phone numbers detected.');
-                return;
-            }
+            if(loaded.length === 0) { alert('No valid numbers found.'); return; }
 
             leadsQueue = loaded;
             activeIndex = 0;
@@ -490,17 +651,39 @@
             renderQueueTable();
             loadActiveContact();
             updateStats();
+            playBeep(800, 200);
+            alert(`Campaign loaded with ${loaded.length} contacts!`);
+        }
 
-            alert(`Successfully loaded & started campaign with ${loaded.length} contacts!`);
+        // ================= LIVE CALL STOPWATCH =================
+        function startCallStopwatch() {
+            clearInterval(stopwatchInterval);
+            stopwatchSeconds = 0;
+            stopwatchInterval = setInterval(() => {
+                stopwatchSeconds++;
+                let mins = Math.floor(stopwatchSeconds / 60).toString().padStart(2, '0');
+                let secs = (stopwatchSeconds % 60).toString().padStart(2, '0');
+                const stopwatchEl = document.getElementById('callStopwatch');
+                if(stopwatchEl) stopwatchEl.innerText = `${mins}:${secs}`;
+            }, 1000);
+        }
+
+        function stopCallStopwatch() {
+            clearInterval(stopwatchInterval);
+            stopwatchSeconds = 0;
+            const stopwatchEl = document.getElementById('callStopwatch');
+            if(stopwatchEl) stopwatchEl.innerText = "00:00";
         }
 
         function loadActiveContact() {
+            stopCallStopwatch();
             if (leadsQueue.length === 0 || activeIndex >= leadsQueue.length) {
                 document.getElementById('activeName').innerText = "All Calls Completed!";
                 document.getElementById('activePhone').innerText = "---";
                 document.getElementById('avatarLetter').innerText = "✓";
                 document.getElementById('activeNotes').innerText = "Campaign Finished";
                 document.getElementById('mainDialBtn').href = "#";
+                document.getElementById('vipBadgeContainer').innerHTML = "";
                 document.getElementById('progressCounter').innerText = `Finished (${leadsQueue.length}/${leadsQueue.length})`;
                 return;
             }
@@ -514,22 +697,40 @@
             document.getElementById('callNotesInput').value = active.callNotes || '';
             document.getElementById('progressCounter').innerText = `Contact ${activeIndex + 1} / ${leadsQueue.length}`;
             
+            // VIP Priority Badge Check
+            const vipContainer = document.getElementById('vipBadgeContainer');
+            if(active.notes.toLowerCase().includes('vip') || active.notes.toLowerCase().includes('urgent')) {
+                vipContainer.innerHTML = `<span class="bg-rose-600 text-white text-[10px] font-bold px-2 py-0.5 rounded-full shadow animate-pulse">🔥 VIP LEAD</span>`;
+            } else {
+                vipContainer.innerHTML = "";
+            }
+
             highlightActiveRow();
         }
 
+        // ================= DISPOSITION & SCHEDULER ENGINE =================
         function recordDisposition(status) {
             if(leadsQueue.length === 0 || activeIndex >= leadsQueue.length) return;
 
+            stopCallStopwatch();
             leadsQueue[activeIndex].status = status;
             leadsQueue[activeIndex].callNotes = document.getElementById('callNotesInput').value.trim();
 
+            if(status === 'Call Back Later') {
+                const callbackTime = prompt("📅 Enter Callback Date & Time (e.g. Tomorrow 2:00 PM):", "Tomorrow 10:00 AM");
+                if(callbackTime) {
+                    leadsQueue[activeIndex].callNotes += ` [Callback Scheduled: ${callbackTime}]`;
+                }
+            }
+
             renderQueueTable();
             updateStats();
+            playBeep(status === 'Interested' ? 900 : 500, 150);
 
             activeIndex++;
             saveSession();
 
-            if(activeIndex < leadsQueue.length && !isPaused && currentAgentStatus === 'Available') {
+            if(activeIndex < leadsQueue.length && !isPaused && currentAgentStatus === 'Available' && dialingMode === 'power') {
                 startAutoTimer();
             } else {
                 loadActiveContact();
@@ -537,7 +738,7 @@
         }
 
         function startAutoTimer() {
-            if(currentAgentStatus !== 'Available') return;
+            if(currentAgentStatus !== 'Available' || dialingMode === 'preview') return;
             let timeLeft = autoDelaySeconds;
             const timerContainer = document.getElementById('autoTimerContainer');
             const secondsDisplay = document.getElementById('timerSeconds');
@@ -549,7 +750,7 @@
 
             clearInterval(timerInterval);
             timerInterval = setInterval(() => {
-                if(currentAgentStatus !== 'Available') {
+                if(currentAgentStatus !== 'Available' || dialingMode === 'preview') {
                     clearInterval(timerInterval);
                     timerContainer.classList.add('hidden');
                     return;
@@ -562,6 +763,7 @@
                     clearInterval(timerInterval);
                     timerContainer.classList.add('hidden');
                     loadActiveContact();
+                    startCallStopwatch();
                     window.location.href = `tel:${leadsQueue[activeIndex].phone}`;
                 }
             }, 1000);
@@ -581,6 +783,7 @@
                 btn.classList.replace('bg-amber-500', 'bg-slate-200');
                 btn.classList.replace('text-white', 'text-slate-700');
             }
+            playBeep(450, 100);
             lucide.createIcons();
         }
 
@@ -589,22 +792,34 @@
             const current = leadsQueue[activeIndex];
             let phone = current.phone;
             if(phone.startsWith('0')) phone = '92' + phone.substring(1);
-            
-            const text = encodeURIComponent(`Hello ${current.name}, thanks for taking our call! Here is our official catalog & website link.`);
+            const text = encodeURIComponent(`Hello ${current.name}, thanks for talking with us! Here is our official link.`);
             window.open(`https://wa.me/${phone}?text=${text}`, '_blank');
+        }
+
+        function setCallbackReminder() {
+            if(leadsQueue.length === 0 || activeIndex >= leadsQueue.length) return;
+            const current = leadsQueue[activeIndex];
+            const minutes = prompt(`Set quick reminder for ${current.name} in how many minutes?`, "15");
+            if(minutes && !isNaN(minutes)) {
+                const ms = parseInt(minutes) * 60 * 1000;
+                alert(`⏰ Reminder set for ${current.name} in ${minutes} minutes!`);
+                setTimeout(() => {
+                    playBeep(880, 500);
+                    alert(`⏰ CALLBACK REMINDER: Time to call ${current.name} (${current.phone})!`);
+                }, ms);
+            }
         }
 
         function renderQueueTable() {
             const tbody = document.getElementById('queueTableBody');
             if(leadsQueue.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="5" class="p-6 text-center text-slate-400">No contacts loaded in dialer queue.</td></tr>`;
+                tbody.innerHTML = `<tr><td colspan="5" class="p-6 text-center text-slate-400">No contacts loaded.</td></tr>`;
                 return;
             }
-
             tbody.innerHTML = leadsQueue.map((item, idx) => `
                 <tr id="row-${idx}" class="hover:bg-slate-50 transition ${idx === activeIndex ? 'bg-indigo-50/60 font-medium' : ''}">
                     <td class="p-3 text-slate-400">${idx + 1}</td>
-                    <td class="p-3 font-semibold text-slate-800">${item.name}</td>
+                    <td class="p-3 font-semibold">${item.name}</td>
                     <td class="p-3 font-mono">${item.phone}</td>
                     <td class="p-3">${getStatusBadge(item.status)}</td>
                     <td class="p-3 text-right">
@@ -650,10 +865,7 @@
         }
 
         function exportCSVResults() {
-            if(leadsQueue.length === 0) {
-                alert('No data to export.');
-                return;
-            }
+            if(leadsQueue.length === 0) { alert('No data to export.'); return; }
             let csvContent = "data:text/csv;charset=utf-8,Name,Phone,Disposition,Notes\n";
             leadsQueue.forEach(row => {
                 csvContent += `"${row.name}","${row.phone}","${row.status}","${row.callNotes}"\n`;
@@ -661,14 +873,14 @@
             const encodedUri = encodeURI(csvContent);
             const link = document.createElement("a");
             link.setAttribute("href", encodedUri);
-            link.setAttribute("download", "prodialer_free_suite_report.csv");
+            link.setAttribute("download", "prodialer_ultimate_report.csv");
             document.body.appendChild(link);
             link.click();
             document.body.removeChild(link);
         }
 
         function clearAllData() {
-            if(confirm("⚠️ Are you sure you want to reset all campaign data?")) {
+            if(confirm("⚠️ Wipe all system data?")) {
                 localStorage.removeItem('prodialer_leads');
                 localStorage.removeItem('prodialer_index');
                 leadsQueue = [];
@@ -676,7 +888,7 @@
                 renderQueueTable();
                 loadActiveContact();
                 updateStats();
-                closeAdminPanel();
+                switchViewToAgent();
             }
         }
 
