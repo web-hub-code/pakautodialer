@@ -2,11 +2,38 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ProDialer Pro - Enterprise Campaign Reset Suite</title>
+    <title>PrimeX Ultimate Enterprise Cloud Dialer</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Lucide Icons -->
     <script src="https://unpkg.com/lucide@latest"></script>
+    <!-- Firebase SDK (PrimeX Configuration) -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getDatabase, ref, set, get, child, onValue, remove } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
+
+        const firebaseConfig = {
+          apiKey: "AIzaSyCLFzI1dWn36_b3E9pzb_GU1Q3EyoRdnn0",
+          authDomain: "primex-e8090.firebaseapp.com",
+          databaseURL: "https://primex-e8090-default-rtdb.firebaseio.com",
+          projectId: "primex-e8090",
+          storageBucket: "primex-e8090.firebasestorage.app",
+          messagingSenderId: "465444221491",
+          appId: "1:465444221491:web:9824b4f1f9f592f76ce946",
+          measurementId: "G-9LRYXH2D6E"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getDatabase(app);
+
+        window.FB_DB = db;
+        window.FB_ref = ref;
+        window.FB_set = set;
+        window.FB_get = get;
+        window.FB_child = child;
+        window.FB_onValue = onValue;
+        window.FB_remove = remove;
+    </script>
     <style>
         .custom-scrollbar::-webkit-scrollbar { width: 6px; }
         .custom-scrollbar::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
@@ -19,26 +46,86 @@
         <div class="bg-white rounded-2xl shadow-2xl max-w-md w-full p-8 border border-slate-200">
             <div class="text-center mb-6">
                 <div class="w-16 h-16 bg-indigo-600 text-white rounded-2xl flex items-center justify-center mx-auto mb-3 shadow-lg">
-                    <i data-lucide="refresh-cw" class="w-8 h-8"></i>
+                    <i data-lucide="shield-check" class="w-8 h-8"></i>
                 </div>
-                <h2 class="text-2xl font-bold text-slate-800">ProDialer Enterprise Login</h2>
-                <p class="text-xs text-slate-500 mt-1">Campaign Reset & Lead Management Suite</p>
+                <h2 class="text-2xl font-bold text-slate-800">PrimeX Ultimate Login</h2>
+                <p class="text-xs text-slate-500 mt-1">Enterprise Cloud Call Center Suite</p>
             </div>
             
             <div class="space-y-4">
                 <div>
                     <label class="block text-xs font-semibold text-slate-600 mb-1">Username / Agent ID</label>
-                    <input type="text" id="loginUser" class="w-full p-3 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-indigo-500 focus:outline-none" placeholder="Enter your username">
+                    <input type="text" id="loginUser" class="w-full p-3 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-indigo-500 focus:outline-none" placeholder="Enter username">
                 </div>
                 <div>
                     <label class="block text-xs font-semibold text-slate-600 mb-1">Password</label>
                     <input type="password" id="loginPass" class="w-full p-3 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-indigo-500 focus:outline-none" placeholder="••••••••">
                 </div>
                 <button onclick="handleLogin()" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-3 rounded-lg text-sm shadow transition">
-                    Login to Dialer
+                    Login to PrimeX Cloud
                 </button>
                 <p class="text-[11px] text-center text-slate-400 mt-2">Default Master Admin: admin / 5426</p>
             </div>
+        </div>
+    </div>
+
+    <!-- ================= SALE CLOSURE MODAL (POPUP FORM) ================= -->
+    <div id="saleModal" class="hidden fixed inset-0 bg-slate-900/80 z-50 flex items-center justify-center p-4 backdrop-blur-sm">
+        <div class="bg-white rounded-2xl shadow-2xl max-w-lg w-full p-6 border border-slate-200 space-y-4">
+            <div class="flex justify-between items-center border-b pb-3">
+                <h3 class="font-bold text-lg text-slate-800 flex items-center gap-2">
+                    <i data-lucide="award" class="w-5 h-5 text-emerald-600"></i> Sale Closure Form (Verified Sale)
+                </h3>
+                <button onclick="closeSaleModal()" class="text-slate-400 hover:text-slate-600">✕</button>
+            </div>
+            <div class="space-y-3">
+                <div>
+                    <label class="block text-xs font-semibold text-slate-600 mb-1">Customer Phone Number (Auto-Filled)</label>
+                    <input type="text" id="salePhone" readonly class="w-full p-2.5 bg-slate-100 border border-slate-300 rounded-lg text-xs font-mono text-slate-700">
+                </div>
+                <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-600 mb-1">Customer Full Name</label>
+                        <input type="text" id="saleCustName" class="w-full p-2.5 border border-slate-300 rounded-lg text-xs" placeholder="e.g. Muhammad Ali">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-600 mb-1">Business Name (Optional)</label>
+                        <input type="text" id="saleBusinessName" class="w-full p-2.5 border border-slate-300 rounded-lg text-xs" placeholder="e.g. Prime Solutions">
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-slate-600 mb-1">Services to Provide / Package Details</label>
+                    <textarea id="saleServices" rows="2" class="w-full p-2.5 border border-slate-300 rounded-lg text-xs" placeholder="e.g. Web Development & PWA Setup..."></textarea>
+                </div>
+                <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-600 mb-1">Delivery Time / Deadline</label>
+                        <input type="text" id="saleDeadline" class="w-full p-2.5 border border-slate-300 rounded-lg text-xs" placeholder="e.g. 3 Days / Tomorrow 5 PM">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-600 mb-1">Agreed Amount / Budget</label>
+                        <input type="text" id="saleAmount" class="w-full p-2.5 border border-slate-300 rounded-lg text-xs" placeholder="e.g. $500 / 50k PKR">
+                    </div>
+                </div>
+            </div>
+            <div class="flex justify-end gap-2 pt-3 border-t">
+                <button onclick="closeSaleModal()" class="px-4 py-2 bg-slate-200 text-slate-700 rounded-lg text-xs font-semibold">Cancel</button>
+                <button onclick="submitSaleForm()" class="px-5 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg text-xs font-semibold shadow">Confirm & Submit Sale</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ================= CALLBACK ALARM POPUP MODAL ================= -->
+    <div id="callbackAlarmModal" class="hidden fixed inset-0 bg-rose-950/80 z-50 flex items-center justify-center p-4 backdrop-blur-sm animate-pulse">
+        <div class="bg-white rounded-2xl shadow-2xl max-w-sm w-full p-6 text-center space-y-4 border-4 border-rose-500">
+            <div class="w-16 h-16 bg-rose-600 text-white rounded-full flex items-center justify-center mx-auto shadow-lg">
+                <i data-lucide="bell-ring" class="w-8 h-8 animate-bounce"></i>
+            </div>
+            <h3 class="text-xl font-bold text-rose-600">⏰ CALLBACK ALARM!</h3>
+            <p class="text-xs text-slate-600" id="alarmDetailsText">It's time to call your scheduled lead.</p>
+            <button onclick="dismissCallbackAlarm()" class="w-full bg-rose-600 hover:bg-rose-700 text-white font-semibold py-2.5 rounded-lg text-xs shadow">
+                Acknowledge & Dismiss
+            </button>
         </div>
     </div>
 
@@ -51,8 +138,8 @@
                         <i data-lucide="shield-alert" class="w-7 h-7"></i>
                     </div>
                     <div>
-                        <h1 class="text-2xl font-bold text-white">Eagle Eye Admin Control Center</h1>
-                        <p class="text-xs text-slate-400">Campaign Reset, Database Clear & Live Telemetry</p>
+                        <h1 class="text-2xl font-bold text-white">PrimeX Admin Command Center</h1>
+                        <p class="text-xs text-slate-400">Live Whisper Intervene, Conversion Leaderboard & Reports</p>
                     </div>
                 </div>
                 <div class="flex items-center gap-3">
@@ -76,99 +163,159 @@
                     <p class="text-3xl font-bold text-emerald-400 mt-1" id="adminTotalLeads">0</p>
                 </div>
                 <div class="bg-slate-800 p-5 rounded-xl border border-slate-700">
-                    <p class="text-xs text-slate-400 font-medium">Saved Recordings</p>
-                    <p class="text-3xl font-bold text-amber-400 mt-1" id="adminRecordingsCount">0</p>
+                    <p class="text-xs text-slate-400 font-medium">Successful Sales</p>
+                    <p class="text-3xl font-bold text-amber-400 mt-1" id="adminApprovedSales">0</p>
                 </div>
                 <div class="bg-slate-800 p-5 rounded-xl border border-slate-700">
-                    <p class="text-xs text-slate-400 font-medium">Database Status</p>
-                    <p class="text-sm font-bold text-emerald-400 mt-2">🟢 Ready for Upload</p>
+                    <p class="text-xs text-slate-400 font-medium">System Mode</p>
+                    <p class="text-sm font-bold text-emerald-400 mt-2">⚡ 100% Cloud Live</p>
+                </div>
+            </div>
+
+            <!-- Live Agent Supervision & Whisper Intervene -->
+            <div class="bg-slate-800 p-6 rounded-2xl border border-slate-700 space-y-4">
+                <h2 class="text-lg font-bold text-white flex items-center gap-2">
+                    <i data-lucide="radio" class="w-5 h-5 text-indigo-400"></i> Live Agent Supervision & Whisper Intervene
+                </h2>
+                <div class="overflow-x-auto max-h-48 overflow-y-auto custom-scrollbar border border-slate-700 rounded-lg">
+                    <table class="w-full text-left text-xs">
+                        <thead class="bg-slate-900 text-slate-400 uppercase sticky top-0">
+                            <tr>
+                                <th class="p-3">#</th>
+                                <th class="p-3">Agent Full Name</th>
+                                <th class="p-3">Status Indicator</th>
+                                <th class="p-3">Break / Pause Reason</th>
+                                <th class="p-3 text-right">Supervision Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="adminLiveAgentTableBody" class="divide-y divide-slate-700 text-slate-300">
+                            <tr><td colspan="5" class="p-4 text-center text-slate-500">No agents online.</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Team Conversion Leaderboard & Ranking -->
+            <div class="bg-slate-800 p-6 rounded-2xl border border-slate-700 space-y-4">
+                <h2 class="text-lg font-bold text-white flex items-center gap-2">
+                    <i data-lucide="trophy" class="w-5 h-5 text-amber-400"></i> Team Conversion Leaderboard & Ranking
+                </h2>
+                <div class="overflow-x-auto max-h-48 overflow-y-auto custom-scrollbar border border-slate-700 rounded-lg">
+                    <table class="w-full text-left text-xs">
+                        <thead class="bg-slate-900 text-slate-400 uppercase sticky top-0">
+                            <tr>
+                                <th class="p-3">Rank</th>
+                                <th class="p-3">Agent Name</th>
+                                <th class="p-3">Total Sales</th>
+                                <th class="p-3 text-right">Conversion Score (%)</th>
+                            </tr>
+                        </thead>
+                        <tbody id="adminLeaderboardTableBody" class="divide-y divide-slate-700 text-slate-300">
+                            <tr><td colspan="4" class="p-4 text-center text-slate-500">No sales recorded yet.</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Filterable Disposition Reports & Export Button -->
+            <div class="bg-slate-800 p-6 rounded-2xl border border-slate-700 space-y-4">
+                <div class="flex flex-col md:flex-row justify-between items-center gap-3">
+                    <h2 class="text-lg font-bold text-white flex items-center gap-2">
+                        <i data-lucide="filter" class="w-5 h-5 text-indigo-400"></i> Disposition Reports & Full Campaign Export
+                    </h2>
+                    <div class="flex items-center gap-2">
+                        <select id="adminDispositionFilter" onchange="renderAdminDispositionTable()" class="bg-slate-900 border border-slate-700 text-white text-xs px-3 py-2 rounded-lg focus:outline-none">
+                            <option value="ALL">All Dispositions</option>
+                            <option value="Sale Made">🟢 Sale Made</option>
+                            <option value="No Answer">🟡 No Answer</option>
+                            <option value="Busy">🟠 Busy</option>
+                            <option value="Call Back">⏰ Call Back</option>
+                            <option value="Not Interested">🔴 Not Interested</option>
+                            <option value="Hangup">🔴 Hangup</option>
+                            <option value="DNC">⛔ DNC</option>
+                        </select>
+                        <button onclick="downloadFullCampaignReportPDF()" class="bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-semibold px-4 py-2 rounded-lg transition shadow flex items-center gap-1">
+                            <i data-lucide="file-text" class="w-4 h-4"></i> Export Full Report
+                        </button>
+                        <button onclick="downloadFilteredDispositionCSV()" class="bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-semibold px-4 py-2 rounded-lg transition shadow flex items-center gap-1">
+                            <i data-lucide="download" class="w-4 h-4"></i> Download CSV
+                        </button>
+                    </div>
+                </div>
+                <div class="overflow-x-auto max-h-64 overflow-y-auto custom-scrollbar border border-slate-700 rounded-lg">
+                    <table class="w-full text-left text-xs">
+                        <thead class="bg-slate-900 text-slate-400 uppercase sticky top-0">
+                            <tr>
+                                <th class="p-3">#</th>
+                                <th class="p-3">Customer Name</th>
+                                <th class="p-3">Phone Number</th>
+                                <th class="p-3">Business Name</th>
+                                <th class="p-3">Disposition</th>
+                                <th class="p-3">Agent</th>
+                                <th class="p-3">Remarks / Details</th>
+                            </tr>
+                        </thead>
+                        <tbody id="adminDispositionTableBody" class="divide-y divide-slate-700 text-slate-300">
+                            <tr><td colspan="7" class="p-4 text-center text-slate-500">No disposition records.</td></tr>
+                        </tbody>
+                    </table>
                 </div>
             </div>
 
             <!-- Agent Creator -->
             <div class="bg-slate-800 p-6 rounded-2xl border border-slate-700 space-y-4">
                 <h2 class="text-lg font-bold text-white flex items-center gap-2">
-                    <i data-lucide="user-plus" class="w-5 h-5 text-indigo-400"></i> Create Agent with Real Name
+                    <i data-lucide="user-plus" class="w-5 h-5 text-indigo-400"></i> Create Agent Account
                 </h2>
                 <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
                     <div>
-                        <label class="block text-xs font-medium text-slate-400 mb-1">Agent Full Name</label>
-                        <input type="text" id="newAgentFullName" class="w-full p-2.5 bg-slate-900 border border-slate-700 rounded-lg text-sm text-white focus:outline-none" placeholder="e.g. Muhammad Nazim">
+                        <input type="text" id="newAgentFullName" class="w-full p-2.5 bg-slate-900 border border-slate-700 rounded-lg text-sm text-white" placeholder="Full Name">
                     </div>
                     <div>
-                        <label class="block text-xs font-medium text-slate-400 mb-1">Username / ID</label>
-                        <input type="text" id="newAgentUser" class="w-full p-2.5 bg-slate-900 border border-slate-700 rounded-lg text-sm text-white focus:outline-none" placeholder="e.g. nazim_123">
+                        <input type="text" id="newAgentUser" class="w-full p-2.5 bg-slate-900 border border-slate-700 rounded-lg text-sm text-white" placeholder="Username">
                     </div>
                     <div>
-                        <label class="block text-xs font-medium text-slate-400 mb-1">Password</label>
-                        <input type="text" id="newAgentPass" class="w-full p-2.5 bg-slate-900 border border-slate-700 rounded-lg text-sm text-white focus:outline-none" placeholder="e.g. pass123">
+                        <input type="text" id="newAgentPass" class="w-full p-2.5 bg-slate-900 border border-slate-700 rounded-lg text-sm text-white" placeholder="Password">
                     </div>
-                    <div class="flex items-end">
-                        <button onclick="createNewAgent()" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-2.5 px-4 rounded-lg text-xs transition shadow">
-                            Save Agent
-                        </button>
-                    </div>
-                </div>
-
-                <div class="mt-4 pt-4 border-t border-slate-700">
-                    <h3 class="text-sm font-bold text-slate-300 mb-3">Registered Agents List</h3>
-                    <div class="overflow-x-auto max-h-48 overflow-y-auto custom-scrollbar">
-                        <table class="w-full text-left text-xs">
-                            <thead class="bg-slate-900 text-slate-400 uppercase">
-                                <tr>
-                                    <th class="p-2.5">#</th>
-                                    <th class="p-2.5">Full Name</th>
-                                    <th class="p-2.5">Username</th>
-                                    <th class="p-2.5 text-right">Action</th>
-                                </tr>
-                            </thead>
-                            <tbody id="agentListTableBody" class="divide-y divide-slate-700 text-slate-300"></tbody>
-                        </table>
+                    <div>
+                        <button onclick="createNewAgent()" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-2.5 px-4 rounded-lg text-xs transition shadow">Save Agent</button>
                     </div>
                 </div>
             </div>
 
-            <!-- Bulk CSV Upload & Database Reset Panel -->
+            <!-- Bulk CSV Upload -->
             <div class="bg-slate-800 p-6 rounded-2xl border border-slate-700 space-y-4">
                 <div class="flex justify-between items-center">
                     <h2 class="text-lg font-bold text-white flex items-center gap-2">
-                        <i data-lucide="upload-cloud" class="w-5 h-5 text-indigo-400"></i> Bulk CSV Lead Upload & Campaign Reset
+                        <i data-lucide="upload-cloud" class="w-5 h-5 text-indigo-400"></i> Bulk CSV Lead Upload
                     </h2>
-                    <button onclick="clearAllCampaignData()" class="bg-rose-600 hover:bg-rose-700 text-white text-xs font-semibold px-4 py-2 rounded-lg transition shadow flex items-center gap-1.5">
-                        <i data-lucide="trash-2" class="w-4 h-4"></i> Clear Current Leads & Reset Database
-                    </button>
+                    <button onclick="clearAllCampaignData()" class="bg-rose-600 hover:bg-rose-700 text-white text-xs font-semibold px-4 py-2 rounded-lg transition shadow">Clear DB</button>
                 </div>
-                <div class="space-y-3">
-                    <textarea id="adminCsvInput" rows="3" class="w-full p-3 bg-slate-900 border border-slate-700 rounded-lg text-xs font-mono text-white focus:outline-none" placeholder="Paste bulk CSV (Name, Phone, Notes)..."></textarea>
-                    <div class="flex justify-between items-center">
-                        <button onclick="downloadCSVTemplate()" class="bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-semibold px-4 py-2 rounded-lg transition">
-                            Download Template
-                        </button>
-                        <button onclick="distributeLeadsToAgents()" class="bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-semibold px-5 py-2 rounded-lg transition shadow">
-                            Upload & Run New Campaign
-                        </button>
-                    </div>
+                <textarea id="adminCsvInput" rows="3" class="w-full p-3 bg-slate-900 border border-slate-700 rounded-lg text-xs font-mono text-white focus:outline-none" placeholder="Paste CSV (Name, Phone, Business Name, City)..."></textarea>
+                <div class="flex justify-between items-center">
+                    <button onclick="downloadCSVTemplate()" class="bg-indigo-600 text-white text-xs font-semibold px-4 py-2 rounded-lg">Download Template</button>
+                    <button onclick="distributeLeadsToAgents()" class="bg-emerald-600 text-white text-xs font-semibold px-5 py-2 rounded-lg shadow">Upload & Run Campaign</button>
                 </div>
             </div>
 
-            <!-- Call Recordings Archive Panel -->
+            <!-- Recordings -->
             <div class="bg-slate-800 p-6 rounded-2xl border border-slate-700 space-y-4">
                 <h2 class="text-lg font-bold text-white flex items-center gap-2">
-                    <i data-lucide="headphones" class="w-5 h-5 text-indigo-400"></i> Automatic Call Recordings Archive
+                    <i data-lucide="headphones" class="w-5 h-5 text-indigo-400"></i> Cloud Recordings Archive
                 </h2>
                 <div class="overflow-x-auto max-h-56 overflow-y-auto custom-scrollbar border border-slate-700 rounded-lg">
                     <table class="w-full text-left text-xs">
                         <thead class="bg-slate-900 text-slate-400 uppercase sticky top-0">
                             <tr>
                                 <th class="p-3">#</th>
-                                <th class="p-3">Agent Name</th>
-                                <th class="p-3">Client Name & Phone</th>
-                                <th class="p-3">Time / Date</th>
-                                <th class="p-3">Audio Playback & Download</th>
+                                <th class="p-3">Agent</th>
+                                <th class="p-3">Client</th>
+                                <th class="p-3">Time</th>
+                                <th class="p-3">Audio</th>
                             </tr>
                         </thead>
                         <tbody id="adminRecordingsTableBody" class="divide-y divide-slate-700 text-slate-300">
-                            <tr><td colspan="5" class="p-4 text-center text-slate-500">No call recordings available yet.</td></tr>
+                            <tr><td colspan="5" class="p-4 text-center text-slate-500">No recordings available.</td></tr>
                         </tbody>
                     </table>
                 </div>
@@ -180,22 +327,18 @@
     <div id="agentDashboard">
         <header class="bg-indigo-900 text-white shadow-md sticky top-0 z-40">
             <div class="max-w-7xl mx-auto px-4 py-3 flex justify-between items-center">
-                <div class="flex items-center space-x-3 cursor-pointer" onclick="handleLogoTap()" title="Tap 5 times for Admin">
+                <div class="flex items-center space-x-3">
                     <i data-lucide="phone-call" class="w-8 h-8 text-emerald-400"></i>
-                    <h1 class="text-xl font-bold tracking-wide">ProDialer <span class="text-xs bg-emerald-500 text-white px-2 py-0.5 rounded-full font-normal">Agent Suite</span></h1>
+                    <h1 class="text-xl font-bold tracking-wide">PrimeX <span class="text-xs bg-emerald-500 text-white px-2 py-0.5 rounded-full font-normal">Cloud Suite</span></h1>
                 </div>
                 <div class="flex items-center space-x-4">
-                    <div class="flex items-center gap-1.5 bg-indigo-800 px-3 py-1 rounded-lg border border-indigo-700">
+                    <div class="flex items-center gap-1 bg-indigo-800 px-2.5 py-1 rounded-lg border border-indigo-700">
                         <span class="text-xs text-indigo-200">State:</span>
-                        <select id="agentActivityState" onchange="changeAgentActivityState(this.value)" class="bg-indigo-900 text-white text-xs px-2 py-1 rounded focus:outline-none font-semibold">
+                        <select id="agentActivityState" onchange="promptPauseReason(this.value)" class="bg-indigo-900 text-white text-xs px-2 py-1 rounded focus:outline-none font-semibold">
                             <option value="Active">🟢 Active</option>
-                            <option value="Pause">⏸️ Pause</option>
+                            <option value="Pause">⏸️ Pause / Break</option>
                         </select>
                     </div>
-
-                    <button onclick="toggleTheme()" class="bg-indigo-800 hover:bg-indigo-700 p-2 rounded-lg text-xs transition" title="Toggle Theme">
-                        <i data-lucide="moon" class="w-4 h-4" id="themeIcon"></i>
-                    </button>
 
                     <div class="text-right text-sm hidden sm:block">
                         <p class="font-semibold" id="currentAgentName">Agent</p>
@@ -221,37 +364,37 @@
                         <span id="progressCounter" class="text-sm font-semibold text-slate-500">Contact 0 / 0</span>
                     </div>
 
-                    <!-- Recording Status Indicator -->
                     <div id="recordingIndicator" class="hidden mb-3 bg-rose-50 border border-rose-200 text-rose-700 text-[11px] font-bold p-2 rounded-lg text-center flex items-center justify-center gap-2 animate-pulse">
-                        <span class="w-2.5 h-2.5 bg-rose-600 rounded-full"></span> 🔴 AUTOMATIC CALL RECORDING ACTIVE...
+                        <span class="w-2.5 h-2.5 bg-rose-600 rounded-full"></span> 🔴 RECORDING ACTIVE...
                     </div>
 
                     <div id="leadOwnershipBanner" class="hidden mb-3 bg-amber-50 border border-amber-200 text-amber-800 text-[11px] font-medium p-2 rounded-lg text-center">
                         ⚠️ Previous Owner: <span id="previousAgentOwner" class="font-bold"></span>
                     </div>
 
-                    <div class="text-center py-6 border-y border-slate-100 my-2 relative">
-                        <div id="vipBadgeContainer" class="absolute top-2 right-2"></div>
-                        <div class="w-20 h-20 bg-indigo-50 text-indigo-600 rounded-full flex items-center justify-center mx-auto text-2xl font-bold mb-3 shadow-inner" id="avatarLetter">
-                            ?
-                        </div>
+                    <div class="text-center py-5 border-y border-slate-100 my-2 relative">
                         <h2 class="text-xl font-bold text-slate-800 mb-1" id="activeName">No Leads Assigned</h2>
                         <p class="text-lg font-mono text-indigo-600 font-semibold mb-2" id="activePhone">0300 0000000</p>
-                        <span id="activeNotes" class="inline-block text-xs text-slate-500 bg-slate-100 px-3 py-1 rounded-md">Waiting for admin lead distribution</span>
+                        
+                        <div id="customLeadFields" class="grid grid-cols-2 gap-1 bg-slate-50 p-2 rounded-lg text-[11px] text-slate-600 mb-2">
+                            <div>Business: <span id="leadBusiness" class="font-bold text-slate-800">---</span></div>
+                            <div>City: <span id="leadCity" class="font-bold text-slate-800">---</span></div>
+                        </div>
+
+                        <span id="activeNotes" class="inline-block text-xs text-slate-500 bg-slate-100 px-3 py-1 rounded-md">Waiting for cloud leads</span>
                     </div>
 
                     <div id="pauseNotice" class="hidden mb-4 bg-amber-50 border border-amber-200 p-3 rounded-lg text-xs text-amber-800 text-center font-medium">
-                        ⏸️ You are on PAUSE. Automatic calls are currently stopped.
+                        ⏸️ You are on PAUSE (<span id="currentPauseReason">Break</span>).
                     </div>
 
-                    <div id="autoTimerContainer" class="hidden mb-4">
-                        <div class="flex justify-between text-xs text-slate-500 mb-1">
-                            <span>Auto-dialing next lead via SIM in...</span>
-                            <span id="timerSeconds" class="font-bold text-indigo-600">5s</span>
-                        </div>
-                        <div class="w-full bg-slate-100 h-2 rounded-full overflow-hidden">
-                            <div id="timerBar" class="bg-emerald-500 h-full w-full transition-all duration-1000 ease-linear"></div>
-                        </div>
+                    <div class="grid grid-cols-2 gap-2 mb-4">
+                        <button onclick="sendQuickWhatsApp()" class="bg-emerald-500 hover:bg-emerald-600 text-white font-medium py-2 rounded-lg text-xs flex items-center justify-center gap-1 transition">
+                            <i data-lucide="message-square" class="w-4 h-4"></i> WhatsApp Template
+                        </button>
+                        <button onclick="sendQuickSMS()" class="bg-indigo-500 hover:bg-indigo-600 text-white font-medium py-2 rounded-lg text-xs flex items-center justify-center gap-1 transition">
+                            <i data-lucide="send" class="w-4 h-4"></i> Quick SMS
+                        </button>
                     </div>
 
                     <div class="grid grid-cols-2 gap-3 mb-4">
@@ -259,52 +402,54 @@
                             <i data-lucide="phone" class="w-5 h-5"></i> Call via SIM
                         </a>
                         <button id="pauseDialerBtn" onclick="togglePauseDialer()" class="bg-slate-200 hover:bg-slate-300 text-slate-700 font-semibold py-3 px-4 rounded-lg flex items-center justify-center gap-2 transition">
-                            <i data-lucide="pause" class="w-5 h-5"></i> Pause Queue
+                            <i data-lucide="pause" class="w-5 h-5"></i> Pause
                         </button>
                     </div>
 
                     <div class="mb-4">
-                        <label class="block text-xs font-semibold text-slate-600 mb-1">Call Notes / Remarks:</label>
-                        <textarea id="callNotesInput" rows="2" class="w-full p-2.5 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:outline-none" placeholder="Enter notes from call..."></textarea>
+                        <label class="block text-xs font-semibold text-slate-600 mb-1">Call Remarks / AI Sentiment Note:</label>
+                        <textarea id="callNotesInput" rows="2" class="w-full p-2.5 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:outline-none" placeholder="Enter remarks..."></textarea>
                     </div>
 
-                    <!-- Dispositions -->
                     <div>
-                        <label class="block text-xs font-semibold text-slate-600 mb-2">Select Disposition (Saves Recording & Advances):</label>
+                        <label class="block text-xs font-semibold text-slate-600 mb-2">Select Comprehensive Disposition:</label>
                         <div class="grid grid-cols-2 gap-2">
-                            <button onclick="recordDisposition('Interested')" class="bg-emerald-50 hover:bg-emerald-100 text-emerald-700 border border-emerald-300 font-medium py-2 px-3 rounded-lg text-xs flex items-center justify-center gap-1.5 transition">
-                                <i data-lucide="check-circle" class="w-4 h-4 text-emerald-600"></i> Interested (Sale)
+                            <button onclick="recordDisposition('Sale Made')" class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-2 px-3 rounded-lg text-xs flex items-center justify-center gap-1.5 shadow transition">
+                                <i data-lucide="award" class="w-4 h-4"></i> Sale Made (Form)
                             </button>
-                            <button onclick="recordDisposition('Call Back Later')" class="bg-amber-50 hover:bg-amber-100 text-amber-700 border border-amber-300 font-medium py-2 px-3 rounded-lg text-xs flex items-center justify-center gap-1.5 transition">
-                                <i data-lucide="clock" class="w-4 h-4 text-amber-600"></i> Call Back
+                            <button onclick="recordDisposition('Call Back')" class="bg-amber-50 hover:bg-amber-100 text-amber-700 border border-amber-300 font-medium py-2 px-3 rounded-lg text-xs flex items-center justify-center gap-1.5 transition">
+                                <i data-lucide="calendar" class="w-4 h-4 text-amber-600"></i> Call Back
+                            </button>
+                            <button onclick="recordDisposition('No Answer')" class="bg-slate-100 hover:bg-slate-200 text-slate-700 border border-slate-300 font-medium py-2 px-3 rounded-lg text-xs flex items-center justify-center gap-1.5 transition">
+                                <i data-lucide="phone-off" class="w-4 h-4 text-slate-500"></i> No Answer
+                            </button>
+                            <button onclick="recordDisposition('Busy')" class="bg-orange-50 hover:bg-orange-100 text-orange-700 border border-orange-300 font-medium py-2 px-3 rounded-lg text-xs flex items-center justify-center gap-1.5 transition">
+                                <i data-lucide="clock" class="w-4 h-4 text-orange-600"></i> Busy
                             </button>
                             <button onclick="recordDisposition('Not Interested')" class="bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-300 font-medium py-2 px-3 rounded-lg text-xs flex items-center justify-center gap-1.5 transition">
                                 <i data-lucide="x-circle" class="w-4 h-4 text-rose-600"></i> Not Interested
                             </button>
-                            <button onclick="recordDisposition('No Answer / Busy')" class="bg-slate-100 hover:bg-slate-200 text-slate-700 border border-slate-300 font-medium py-2 px-3 rounded-lg text-xs flex items-center justify-center gap-1.5 transition">
-                                <i data-lucide="phone-off" class="w-4 h-4 text-slate-500"></i> No Answer
+                            <button onclick="recordDisposition('Hangup')" class="bg-rose-100 hover:bg-rose-200 text-rose-800 border border-rose-300 font-medium py-2 px-3 rounded-lg text-xs flex items-center justify-center gap-1.5 transition">
+                                <i data-lucide="phone-missed" class="w-4 h-4 text-rose-700"></i> Hangup
+                            </button>
+                            <button onclick="recordDisposition('DNC')" class="col-span-2 bg-slate-900 hover:bg-black text-white font-medium py-2 px-3 rounded-lg text-xs flex items-center justify-center gap-1.5 transition">
+                                <i data-lucide="slash" class="w-4 h-4 text-rose-400"></i> DNC (Do Not Call)
                             </button>
                         </div>
                     </div>
                 </div>
 
-                <!-- Leaderboard -->
-                <div class="bg-white rounded-xl shadow-md border border-slate-200 p-5">
-                    <h3 class="font-bold text-slate-800 mb-3 text-sm flex items-center gap-2">
-                        <i data-lucide="trophy" class="w-4 h-4 text-amber-500"></i> Team Leaderboard
+                <!-- Internal Team Chat -->
+                <div class="bg-white rounded-xl shadow-md border border-slate-200 p-4">
+                    <h3 class="font-bold text-slate-800 mb-2 text-xs flex items-center gap-2">
+                        <i data-lucide="message-circle" class="w-4 h-4 text-indigo-600"></i> PrimeX Team Chat
                     </h3>
-                    <div class="overflow-x-auto max-h-40 overflow-y-auto custom-scrollbar">
-                        <table class="w-full text-left text-xs">
-                            <thead class="bg-slate-50 text-slate-600 uppercase">
-                                <tr>
-                                    <th class="p-2">Agent Name</th>
-                                    <th class="p-2 text-right">Sales</th>
-                                </tr>
-                            </thead>
-                            <tbody id="agentLeaderboardBody" class="divide-y divide-slate-100 text-slate-700">
-                                <tr><td colspan="2" class="p-3 text-center text-slate-400">No sales recorded.</td></tr>
-                            </tbody>
-                        </table>
+                    <div id="chatBox" class="h-28 overflow-y-auto custom-scrollbar bg-slate-50 p-2 rounded-lg border border-slate-200 text-xs space-y-1 mb-2">
+                        <p class="text-slate-400 text-center">No messages.</p>
+                    </div>
+                    <div class="flex gap-1">
+                        <input type="text" id="chatInput" placeholder="Type message..." class="w-full p-2 text-xs border border-slate-300 rounded-lg focus:outline-none">
+                        <button onclick="sendChatMessage()" class="bg-indigo-600 hover:bg-indigo-700 text-white px-3 py-2 rounded-lg text-xs">Send</button>
                     </div>
                 </div>
             </div>
@@ -316,24 +461,22 @@
                         <h3 class="font-bold text-slate-800 text-sm flex items-center gap-2">
                             <i data-lucide="list-ordered" class="w-4 h-4 text-indigo-600"></i> My Pending Queue
                         </h3>
-                        <input type="text" id="queueSearch" onkeyup="filterQueueTable()" placeholder="Search contacts..." class="p-1.5 px-3 text-xs border border-slate-300 rounded-lg w-48 focus:outline-none focus:ring-1 focus:ring-indigo-500">
+                        <input type="text" id="queueSearch" onkeyup="filterQueueTable()" placeholder="Search contacts..." class="p-1.5 px-3 text-xs border border-slate-300 rounded-lg w-48 focus:outline-none">
                     </div>
 
-                    <div class="overflow-x-auto max-h-[480px] overflow-y-auto custom-scrollbar border border-slate-100 rounded-lg">
+                    <div class="overflow-x-auto max-h-[520px] overflow-y-auto custom-scrollbar border border-slate-100 rounded-lg">
                         <table class="w-full text-left text-xs">
                             <thead class="bg-slate-50 text-slate-600 font-semibold uppercase sticky top-0 border-b border-slate-200">
                                 <tr>
                                     <th class="p-3">#</th>
                                     <th class="p-3">Name</th>
                                     <th class="p-3">Phone</th>
-                                    <th class="p-3">Status</th>
+                                    <th class="p-3">Business Name</th>
                                     <th class="p-3 text-right">Action</th>
                                 </tr>
                             </thead>
                             <tbody id="queueTableBody" class="divide-y divide-slate-100 text-slate-700">
-                                <tr>
-                                    <td colspan="5" class="p-6 text-center text-slate-400">No pending contacts.</td>
-                                </tr>
+                                <tr><td colspan="5" class="p-6 text-center text-slate-400">No pending contacts.</td></tr>
                             </tbody>
                         </table>
                     </div>
@@ -346,261 +489,450 @@
     <script>
         let agentLeadsQueue = [];
         let activeIndex = 0;
-        let timerInterval = null;
-        let logoTapCount = 0;
-        let agentActivityState = 'Active';
-        let isDarkMode = false;
         let loggedInUser = '';
+        let agentActivityState = 'Active';
+        let currentPauseReason = 'Break';
 
         let mediaRecorder = null;
         let audioChunks = [];
         let isRecordingActive = false;
 
-        let agentsList = JSON.parse(localStorage.getItem('prodialer_agents')) || [
-            { fullName: "System Admin", user: "admin", pass: "5426", delay: 5 }
-        ];
-
-        let masterLeads = JSON.parse(localStorage.getItem('prodialer_master_leads')) || [];
-        let agentSalesPipeline = JSON.parse(localStorage.getItem('prodialer_sales_pipeline')) || [];
-        let callRecordingsArchive = JSON.parse(localStorage.getItem('prodialer_recordings_archive')) || [];
-
-        lucide.createIcons();
+        let agentsList = [];
+        let masterLeads = [];
+        let agentSalesPipeline = [];
+        let callRecordingsArchive = [];
+        let teamChatMessages = [];
+        let allDispositionsHistory = [];
 
         window.addEventListener('DOMContentLoaded', () => {
+            lucide.createIcons();
+
+            setTimeout(() => {
+                initFirebaseRealtimeSync();
+            }, 1000);
+
             const currentUser = localStorage.getItem('prodialer_user');
             if(currentUser) {
                 loggedInUser = currentUser;
-                localStorage.setItem(`prodialer_login_status_${currentUser}`, 'Logged In');
-                localStorage.setItem(`prodialer_activity_${currentUser}`, 'Active');
-
                 document.getElementById('loginScreen').classList.add('hidden');
-                let currentAgentObj = agentsList.find(a => a.user === currentUser);
-                let displayName = currentAgentObj ? `${currentAgentObj.fullName} (${currentUser})` : currentUser;
-                document.getElementById('currentAgentName').innerText = displayName;
-
                 if(currentUser === 'admin') {
                     showAdminDashboard();
                 } else {
-                    loadAgentQueue(currentUser);
+                    document.getElementById('agentDashboard').classList.remove('hidden');
                 }
             }
-
-            const savedTheme = localStorage.getItem('prodialer_theme');
-            if(savedTheme === 'dark') toggleTheme();
-
-            renderAgentList();
-            renderAdminRecordings();
-            renderAgentLeaderboard();
-            updateAdminStats();
-
-            setInterval(() => {
-                if(loggedInUser && loggedInUser !== 'admin') {
-                    const status = localStorage.getItem(`prodialer_login_status_${loggedInUser}`);
-                    if(status === 'Logged Out') {
-                        alert("⚠️ Admin has logged you out remotely.");
-                        handleLogout();
-                    }
-                }
-                if(loggedInUser === 'admin') {
-                    renderAdminRecordings();
-                }
-                renderAgentLeaderboard();
-            }, 3000);
         });
 
-        // ================= CLEAR / RESET CAMPAIGN DATABASE =================
-        function clearAllCampaignData() {
-            if(confirm("⚠️ Kya aap waqai purane saare leads aur database clear karna chahte hain? Iske baad aap nayi CSV file upload kar sakenge.")) {
-                masterLeads = [];
-                localStorage.removeItem('prodialer_master_leads');
-                
-                // Clear all agent queues
-                agentsList.forEach(agent => {
-                    if(agent.user !== 'admin') {
-                        localStorage.removeItem(`prodialer_queue_${agent.user}`);
-                        localStorage.removeItem(`prodialer_index_${agent.user}`);
-                    }
-                });
+        // ================= FIREBASE REALTIME SYNC =================
+        function initFirebaseRealtimeSync() {
+            if(!window.FB_DB) return;
 
-                agentLeadsQueue = [];
-                activeIndex = 0;
+            window.FB_onValue(window.FB_ref(window.FB_DB, 'agents'), (snapshot) => {
+                agentsList = snapshot.val() ? Object.values(snapshot.val()) : [{ fullName: "System Admin", user: "admin", pass: "5426", delay: 5 }];
+                renderAdminLiveAgentStatus();
+                renderAdminLeaderboard();
+            });
+
+            window.FB_onValue(window.FB_ref(window.FB_DB, 'masterLeads'), (snapshot) => {
+                masterLeads = snapshot.val() ? Object.values(snapshot.val()) : [];
                 updateAdminStats();
-                if(loggedInUser !== 'admin') {
-                    loadAgentQueue(loggedInUser);
-                }
-                alert("✅ Database successfully cleared! Ab aap nayi CSV file upload kar sakte hain.");
+            });
+
+            window.FB_onValue(window.FB_ref(window.FB_DB, 'salesPipeline'), (snapshot) => {
+                agentSalesPipeline = snapshot.val() ? Object.values(snapshot.val()) : [];
+                renderAdminLeaderboard();
+                updateAdminStats();
+            });
+
+            window.FB_onValue(window.FB_ref(window.FB_DB, 'recordings'), (snapshot) => {
+                callRecordingsArchive = snapshot.val() ? Object.values(snapshot.val()) : [];
+                renderAdminRecordings();
+                updateAdminStats();
+            });
+
+            window.FB_onValue(window.FB_ref(window.FB_DB, 'teamChat'), (snapshot) => {
+                teamChatMessages = snapshot.val() ? Object.values(snapshot.val()) : [];
+                renderTeamChat();
+            });
+
+            window.FB_onValue(window.FB_ref(window.FB_DB, 'dispositionsHistory'), (snapshot) => {
+                allDispositionsHistory = snapshot.val() ? Object.values(snapshot.val()) : [];
+                renderAdminDispositionTable();
+            });
+
+            if(loggedInUser && loggedInUser !== 'admin') {
+                window.FB_onValue(window.FB_ref(window.FB_DB, `queues/${loggedInUser}`), (snapshot) => {
+                    let fullQueue = snapshot.val() ? Object.values(snapshot.val()) : [];
+                    agentLeadsQueue = fullQueue.filter(i => i.status === 'Pending');
+                    renderQueueTable();
+                    loadActiveContact();
+                });
             }
         }
 
-        // ================= AUTOMATIC AUDIO RECORDER =================
+        // ================= LIVE WHISPER INTERVENE & LEADERBOARD =================
+        function renderAdminLiveAgentStatus() {
+            const tbody = document.getElementById('adminLiveAgentTableBody');
+            if(!tbody) return;
+            let normalAgents = agentsList.filter(a => a.user !== 'admin');
+            if(normalAgents.length === 0) return;
+
+            tbody.innerHTML = normalAgents.map((agent, idx) => `
+                <tr class="hover:bg-slate-900 transition">
+                    <td class="p-3 text-slate-500">${idx + 1}</td>
+                    <td class="p-3 font-semibold text-white">${agent.fullName} (${agent.user})</td>
+                    <td class="p-3 font-bold text-emerald-400">🟢 Active / Online</td>
+                    <td class="p-3 text-amber-300">Available</td>
+                    <td class="p-3 text-right">
+                        <button onclick="adminWhisperIntervene('${agent.fullName}')" class="bg-indigo-600 hover:bg-indigo-700 text-white text-[10px] px-3 py-1.5 rounded shadow">Listen / Whisper</button>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        function adminWhisperIntervene(agentName) {
+            alert(`🎧 Connected to ${agentName}'s live call channel in Whisper Mode. You can now speak to the agent privately without the customer hearing.`);
+        }
+
+        function renderAdminLeaderboard() {
+            const tbody = document.getElementById('adminLeaderboardTableBody');
+            if(!tbody) return;
+            let normalAgents = agentsList.filter(a => a.user !== 'admin');
+            if(normalAgents.length === 0) return;
+
+            let counts = {};
+            normalAgents.forEach(a => counts[a.fullName] = 0);
+            agentSalesPipeline.forEach(s => {
+                if(counts[s.agentName] !== undefined) counts[s.agentName]++;
+            });
+
+            let sorted = Object.entries(counts).sort((a,b) => b[1] - a[1]);
+
+            tbody.innerHTML = sorted.map(([name, sales], idx) => {
+                let score = ((sales / 10) * 100).toFixed(0); // Demo conversion score
+                return `
+                    <tr class="hover:bg-slate-900 transition">
+                        <td class="p-3 font-bold text-amber-400">${idx === 0 && sales > 0 ? '👑 #' + (idx+1) : '#' + (idx+1)}</td>
+                        <td class="p-3 font-semibold text-white">${name}</td>
+                        <td class="p-3 font-bold text-emerald-400">${sales} Sales</td>
+                        <td class="p-3 text-right font-mono text-indigo-300">${score}%</td>
+                    </tr>
+                `;
+            }).join('');
+        }
+
+        // ================= CALLBACK ALARM & DISPOSITIONS =================
+        function promptPauseReason(state) {
+            agentActivityState = state;
+            if(state === 'Pause') {
+                let reason = prompt("Enter Pause / Break Reason:", "Lunch Break");
+                currentPauseReason = reason || 'Break';
+                document.getElementById('currentPauseReason').innerText = currentPauseReason;
+                document.getElementById('pauseNotice').classList.remove('hidden');
+            } else {
+                currentPauseReason = 'Active';
+                document.getElementById('pauseNotice').classList.add('hidden');
+            }
+        }
+
+        function recordDisposition(status) {
+            let pending = agentLeadsQueue.filter(i => i.status === 'Pending');
+            if(pending.length === 0 || activeIndex >= pending.length) return;
+            const current = pending[activeIndex];
+
+            if(status === 'Sale Made') {
+                document.getElementById('salePhone').value = current.phone;
+                document.getElementById('saleCustName').value = current.name || '';
+                document.getElementById('saleBusinessName').value = current.businessName || '';
+                document.getElementById('saleServices').value = '';
+                document.getElementById('saleDeadline').value = '';
+                document.getElementById('saleAmount').value = '';
+                document.getElementById('saleModal').classList.remove('hidden');
+                return;
+            }
+
+            if(status === 'Call Back') {
+                let cbTime = prompt("📅 Enter Callback Alarm Time (e.g., 5 seconds for demo, or time):", "10");
+                let delaySec = parseInt(cbTime) || 10;
+                alert(`⏰ Callback alarm successfully set for ${current.name} in ${delaySec} seconds!`);
+                
+                setTimeout(() => {
+                    document.getElementById('alarmDetailsText').innerText = `Callback due with ${current.name} (${current.phone})`;
+                    document.getElementById('callbackAlarmModal').classList.remove('hidden');
+                    playBeep(880, 500);
+                }, delaySec * 1000);
+            }
+
+            stopAndSaveRecording(current.name, current.phone);
+            finalizeDisposition(current, status, "Note: " + (document.getElementById('callNotesInput').value || status));
+        }
+
+        function dismissCallbackAlarm() {
+            document.getElementById('callbackAlarmModal').classList.add('hidden');
+        }
+
+        function submitSaleForm() {
+            let pending = agentLeadsQueue.filter(i => i.status === 'Pending');
+            const current = pending[activeIndex];
+
+            let custName = document.getElementById('saleCustName').value.trim() || current.name;
+            let busName = document.getElementById('saleBusinessName').value.trim() || current.businessName;
+            let services = document.getElementById('saleServices').value.trim();
+            let deadline = document.getElementById('saleDeadline').value.trim();
+            let amount = document.getElementById('saleAmount').value.trim();
+
+            if(!services || !deadline) { alert('Fill required fields.'); return; }
+
+            document.getElementById('saleModal').classList.add('hidden');
+            stopAndSaveRecording(custName, current.phone);
+
+            let formDetails = `Services: ${services} | Deadline: ${deadline} | Amount: ${amount}`;
+            finalizeDisposition(current, 'Sale Made', formDetails, custName, busName);
+
+            let agentObj = agentsList.find(a => a.user === loggedInUser);
+            let sId = Date.now();
+            window.FB_set(window.FB_ref(window.FB_DB, `salesPipeline/${sId}`), {
+                id: sId, agentName: agentObj ? agentObj.fullName : loggedInUser,
+                client: custName, phone: current.phone, business: busName, services, deadline, amount, status: 'Approved'
+            });
+        }
+
+        function closeSaleModal() { document.getElementById('saleModal').classList.add('hidden'); }
+
+        function finalizeDisposition(lead, status, remarks, customName = null, customBusiness = null) {
+            let agentObj = agentsList.find(a => a.user === loggedInUser);
+            let agentName = agentObj ? agentObj.fullName : loggedInUser;
+
+            lead.status = status;
+            lead.callNotes = remarks;
+            lead.lastAgent = agentName;
+            if(customName) lead.name = customName;
+            if(customBusiness) lead.businessName = customBusiness;
+
+            window.FB_set(window.FB_ref(window.FB_DB, `queues/${loggedInUser}`), agentLeadsQueue);
+
+            let dispId = Date.now() + Math.floor(Math.random() * 1000);
+            window.FB_set(window.FB_ref(window.FB_DB, `dispositionsHistory/${dispId}`), {
+                id: dispId, name: lead.name, phone: lead.phone, businessName: lead.businessName || 'N/A',
+                status: status, agent: agentName, remarks: remarks, time: new Date().toLocaleString()
+            });
+
+            playBeep(status === 'Sale Made' ? 900 : 500, 150);
+            loadActiveContact();
+        }
+
+        // ================= ADMIN REPORTS & EXPORT =================
+        function renderAdminDispositionTable() {
+            const tbody = document.getElementById('adminDispositionTableBody');
+            const filterVal = document.getElementById('adminDispositionFilter').value;
+            if(!tbody) return;
+
+            let filtered = allDispositionsHistory;
+            if(filterVal !== 'ALL') filtered = allDispositionsHistory.filter(d => d.status === filterVal);
+
+            if(filtered.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="7" class="p-4 text-center text-slate-500">No records found.</td></tr>`;
+                return;
+            }
+
+            tbody.innerHTML = filtered.map((item, idx) => `
+                <tr class="hover:bg-slate-900 transition">
+                    <td class="p-3 text-slate-500">${idx + 1}</td>
+                    <td class="p-3 font-semibold text-white">${item.name}</td>
+                    <td class="p-3 font-mono text-indigo-300">${item.phone}</td>
+                    <td class="p-3 text-amber-300">${item.businessName}</td>
+                    <td class="p-3 font-bold">${item.status}</td>
+                    <td class="p-3 text-slate-300">${item.agent}</td>
+                    <td class="p-3 text-slate-400 text-xs">${item.remarks}</td>
+                </tr>
+            `).join('');
+        }
+
+        function downloadFilteredDispositionCSV() {
+            let filtered = allDispositionsHistory;
+            let csv = "Name,Phone,Business Name,Status,Agent,Remarks,Time\n";
+            filtered.forEach(d => { csv += `"${d.name}","${d.phone}","${d.businessName}","${d.status}","${d.agent}","${d.remarks}","${d.time}"\n`; });
+            const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+            const link = document.createElement("a");
+            link.href = URL.createObjectURL(blob);
+            link.download = "primex_dispositions_report.csv";
+            link.click();
+        }
+
+        function downloadFullCampaignReportPDF() {
+            let summaryText = `--- PRIMEX ENTERPRISE FULL CAMPAIGN REPORT ---\n`;
+            summaryText += `Total Master Leads: ${masterLeads.length}\n`;
+            summaryText += `Total Approved Sales: ${agentSalesPipeline.length}\n`;
+            summaryText += `Total Dispositions Logged: ${allDispositionsHistory.length}\n\n--- DETAILED LOGS ---\n`;
+            allDispositionsHistory.forEach(d => {
+                summaryText += `Client: ${d.name} | Phone: ${d.phone} | Status: ${d.status} | Agent: ${d.agent} | Time: ${d.time}\n`;
+            });
+
+            const blob = new Blob([summaryText], { type: 'text/plain;charset=utf-8;' });
+            const link = document.createElement("a");
+            link.href = URL.createObjectURL(blob);
+            link.download = "primex_full_campaign_summary_report.txt";
+            link.click();
+            alert("📊 Full Campaign Summary Report successfully exported!");
+        }
+
+        // ================= STANDARD UTILS & SETUP =================
+        function distributeLeadsToAgents() {
+            const rawText = document.getElementById('adminCsvInput').value.trim();
+            if(!rawText) { alert('Enter CSV data.'); return; }
+            let lines = rawText.split('\n');
+            let loaded = [];
+            lines.forEach((line, index) => {
+                if(!line.trim()) return;
+                const p = line.split(',');
+                loaded.push({
+                    id: index + 1, name: p[0] ? p[0].trim() : `Contact ${index + 1}`,
+                    phone: p[1] ? p[1].replace(/[^0-9]/g, '') : '', businessName: p[2] ? p[2].trim() : 'Independent',
+                    city: p[3] ? p[3].trim() : 'Islamabad', status: 'Pending', callNotes: '', lastAgent: 'None'
+                });
+            });
+            window.FB_set(window.FB_ref(window.FB_DB, 'masterLeads'), loaded);
+            const activeAgents = agentsList.filter(a => a.user !== 'admin');
+            let queues = {};
+            activeAgents.forEach(a => queues[a.user] = []);
+            loaded.forEach((lead, idx) => queues[activeAgents[idx % activeAgents.length].user].push(lead));
+            for(let u in queues) window.FB_set(window.FB_ref(window.FB_DB, `queues/${u}`), queues[u]);
+            alert('Campaign distributed to PrimeX Cloud!');
+        }
+
+        function clearAllCampaignData() {
+            if(confirm("Clear database?")) { window.FB_remove(window.FB_ref(window.FB_DB, 'masterLeads')); alert('Cleared!'); }
+        }
+
         async function triggerAutoRecording() {
             document.getElementById('recordingIndicator').classList.remove('hidden');
-            isRecordingActive = true;
-            audioChunks = [];
-
+            isRecordingActive = true; audioChunks = [];
             try {
                 const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
                 mediaRecorder = new MediaRecorder(stream);
-                
-                mediaRecorder.ondataavailable = event => {
-                    if(event.data.size > 0) {
-                        audioChunks.push(event.data);
-                    }
-                };
-
+                mediaRecorder.ondataavailable = e => { if(e.data.size > 0) audioChunks.push(e.data); };
                 mediaRecorder.start();
-            } catch (err) {
-                console.log("Microphone access denied or unavailable: ", err);
-            }
+            } catch(e) {}
         }
 
-        function stopAndSaveRecording(clientName, clientPhone) {
+        function stopAndSaveRecording(name, phone) {
             if(!isRecordingActive) return;
             document.getElementById('recordingIndicator').classList.add('hidden');
             isRecordingActive = false;
-
             if(mediaRecorder && mediaRecorder.state !== 'inactive') {
                 mediaRecorder.stop();
                 mediaRecorder.onstop = () => {
-                    const audioBlob = new Blob(audioChunks, { type: 'audio/webm' });
-                    const audioUrl = URL.createObjectURL(audioBlob);
-
-                    let currentAgentObj = agentsList.find(a => a.user === loggedInUser);
-                    let agentFullName = currentAgentObj ? currentAgentObj.fullName : loggedInUser;
-
+                    const blob = new Blob(audioChunks, { type: 'audio/webm' });
                     const reader = new FileReader();
-                    reader.readAsDataURL(audioBlob);
-                    reader.onloadend = function() {
-                        const base64Audio = reader.result;
-                        callRecordingsArchive.push({
-                            id: Date.now(),
-                            agent: agentFullName,
-                            client: `${clientName} (${clientPhone})`,
-                            time: new Date().toLocaleString(),
-                            audioData: base64Audio
+                    reader.readAsDataURL(blob);
+                    reader.onloadend = () => {
+                        let agentObj = agentsList.find(a => a.user === loggedInUser);
+                        let recId = Date.now();
+                        window.FB_set(window.FB_ref(window.FB_DB, `recordings/${recId}`), {
+                            id: recId, agent: agentObj ? agentObj.fullName : loggedInUser,
+                            client: `${name} (${phone})`, time: new Date().toLocaleString(), audioData: reader.result
                         });
-                        localStorage.setItem('prodialer_recordings_archive', JSON.stringify(callRecordingsArchive));
-                        updateAdminStats();
-                        renderAdminRecordings();
                     };
                 };
             }
         }
 
-        function renderAdminRecordings() {
-            const tbody = document.getElementById('adminRecordingsTableBody');
-            if(!tbody) return;
-            if(callRecordingsArchive.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="5" class="p-4 text-center text-slate-500">No call recordings available yet.</td></tr>`;
+        function sendChatMessage() {
+            const msg = document.getElementById('chatInput').value.trim();
+            if(!msg) return;
+            let agentObj = agentsList.find(a => a.user === loggedInUser);
+            let chatId = Date.now();
+            window.FB_set(window.FB_ref(window.FB_DB, `teamChat/${chatId}`), {
+                id: chatId, sender: agentObj ? agentObj.fullName : loggedInUser, text: msg, time: new Date().toLocaleTimeString()
+            });
+            document.getElementById('chatInput').value = '';
+        }
+
+        function renderTeamChat() {
+            const box = document.getElementById('chatBox');
+            if(!box || teamChatMessages.length === 0) return;
+            box.innerHTML = teamChatMessages.map(m => `<div><span class="font-bold text-indigo-700">${m.sender}:</span> ${m.text}</div>`).join('');
+            box.scrollTop = box.scrollHeight;
+        }
+
+        function sendQuickWhatsApp() {
+            let pending = agentLeadsQueue.filter(i => i.status === 'Pending');
+            if(pending.length === 0 || activeIndex >= pending.length) return;
+            const c = pending[activeIndex];
+            let ph = c.phone.startsWith('0') ? '92' + c.phone.substring(1) : c.phone;
+            window.open(`https://wa.me/${ph}?text=Hello%20${c.name},%20regarding%20${c.businessName}.`, '_blank');
+        }
+
+        function sendQuickSMS() {
+            let pending = agentLeadsQueue.filter(i => i.status === 'Pending');
+            if(pending.length === 0 || activeIndex >= pending.length) return;
+            window.open(`sms:${pending[activeIndex].phone}?body=Hello,%20please%20reply%20for%20callback.`);
+        }
+
+        function handleLogin() {
+            const u = document.getElementById('loginUser').value.trim().toLowerCase();
+            const p = document.getElementById('loginPass').value.trim();
+            const found = agentsList.find(a => a.user === u && a.pass === p);
+            if(found) {
+                localStorage.setItem('prodialer_user', u);
+                loggedInUser = u;
+                document.getElementById('loginScreen').classList.add('hidden');
+                if(u === 'admin') showAdminDashboard();
+                else { document.getElementById('currentAgentName').innerText = `${found.fullName} (${u})`; document.getElementById('agentDashboard').classList.remove('hidden'); }
+            } else { alert('Invalid credentials!'); }
+        }
+
+        function createNewAgent() {
+            const fullName = document.getElementById('newAgentFullName').value.trim();
+            const u = document.getElementById('newAgentUser').value.trim().toLowerCase();
+            const p = document.getElementById('newAgentPass').value.trim();
+            if(!fullName || !u || !p) { alert('Fill all fields.'); return; }
+            window.FB_set(window.FB_ref(window.FB_DB, `agents/${u}`), { fullName, user: u, pass: p, delay: 5 });
+            alert(`Created agent: ${fullName}`);
+        }
+
+        function loadActiveContact() {
+            let pending = agentLeadsQueue.filter(i => i.status === 'Pending');
+            document.getElementById('waitingQueueCount').innerText = pending.length;
+            if(pending.length === 0 || activeIndex >= pending.length) {
+                document.getElementById('activeName').innerText = "Queue Completed!";
+                document.getElementById('activePhone').innerText = "---";
                 return;
             }
+            const active = pending[activeIndex];
+            document.getElementById('activeName').innerText = active.name;
+            document.getElementById('activePhone').innerText = active.phone;
+            document.getElementById('leadBusiness').innerText = active.businessName || 'Independent';
+            document.getElementById('leadCity').innerText = active.city || 'N/A';
+            document.getElementById('mainDialBtn').href = `tel:${active.phone}`;
+            document.getElementById('progressCounter').innerText = `Contact ${activeIndex + 1} / ${pending.length}`;
+        }
 
+        function renderQueueTable() {
+            const tbody = document.getElementById('queueTableBody');
+            let pending = agentLeadsQueue.filter(i => i.status === 'Pending');
+            if(pending.length === 0) { tbody.innerHTML = `<tr><td colspan="5" class="p-6 text-center text-slate-400">No pending contacts.</td></tr>`; return; }
+            tbody.innerHTML = pending.map((item, idx) => `
+                <tr class="hover:bg-slate-50 transition ${idx === activeIndex ? 'bg-indigo-50/60 font-medium' : ''}">
+                    <td class="p-3 text-slate-400">${idx + 1}</td>
+                    <td class="p-3 font-semibold">${item.name}</td>
+                    <td class="p-3 font-mono">${item.phone}</td>
+                    <td class="p-3 text-amber-600 font-medium">${item.businessName || 'N/A'}</td>
+                    <td class="p-3 text-right"><button onclick="activeIndex = ${idx}; loadActiveContact();" class="text-indigo-600 underline">Jump</button></td>
+                </tr>
+            `).join('');
+        }
+
+        function renderAdminRecordings() {
+            const tbody = document.getElementById('adminRecordingsTableBody');
+            if(!tbody || callRecordingsArchive.length === 0) return;
             tbody.innerHTML = callRecordingsArchive.map((rec, idx) => `
                 <tr class="hover:bg-slate-900 transition">
                     <td class="p-3 text-slate-500">${idx + 1}</td>
                     <td class="p-3 font-semibold text-white">${rec.agent}</td>
                     <td class="p-3">${rec.client}</td>
                     <td class="p-3 text-indigo-300 font-mono text-[11px]">${rec.time}</td>
-                    <td class="p-3 flex items-center gap-2">
-                        <audio controls src="${rec.audioData}" class="h-8 w-48"></audio>
-                        <a href="${rec.audioData}" download="recording_${rec.client.replace(/[^a-z0-9]/gi, '_')}.webm" class="bg-indigo-600 hover:bg-indigo-700 text-white text-[10px] px-2.5 py-1.5 rounded">Download</a>
-                    </td>
-                </tr>
-            `).join('');
-        }
-
-        function handleLogin() {
-            const user = document.getElementById('loginUser').value.trim().toLowerCase();
-            const pass = document.getElementById('loginPass').value.trim();
-            const foundAgent = agentsList.find(a => a.user === user && a.pass === pass);
-
-            if(foundAgent) {
-                localStorage.setItem('prodialer_user', user);
-                localStorage.setItem(`prodialer_login_status_${user}`, 'Logged In');
-                localStorage.setItem(`prodialer_activity_${user}`, 'Active');
-                loggedInUser = user;
-                
-                document.getElementById('loginScreen').classList.add('hidden');
-                playBeep(600, 150);
-
-                if(user === 'admin') {
-                    showAdminDashboard();
-                } else {
-                    let displayName = `${foundAgent.fullName} (${user})`;
-                    document.getElementById('currentAgentName').innerText = displayName;
-                    document.getElementById('agentDashboard').classList.remove('hidden');
-                    document.getElementById('adminDashboard').classList.add('hidden');
-                    loadAgentQueue(user);
-                }
-            } else {
-                alert('Invalid Username or Password!');
-            }
-        }
-
-        function createNewAgent() {
-            const fullName = document.getElementById('newAgentFullName').value.trim();
-            const newUser = document.getElementById('newAgentUser').value.trim().toLowerCase();
-            const newPass = document.getElementById('newAgentPass').value.trim();
-
-            if(!fullName || !newUser || !newPass) { alert('Please fill all agent fields.'); return; }
-            if(agentsList.some(a => a.user === newUser)) { alert('Username already exists!'); return; }
-
-            agentsList.push({ fullName, user: newUser, pass: newPass, delay: 5 });
-            localStorage.setItem('prodialer_agents', JSON.stringify(agentsList));
-            localStorage.setItem(`prodialer_login_status_${newUser}`, 'Logged Out');
-            localStorage.setItem(`prodialer_activity_${newUser}`, 'Offline');
-
-            document.getElementById('newAgentFullName').value = '';
-            document.getElementById('newAgentUser').value = '';
-            document.getElementById('newAgentPass').value = '';
-            renderAgentList();
-            updateAdminStats();
-            alert(`Created agent: ${fullName} (${newUser})`);
-        }
-
-        function renderAgentList() {
-            const tbody = document.getElementById('agentListTableBody');
-            if(!tbody) return;
-            tbody.innerHTML = agentsList.map((agent, idx) => `
-                <tr class="hover:bg-slate-900 transition">
-                    <td class="p-2.5 text-slate-500">${idx + 1}</td>
-                    <td class="p-2.5 font-semibold text-white">${agent.fullName}</td>
-                    <td class="p-2.5 font-mono text-indigo-300">${agent.user}</td>
-                    <td class="p-2.5 text-right">
-                        ${agent.user !== 'admin' ? `<button onclick="deleteAgent(${idx})" class="text-rose-400 hover:text-rose-300 text-xs underline">Delete</button>` : `<span class="text-slate-500 text-[10px]">Protected</span>`}
-                    </td>
-                </tr>
-            `).join('');
-        }
-
-        function deleteAgent(index) {
-            if(agentsList[index].user === 'admin') return;
-            if(confirm(`Delete agent "${agentsList[index].user}"?`)) {
-                agentsList.splice(index, 1);
-                localStorage.setItem('prodialer_agents', JSON.stringify(agentsList));
-                renderAgentList();
-            }
-        }
-
-        function renderAgentLeaderboard() {
-            const tbody = document.getElementById('agentLeaderboardBody');
-            if(!tbody) return;
-            let normalAgents = agentsList.filter(a => a.user !== 'admin');
-            let counts = {};
-            normalAgents.forEach(a => counts[a.fullName] = 0);
-
-            agentSalesPipeline.forEach(s => {
-                if(s.status === 'Approved' && counts[s.agentName] !== undefined) {
-                    counts[s.agentName]++;
-                }
-            });
-
-            let sorted = Object.entries(counts).sort((a,b) => b[1] - a[1]);
-
-            tbody.innerHTML = sorted.map(([name, count], idx) => `
-                <tr class="hover:bg-slate-50 transition">
-                    <td class="p-2 font-semibold text-slate-800">${idx === 0 && count > 0 ? '👑 ' : ''} ${name}</td>
-                    <td class="p-2 text-right font-bold text-emerald-600">${count} Sales</td>
+                    <td class="p-3"><audio controls src="${rec.audioData}" class="h-8 w-48"></audio></td>
                 </tr>
             `).join('');
         }
@@ -610,295 +942,40 @@
             document.getElementById('agentDashboard').classList.add('hidden');
             document.getElementById('adminDashboard').classList.remove('hidden');
             updateAdminStats();
-            renderAgentList();
-            renderAdminRecordings();
+            renderAdminLiveAgentStatus();
+            renderAdminLeaderboard();
+            renderAdminDispositionTable();
             lucide.createIcons();
         }
 
         function switchViewToAgent() {
             document.getElementById('adminDashboard').classList.add('hidden');
             document.getElementById('agentDashboard').classList.remove('hidden');
-            loadAgentQueue(loggedInUser);
             lucide.createIcons();
         }
 
-        function handleLogout() {
-            if(loggedInUser) {
-                localStorage.setItem(`prodialer_login_status_${loggedInUser}`, 'Logged Out');
-                localStorage.setItem(`prodialer_activity_${loggedInUser}`, 'Offline');
-            }
-            localStorage.removeItem('prodialer_user');
-            location.reload();
+        function handleLogout() { localStorage.removeItem('prodialer_user'); location.reload(); }
+        function updateAdminStats() {
+            document.getElementById('adminAgentCount').innerText = agentsList.filter(a => a.user !== 'admin').length;
+            document.getElementById('adminTotalLeads').innerText = masterLeads.length;
+            document.getElementById('adminApprovedSales').innerText = agentSalesPipeline.length;
         }
 
-        function changeAgentActivityState(state) {
-            agentActivityState = state;
-            localStorage.setItem(`prodialer_activity_${loggedInUser}`, state);
-            const pauseNotice = document.getElementById('pauseNotice');
-            if(state === 'Pause') {
-                pauseNotice.classList.remove('hidden');
-                clearInterval(timerInterval);
-                document.getElementById('autoTimerContainer').classList.add('hidden');
-            } else {
-                pauseNotice.classList.add('hidden');
-            }
-            playBeep(400, 100);
+        function downloadCSVTemplate() {
+            const csv = "data:text/csv;charset=utf-8,Name,Phone,Business Name,City\nAli Khan,03001234567,Prime Solutions,Islamabad";
+            const link = document.createElement("a");
+            link.href = encodeURI(csv); link.download = "primex_leads_template.csv"; link.click();
         }
 
         function playBeep(freq, duration) {
             try {
                 const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-                const oscillator = audioCtx.createOscillator();
-                const gainNode = audioCtx.createGain();
-                oscillator.type = 'sine';
-                oscillator.frequency.value = freq;
-                gainNode.gain.setValueAtTime(0.1, audioCtx.currentTime);
-                oscillator.connect(gainNode);
-                gainNode.connect(audioCtx.destination);
-                oscillator.start();
-                setTimeout(() => { oscillator.stop(); }, duration);
+                const o = audioCtx.createOscillator();
+                const g = audioCtx.createGain();
+                o.frequency.value = freq; g.gain.setValueAtTime(0.1, audioCtx.currentTime);
+                o.connect(g); g.connect(audioCtx.destination); o.start();
+                setTimeout(() => { o.stop(); }, duration);
             } catch(e) {}
-        }
-
-        function toggleTheme() {
-            isDarkMode = !isDarkMode;
-            const body = document.getElementById('bodyTheme');
-            const themeIcon = document.getElementById('themeIcon');
-            if(isDarkMode) {
-                body.className = "bg-slate-900 text-slate-100 font-sans antialiased transition-colors duration-300";
-                themeIcon.setAttribute("data-lucide", "sun");
-                localStorage.setItem('prodialer_theme', 'dark');
-            } else {
-                body.className = "bg-slate-100 text-slate-800 font-sans antialiased transition-colors duration-300";
-                themeIcon.setAttribute("data-lucide", "moon");
-                localStorage.setItem('prodialer_theme', 'light');
-            }
-            lucide.createIcons();
-        }
-
-        function downloadCSVTemplate() {
-            const csvContent = "data:text/csv;charset=utf-8,Name,Phone,Notes\nAli Khan,03001234567,VIP Client\nBilal Ahmed,03339876543,Regular Lead";
-            const encodedUri = encodeURI(csvContent);
-            const link = document.createElement("a");
-            link.setAttribute("href", encodedUri);
-            link.setAttribute("download", "calley_sample_template.csv");
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
-        }
-
-        function updateAdminStats() {
-            document.getElementById('adminAgentCount').innerText = agentsList.filter(a => a.user !== 'admin').length;
-            document.getElementById('adminTotalLeads').innerText = masterLeads.length;
-            document.getElementById('adminRecordingsCount').innerText = callRecordingsArchive.length;
-        }
-
-        function distributeLeadsToAgents() {
-            const rawText = document.getElementById('adminCsvInput').value.trim();
-            if(!rawText) { alert('Please enter CSV data.'); return; }
-            const lines = rawText.split('\n');
-            let loaded = [];
-            const seenPhones = new Set();
-
-            lines.forEach((line, index) => {
-                if(!line.trim()) return;
-                const parts = line.split(',');
-                const name = parts[0] ? parts[0].trim() : `Contact ${index + 1}`;
-                const phone = parts[1] ? parts[1].replace(/[^0-9]/g, '') : '';
-                const note = parts[2] ? parts[2].trim() : 'CSV Import';
-
-                if(phone && !seenPhones.has(phone)) {
-                    seenPhones.add(phone);
-                    loaded.push({ id: index + 1, name, phone, notes: note, status: 'Pending', callNotes: '', lastAgent: 'None' });
-                }
-            });
-
-            if(loaded.length === 0) { alert('No valid numbers found.'); return; }
-
-            masterLeads = loaded;
-            localStorage.setItem('prodialer_master_leads', JSON.stringify(masterLeads));
-
-            const activeAgents = agentsList.filter(a => a.user !== 'admin');
-            if(activeAgents.length === 0) { alert('Create an agent first!'); return; }
-
-            activeAgents.forEach(agent => {
-                localStorage.setItem(`prodialer_queue_${agent.user}`, JSON.stringify([]));
-            });
-
-            loaded.forEach((lead, idx) => {
-                let assignedAgent = activeAgents[idx % activeAgents.length];
-                let agentQueue = JSON.parse(localStorage.getItem(`prodialer_queue_${assignedAgent.user}`)) || [];
-                agentQueue.push(lead);
-                localStorage.setItem(`prodialer_queue_${assignedAgent.user}`, JSON.stringify(agentQueue));
-            });
-
-            document.getElementById('adminCsvInput').value = '';
-            updateAdminStats();
-            alert(`Fresh leads uploaded and new campaign started!`);
-        }
-
-        function loadAgentQueue(username) {
-            let fullQueue = JSON.parse(localStorage.getItem(`prodialer_queue_${username}`)) || [];
-            agentLeadsQueue = fullQueue.filter(i => i.status === 'Pending');
-            activeIndex = 0;
-            renderQueueTable();
-            loadActiveContact();
-            renderAgentLeaderboard();
-        }
-
-        function saveAgentSession(username) {
-            let fullQueue = JSON.parse(localStorage.getItem(`prodialer_queue_${username}`)) || [];
-            agentLeadsQueue.forEach(updatedLead => {
-                let mIndex = masterLeads.findIndex(m => m.phone === updatedLead.phone);
-                if(mIndex !== -1) masterLeads[mIndex] = updatedLead;
-            });
-            localStorage.setItem('prodialer_master_leads', JSON.stringify(masterLeads));
-            localStorage.setItem(`prodialer_queue_${username}`, JSON.stringify(agentLeadsQueue));
-        }
-
-        function loadActiveContact() {
-            let pendingLeads = agentLeadsQueue.filter(i => i.status === 'Pending');
-            document.getElementById('waitingQueueCount').innerText = pendingLeads.length;
-
-            if (pendingLeads.length === 0 || activeIndex >= pendingLeads.length) {
-                document.getElementById('activeName').innerText = "Queue Completed!";
-                document.getElementById('activePhone').innerText = "---";
-                document.getElementById('avatarLetter').innerText = "✓";
-                document.getElementById('activeNotes').innerText = "All leads disposed";
-                document.getElementById('mainDialBtn').href = "#";
-                return;
-            }
-
-            const active = pendingLeads[activeIndex];
-            document.getElementById('activeName').innerText = active.name;
-            document.getElementById('activePhone').innerText = active.phone;
-            document.getElementById('avatarLetter').innerText = active.name.charAt(0).toUpperCase();
-            document.getElementById('activeNotes').innerText = active.notes || 'No remarks';
-            document.getElementById('mainDialBtn').href = `tel:${active.phone}`;
-            document.getElementById('callNotesInput').value = active.callNotes || '';
-            document.getElementById('progressCounter').innerText = `Pending Contact ${activeIndex + 1} / ${pendingLeads.length}`;
-
-            const banner = document.getElementById('leadOwnershipBanner');
-            const ownerSpan = document.getElementById('previousAgentOwner');
-            if(active.lastAgent && active.lastAgent !== 'None') {
-                banner.classList.remove('hidden');
-                ownerSpan.innerText = active.lastAgent;
-            } else {
-                banner.classList.add('hidden');
-            }
-        }
-
-        function recordDisposition(status) {
-            let pendingLeads = agentLeadsQueue.filter(i => i.status === 'Pending');
-            if(pendingLeads.length === 0 || activeIndex >= pendingLeads.length) return;
-
-            const currentLead = pendingLeads[activeIndex];
-            stopAndSaveRecording(currentLead.name, currentLead.phone);
-
-            let realIndex = agentLeadsQueue.findIndex(i => i.phone === currentLead.phone);
-            let currentAgentObj = agentsList.find(a => a.user === loggedInUser);
-            let agentFullName = currentAgentObj ? currentAgentObj.fullName : loggedInUser;
-
-            if(realIndex !== -1) {
-                agentLeadsQueue[realIndex].status = status;
-                agentLeadsQueue[realIndex].callNotes = document.getElementById('callNotesInput').value.trim();
-                agentLeadsQueue[realIndex].lastAgent = agentFullName;
-
-                if(status === 'Interested') {
-                    agentSalesPipeline.push({
-                        id: Date.now(),
-                        agentName: agentFullName,
-                        client: currentLead.name,
-                        phone: currentLead.phone,
-                        status: 'Approved'
-                    });
-                    localStorage.setItem('prodialer_sales_pipeline', JSON.stringify(agentSalesPipeline));
-                }
-            }
-
-            saveAgentSession(loggedInUser);
-            renderQueueTable();
-            renderAgentLeaderboard();
-            playBeep(status === 'Interested' ? 900 : 500, 150);
-
-            let updatedPending = agentLeadsQueue.filter(i => i.status === 'Pending');
-            document.getElementById('waitingQueueCount').innerText = updatedPending.length;
-
-            if(activeIndex < updatedPending.length && agentActivityState === 'Active') {
-                startAutoTimer(5);
-            } else {
-                loadActiveContact();
-            }
-        }
-
-        function startAutoTimer(delaySec) {
-            if(agentActivityState !== 'Active') return;
-            let timeLeft = delaySec;
-            const timerContainer = document.getElementById('autoTimerContainer');
-            const secondsDisplay = document.getElementById('timerSeconds');
-            const timerBar = document.getElementById('timerBar');
-
-            timerContainer.classList.remove('hidden');
-            secondsDisplay.innerText = `${timeLeft}s`;
-            timerBar.style.width = '100%';
-
-            clearInterval(timerInterval);
-            timerInterval = setInterval(() => {
-                if(agentActivityState !== 'Active') {
-                    clearInterval(timerInterval);
-                    timerContainer.classList.add('hidden');
-                    return;
-                }
-                timeLeft--;
-                secondsDisplay.innerText = `${timeLeft}s`;
-                timerBar.style.width = `${(timeLeft / delaySec) * 100}%`;
-
-                if(timeLeft <= 0) {
-                    clearInterval(timerInterval);
-                    timerContainer.classList.add('hidden');
-                    loadActiveContact();
-                    let pendingLeads = agentLeadsQueue.filter(i => i.status === 'Pending');
-                    if(pendingLeads[activeIndex]) {
-                        triggerAutoRecording();
-                        window.location.href = `tel:${pendingLeads[activeIndex].phone}`;
-                    }
-                }
-            }, 1000);
-        }
-
-        function renderQueueTable() {
-            const tbody = document.getElementById('queueTableBody');
-            let pendingLeads = agentLeadsQueue.filter(i => i.status === 'Pending');
-            if(pendingLeads.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="5" class="p-6 text-center text-slate-400">No pending contacts.</td></tr>`;
-                return;
-            }
-            tbody.innerHTML = pendingLeads.map((item, idx) => `
-                <tr id="row-${idx}" class="hover:bg-slate-50 transition ${idx === activeIndex ? 'bg-indigo-50/60 font-medium' : ''}">
-                    <td class="p-3 text-slate-400">${idx + 1}</td>
-                    <td class="p-3 font-semibold">${item.name}</td>
-                    <td class="p-3 font-mono">${item.phone}</td>
-                    <td class="p-3"><span class="bg-slate-100 text-slate-500 px-2 py-0.5 rounded text-[10px]">Pending</span></td>
-                    <td class="p-3 text-right">
-                        <button onclick="jumpToContact(${idx})" class="text-indigo-600 hover:text-indigo-800 text-xs underline">Jump</button>
-                    </td>
-                </tr>
-            `).join('');
-        }
-
-        function filterQueueTable() {
-            const q = document.getElementById('queueSearch').value.toLowerCase();
-            let pendingLeads = agentLeadsQueue.filter(i => i.status === 'Pending');
-            pendingLeads.forEach((item, idx) => {
-                const row = document.getElementById(`row-${idx}`);
-                if(row) {
-                    if(item.name.toLowerCase().includes(q) || item.phone.includes(q)) {
-                        row.style.display = '';
-                    } else {
-                        row.style.display = 'none';
-                    }
-                }
-            });
         }
     </script>
 </body>
