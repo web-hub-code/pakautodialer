@@ -2,202 +2,453 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cold Calling Web Dialer</title>
+    <title>Pro Dialer - Calley Clone Dashboard</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
     <style>
-        * {
-            box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            margin: 0;
-            padding: 0;
-        }
-        body {
-            background-color: #f4f6f9;
-            padding: 20px;
-            color: #333;
-        }
-        .container {
-            max-width: 600px;
-            margin: 0 auto;
-            background: #fff;
-            padding: 25px;
-            border-radius: 12px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-        }
-        h2 {
-            margin-bottom: 20px;
-            color: #2c3e50;
-            text-align: center;
-        }
-        .section {
-            margin-bottom: 20px;
-        }
-        textarea {
-            width: 100%;
-            height: 100px;
-            padding: 10px;
-            border-radius: 8px;
-            border: 1px solid #ccc;
-            resize: vertical;
-            font-size: 14px;
-        }
-        button {
-            width: 100%;
-            padding: 12px;
-            background-color: #27ae60;
-            color: white;
-            border: none;
-            border-radius: 8px;
-            font-size: 16px;
-            font-weight: bold;
-            cursor: pointer;
-            transition: background 0.3s;
-        }
-        button:hover {
-            background-color: #219150;
-        }
-        .call-card {
-            border: 2px solid #e0e0e0;
-            padding: 20px;
-            border-radius: 10px;
-            text-align: center;
-            background: #fafafa;
-        }
-        .call-card h3 {
-            font-size: 20px;
-            color: #2c3e50;
-            margin-bottom: 8px;
-        }
-        .call-card p {
-            font-size: 18px;
-            color: #7f8c8d;
-            margin-bottom: 15px;
-        }
-        .dial-btn {
-            display: inline-block;
-            background-color: #2980b9;
-            color: white;
-            text-decoration: none;
-            padding: 12px 25px;
-            border-radius: 8px;
-            font-weight: bold;
-            font-size: 16px;
-            margin-bottom: 15px;
-        }
-        .status-btns {
-            display: flex;
-            gap: 10px;
-            margin-top: 10px;
-        }
-        .status-btns button {
-            font-size: 14px;
-            padding: 10px;
-        }
-        .btn-interested { background-color: #27ae60; }
-        .btn-callback { background-color: #f39c12; }
-        .btn-not { background-color: #c0392b; }
-        .btn-interested:hover { background-color: #1e8449; }
-        .btn-callback:hover { background-color: #d68910; }
-        .btn-not:hover { background-color: #922b21; }
-        .hidden { display: none; }
-        .stats {
-            margin-top: 15px;
-            font-size: 14px;
-            color: #555;
-            text-align: center;
-        }
+        .custom-scrollbar::-webkit-scrollbar { width: 6px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
     </style>
 </head>
-<body>
+<body class="bg-slate-100 text-slate-800 font-sans antialiased">
 
-<div class="container">
-    <h2>Cold Calling Auto-Dialer</h2>
-
-    <!-- Step 1: Import Contacts -->
-    <div id="import-section" class="section">
-        <label style="font-weight: bold; display: block; margin-bottom: 8px;">Paste CSV Data (Format: Name, Phone Number):</label>
-        <textarea id="csvInput" placeholder="Nomad Travels, 03390037475&#10;Lubna's kitchen, 03354479569"></textarea>
-        <button onclick="loadContacts()" style="margin-top: 10px;">Load Contacts</button>
-    </div>
-
-    <!-- Step 2: Call Interface -->
-    <div id="dialer-section" class="section hidden">
-        <div class="call-card">
-            <h3 id="contactName">Business Name</h3>
-            <p id="contactPhone">03000000000</p>
-            
-            <a id="callLink" href="#" class="dial-btn" onclick="markCalled()">📞 Call Now</a>
-
-            <div class="status-btns">
-                <button class="btn-interested" onclick="nextContact('Interested')">Interested</button>
-                <button class="btn-callback" onclick="nextContact('Call Back')">Call Back</button>
-                <button class="btn-not" onclick="nextContact('Not Interested')">Not Interested</button>
+    <!-- Top Navigation Bar -->
+    <header class="bg-indigo-900 text-white shadow-md sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 py-3 flex justify-between items-center">
+            <div class="flex items-center space-x-3">
+                <i data-lucide="phone-call" class="w-8 h-8 text-emerald-400"></i>
+                <h1 class="text-xl font-bold tracking-wide">ProDialer <span class="text-xs bg-emerald-500 text-white px-2 py-0.5 rounded-full font-normal">v2.0 Auto</span></h1>
+            </div>
+            <div class="flex items-center space-x-6">
+                <div class="text-right text-sm hidden sm:block">
+                    <p class="font-semibold" id="agentNameDisplay">Muhammad Nazim</p>
+                    <p class="text-xs text-indigo-200">Active Campaign: <span id="campaignNameTag" class="text-emerald-300 font-medium">Ufone Outreach</span></p>
+                </div>
             </div>
         </div>
-        <div class="stats" id="statsText">Contact 1 of X</div>
+    </header>
+
+    <!-- Main Container -->
+    <div class="max-w-7xl mx-auto px-4 py-6 grid grid-cols-1 lg:grid-cols-12 gap-6">
+
+        <!-- Left Column: Dialer & Active Call Control (5 cols) -->
+        <div class="lg:col-span-5 space-y-6">
+
+            <!-- Dialer Card -->
+            <div class="bg-white rounded-xl shadow-md border border-slate-200 p-6 relative overflow-hidden">
+                <div class="flex justify-between items-center mb-4">
+                    <span id="dialerModeBadge" class="bg-indigo-100 text-indigo-700 font-medium text-xs px-3 py-1 rounded-full flex items-center gap-1">
+                        <i data-lucide="zap" class="w-3.5 h-3.5"></i> Power Auto-Dialer
+                    </span>
+                    <span id="progressCounter" class="text-sm font-semibold text-slate-500">Contact 0 / 0</span>
+                </div>
+
+                <!-- Active Contact Info -->
+                <div id="contactDisplay" class="text-center py-6 border-y border-slate-100 my-2">
+                    <div class="w-20 h-20 bg-indigo-50 text-indigo-600 rounded-full flex items-center justify-center mx-auto text-2xl font-bold mb-3 shadow-inner" id="avatarLetter">
+                        ?
+                    </div>
+                    <h2 class="text-xl font-bold text-slate-800 mb-1" id="activeName">No Leads Loaded</h2>
+                    <p class="text-lg font-mono text-indigo-600 font-semibold mb-2" id="activePhone">0300 0000000</p>
+                    <span id="activeNotes" class="inline-block text-xs text-slate-500 bg-slate-100 px-3 py-1 rounded-md">Import contacts to begin calling</span>
+                </div>
+
+                <!-- Timer / Auto-delay Bar -->
+                <div id="autoTimerContainer" class="hidden mb-4">
+                    <div class="flex justify-between text-xs text-slate-500 mb-1">
+                        <span>Auto-dialing next contact in...</span>
+                        <span id="timerSeconds" class="font-bold text-indigo-600">5s</span>
+                    </div>
+                    <div class="w-full bg-slate-100 h-2 rounded-full overflow-hidden">
+                        <div id="timerBar" class="bg-emerald-500 h-full w-full transition-all duration-1000 ease-linear"></div>
+                    </div>
+                </div>
+
+                <!-- Primary Call Action Buttons -->
+                <div class="grid grid-cols-2 gap-3 mb-4">
+                    <a id="mainDialBtn" href="#" class="bg-emerald-600 hover:bg-emerald-700 text-white font-semibold py-3 px-4 rounded-lg flex items-center justify-center gap-2 shadow-md transition">
+                        <i data-lucide="phone" class="w-5 h-5"></i> Call Now
+                    </a>
+                    <button id="pauseDialerBtn" onclick="togglePauseDialer()" class="bg-slate-200 hover:bg-slate-300 text-slate-700 font-semibold py-3 px-4 rounded-lg flex items-center justify-center gap-2 transition">
+                        <i data-lucide="pause" class="w-5 h-5"></i> Pause Queue
+                    </button>
+                </div>
+
+                <!-- Quick Call Notes -->
+                <div class="mb-4">
+                    <label class="block text-xs font-semibold text-slate-600 mb-1">Call Notes / Remarks:</label>
+                    <textarea id="callNotesInput" rows="2" class="w-full p-2.5 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:outline-none" placeholder="Enter notes from call..."></textarea>
+                </div>
+
+                <!-- Disposition Buttons -->
+                <div>
+                    <label class="block text-xs font-semibold text-slate-600 mb-2">Select Disposition (Auto Advance):</label>
+                    <div class="grid grid-cols-2 gap-2">
+                        <button onclick="recordDisposition('Interested')" class="bg-emerald-50 hover:bg-emerald-100 text-emerald-700 border border-emerald-300 font-medium py-2 px-3 rounded-lg text-xs flex items-center justify-center gap-1.5 transition">
+                            <i data-lucide="check-circle" class="w-4 h-4 text-emerald-600"></i> Interested
+                        </button>
+                        <button onclick="recordDisposition('Call Back Later')" class="bg-amber-50 hover:bg-amber-100 text-amber-700 border border-amber-300 font-medium py-2 px-3 rounded-lg text-xs flex items-center justify-center gap-1.5 transition">
+                            <i data-lucide="clock" class="w-4 h-4 text-amber-600"></i> Call Back
+                        </button>
+                        <button onclick="recordDisposition('Not Interested')" class="bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-300 font-medium py-2 px-3 rounded-lg text-xs flex items-center justify-center gap-1.5 transition">
+                            <i data-lucide="x-circle" class="w-4 h-4 text-rose-600"></i> Not Interested
+                        </button>
+                        <button onclick="recordDisposition('No Answer / Busy')" class="bg-slate-100 hover:bg-slate-200 text-slate-700 border border-slate-300 font-medium py-2 px-3 rounded-lg text-xs flex items-center justify-center gap-1.5 transition">
+                            <i data-lucide="phone-off" class="w-4 h-4 text-slate-500"></i> No Answer
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Instant Follow-up Actions -->
+                <div class="mt-4 pt-4 border-t border-slate-100 flex gap-2">
+                    <button onclick="sendQuickWhatsApp()" class="flex-1 bg-green-500 hover:bg-green-600 text-white font-medium py-2 rounded-lg text-xs flex items-center justify-center gap-1 transition">
+                        <i data-lucide="message-square" class="w-4 h-4"></i> WhatsApp Template
+                    </button>
+                </div>
+            </div>
+
+            <!-- Campaign Statistics -->
+            <div class="bg-white rounded-xl shadow-md border border-slate-200 p-5">
+                <h3 class="font-bold text-slate-800 mb-3 text-sm flex items-center gap-2">
+                    <i data-lucide="bar-chart-2" class="w-4 h-4 text-indigo-600"></i> Campaign Analytics
+                </h3>
+                <div class="grid grid-cols-4 gap-2 text-center">
+                    <div class="bg-slate-50 p-2 rounded-lg border border-slate-100">
+                        <p class="text-xs text-slate-500">Total</p>
+                        <p class="text-lg font-bold text-slate-800" id="statTotal">0</p>
+                    </div>
+                    <div class="bg-emerald-50 p-2 rounded-lg border border-emerald-100">
+                        <p class="text-xs text-emerald-600">Interested</p>
+                        <p class="text-lg font-bold text-emerald-700" id="statInterested">0</p>
+                    </div>
+                    <div class="bg-amber-50 p-2 rounded-lg border border-amber-100">
+                        <p class="text-xs text-amber-600">Call Back</p>
+                        <p class="text-lg font-bold text-amber-700" id="statCallback">0</p>
+                    </div>
+                    <div class="bg-rose-50 p-2 rounded-lg border border-rose-100">
+                        <p class="text-xs text-rose-600">Rejected</p>
+                        <p class="text-lg font-bold text-rose-700" id="statRejected">0</p>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Right Column: Queue Management & Data Import (7 cols) -->
+        <div class="lg:col-span-7 space-y-6">
+
+            <!-- Data Import Card -->
+            <div class="bg-white rounded-xl shadow-md border border-slate-200 p-6">
+                <div class="flex flex-wrap justify-between items-center mb-4 gap-2">
+                    <div>
+                        <h3 class="font-bold text-slate-800 text-base">Lead Queue Management</h3>
+                        <p class="text-xs text-slate-500">Import CSV leads or paste contact entries directly</p>
+                    </div>
+                    <div class="flex gap-2">
+                        <button onclick="exportCSVResults()" class="bg-indigo-50 hover:bg-indigo-100 text-indigo-700 border border-indigo-200 px-3 py-1.5 rounded-lg text-xs font-semibold flex items-center gap-1 transition">
+                            <i data-lucide="download" class="w-3.5 h-3.5"></i> Export Results
+                        </button>
+                        <button onclick="clearAllData()" class="bg-rose-50 hover:bg-rose-100 text-rose-600 border border-rose-200 px-3 py-1.5 rounded-lg text-xs font-semibold transition">
+                            Clear
+                        </button>
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <textarea id="rawCsvInput" rows="3" class="w-full p-3 text-xs font-mono border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:outline-none" placeholder="Paste CSV (Name, Phone, Notes) e.g:&#10;Nomad Travels, 03390037475, Ufone Lead&#10;Pearl Luxury Suites, 03335613383, Guest House"></textarea>
+                </div>
+                <div class="flex justify-between items-center">
+                    <div class="flex items-center gap-2">
+                        <label class="text-xs text-slate-600 font-medium">Auto-filter duplicates:</label>
+                        <input type="checkbox" id="dedupeCheck" checked class="rounded border-slate-300 text-indigo-600 focus:ring-indigo-500">
+                    </div>
+                    <button onclick="parseAndLoadCSV()" class="bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-semibold px-5 py-2 rounded-lg flex items-center gap-1.5 shadow transition">
+                        <i data-lucide="upload-cloud" class="w-4 h-4"></i> Load Leads Queue
+                    </button>
+                </div>
+            </div>
+
+            <!-- Contacts Queue Table -->
+            <div class="bg-white rounded-xl shadow-md border border-slate-200 p-6">
+                <div class="flex justify-between items-center mb-4">
+                    <h3 class="font-bold text-slate-800 text-sm flex items-center gap-2">
+                        <i data-lucide="list-ordered" class="w-4 h-4 text-indigo-600"></i> Active Contacts Queue
+                    </h3>
+                    <input type="text" id="queueSearch" onkeyup="filterQueueTable()" placeholder="Search contacts..." class="p-1.5 px-3 text-xs border border-slate-300 rounded-lg w-48 focus:outline-none focus:ring-1 focus:ring-indigo-500">
+                </div>
+
+                <div class="overflow-x-auto max-h-[380px] overflow-y-auto custom-scrollbar border border-slate-100 rounded-lg">
+                    <table class="w-full text-left text-xs">
+                        <thead class="bg-slate-50 text-slate-600 font-semibold uppercase sticky top-0 border-b border-slate-200">
+                            <tr>
+                                <th class="p-3">#</th>
+                                <th class="p-3">Name</th>
+                                <th class="p-3">Phone</th>
+                                <th class="p-3">Disposition</th>
+                                <th class="p-3 text-right">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="queueTableBody" class="divide-y divide-slate-100 text-slate-700">
+                            <tr>
+                                <td colspan="5" class="p-6 text-center text-slate-400">No contacts loaded in dialer queue.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </div>
+
     </div>
-</div>
 
-<script>
-    let contacts = [];
-    let currentIndex = 0;
-    let results = [];
+    <!-- Application Script -->
+    <script>
+        let leadsQueue = [];
+        let activeIndex = 0;
+        let dialerMode = 'power';
+        let autoDelaySeconds = 5;
+        let timerInterval = null;
+        let isPaused = false;
 
-    function loadContacts() {
-        const text = document.getElementById('csvInput').value.trim();
-        if (!text) {
-            alert('Please paste some contacts first!');
-            return;
+        lucide.createIcons();
+
+        function parseAndLoadCSV() {
+            const rawText = document.getElementById('rawCsvInput').value.trim();
+            if(!rawText) {
+                alert('Please enter CSV data first.');
+                return;
+            }
+
+            const lines = rawText.split('\n');
+            const dedupe = document.getElementById('dedupeCheck').checked;
+            const seenPhones = new Set();
+            let loaded = [];
+
+            lines.forEach((line, index) => {
+                if(!line.trim()) return;
+                const parts = line.split(',');
+                const name = parts[0] ? parts[0].trim() : `Contact ${index + 1}`;
+                const phone = parts[1] ? parts[1].replace(/[^0-9]/g, '') : (parts[0] ? parts[0].replace(/[^0-9]/g, '') : '');
+                const note = parts[2] ? parts[2].trim() : 'CSV Import';
+
+                if(phone) {
+                    if(dedupe && seenPhones.has(phone)) return;
+                    seenPhones.add(phone);
+
+                    loaded.push({
+                        id: index + 1,
+                        name: name,
+                        phone: phone,
+                        notes: note,
+                        status: 'Pending',
+                        callNotes: ''
+                    });
+                }
+            });
+
+            if(loaded.length === 0) {
+                alert('No valid phone numbers detected.');
+                return;
+            }
+
+            leadsQueue = loaded;
+            activeIndex = 0;
+            renderQueueTable();
+            loadActiveContact();
+            updateStats();
+            alert(`Loaded ${loaded.length} contacts!`);
         }
 
-        const lines = text.split('\n');
-        contacts = lines.map(line => {
-            const parts = line.split(',');
-            return {
-                name: parts[0] ? parts[0].trim() : 'Unknown',
-                phone: parts[1] ? parts[1].trim() : (parts[0] ? parts[0].trim() : '')
-            };
-        }).filter(c => c.phone.length > 0);
+        function loadActiveContact() {
+            if (leadsQueue.length === 0 || activeIndex >= leadsQueue.length) {
+                document.getElementById('activeName').innerText = "All Calls Completed!";
+                document.getElementById('activePhone').innerText = "---";
+                document.getElementById('avatarLetter').innerText = "✓";
+                document.getElementById('activeNotes').innerText = "Campaign Finished";
+                document.getElementById('mainDialBtn').href = "#";
+                document.getElementById('progressCounter').innerText = `Finished (${leadsQueue.length}/${leadsQueue.length})`;
+                return;
+            }
 
-        if (contacts.length === 0) {
-            alert('No valid contacts found!');
-            return;
+            const active = leadsQueue[activeIndex];
+            document.getElementById('activeName').innerText = active.name;
+            document.getElementById('activePhone').innerText = active.phone;
+            document.getElementById('avatarLetter').innerText = active.name.charAt(0).toUpperCase();
+            document.getElementById('activeNotes').innerText = active.notes || 'No extra remarks';
+            document.getElementById('mainDialBtn').href = `tel:${active.phone}`;
+            document.getElementById('callNotesInput').value = active.callNotes || '';
+            document.getElementById('progressCounter').innerText = `Contact ${activeIndex + 1} / ${leadsQueue.length}`;
+            
+            highlightActiveRow();
         }
 
-        currentIndex = 0;
-        results = [];
-        document.getElementById('import-section').classList.add('hidden');
-        document.getElementById('dialer-section').classList.remove('hidden');
-        showContact();
-    }
+        function recordDisposition(status) {
+            if(leadsQueue.length === 0 || activeIndex >= leadsQueue.length) return;
 
-    function showContact() {
-        if (currentIndex < contacts.length) {
-            const c = contacts[currentIndex];
-            document.getElementById('contactName').innerText = c.name;
-            document.getElementById('contactPhone').innerText = c.phone;
-            document.getElementById('callLink').href = "tel:" + c.phone;
-            document.getElementById('statsText').innerText = `Contact ${currentIndex + 1} of ${contacts.length}`;
-        } else {
-            alert('Calling completed for all contacts!');
-            console.log('Final Results:', results);
-            location.reload();
+            leadsQueue[activeIndex].status = status;
+            leadsQueue[activeIndex].callNotes = document.getElementById('callNotesInput').value.trim();
+
+            renderQueueTable();
+            updateStats();
+
+            activeIndex++;
+
+            if(dialerMode === 'power' && activeIndex < leadsQueue.length && !isPaused) {
+                startAutoTimer();
+            } else {
+                loadActiveContact();
+            }
         }
-    }
 
-    function markCalled() {
-        console.log('Calling:', contacts[currentIndex].phone);
-    }
+        function startAutoTimer() {
+            let timeLeft = autoDelaySeconds;
+            const timerContainer = document.getElementById('autoTimerContainer');
+            const secondsDisplay = document.getElementById('timerSeconds');
+            const timerBar = document.getElementById('timerBar');
 
-    function nextContact(status) {
-        results.push({
-            name: contacts[currentIndex].name,
-            phone: contacts[currentIndex].phone,
-            status: status
-        });
-        currentIndex++;
-        showContact();
-    }
-</script>
+            timerContainer.classList.remove('hidden');
+            secondsDisplay.innerText = `${timeLeft}s`;
+            timerBar.style.width = '100%';
 
+            clearInterval(timerInterval);
+            timerInterval = setInterval(() => {
+                timeLeft--;
+                secondsDisplay.innerText = `${timeLeft}s`;
+                timerBar.style.width = `${(timeLeft / autoDelaySeconds) * 100}%`;
+
+                if(timeLeft <= 0) {
+                    clearInterval(timerInterval);
+                    timerContainer.classList.add('hidden');
+                    loadActiveContact();
+                    window.location.href = `tel:${leadsQueue[activeIndex].phone}`;
+                }
+            }, 1000);
+        }
+
+        function togglePauseDialer() {
+            isPaused = !isPaused;
+            const btn = document.getElementById('pauseDialerBtn');
+            if(isPaused) {
+                clearInterval(timerInterval);
+                document.getElementById('autoTimerContainer').classList.add('hidden');
+                btn.innerHTML = `<i data-lucide="play" class="w-5 h-5"></i> Resume Queue`;
+                btn.classList.replace('bg-slate-200', 'bg-amber-500');
+                btn.classList.replace('text-slate-700', 'text-white');
+            } else {
+                btn.innerHTML = `<i data-lucide="pause" class="w-5 h-5"></i> Pause Queue`;
+                btn.classList.replace('bg-amber-500', 'bg-slate-200');
+                btn.classList.replace('text-white', 'text-slate-700');
+            }
+            lucide.createIcons();
+        }
+
+        function sendQuickWhatsApp() {
+            if(leadsQueue.length === 0 || activeIndex >= leadsQueue.length) return;
+            const current = leadsQueue[activeIndex];
+            let phone = current.phone;
+            if(phone.startsWith('0')) phone = '92' + phone.substring(1);
+            
+            const text = encodeURIComponent(`Hello ${current.name}, thanks for taking our call! Here is our details.`);
+            window.open(`https://wa.me/${phone}?text=${text}`, '_blank');
+        }
+
+        function renderQueueTable() {
+            const tbody = document.getElementById('queueTableBody');
+            if(leadsQueue.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="5" class="p-6 text-center text-slate-400">No contacts loaded in dialer queue.</td></tr>`;
+                return;
+            }
+
+            tbody.innerHTML = leadsQueue.map((item, idx) => `
+                <tr id="row-${idx}" class="hover:bg-slate-50 transition ${idx === activeIndex ? 'bg-indigo-50/60 font-medium' : ''}">
+                    <td class="p-3 text-slate-400">${idx + 1}</td>
+                    <td class="p-3 font-semibold text-slate-800">${item.name}</td>
+                    <td class="p-3 font-mono">${item.phone}</td>
+                    <td class="p-3">${getStatusBadge(item.status)}</td>
+                    <td class="p-3 text-right">
+                        <button onclick="jumpToContact(${idx})" class="text-indigo-600 hover:text-indigo-800 text-xs underline">Jump</button>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        function getStatusBadge(status) {
+            switch(status) {
+                case 'Interested': return `<span class="bg-emerald-100 text-emerald-800 px-2 py-0.5 rounded text-[10px] font-bold">Interested</span>`;
+                case 'Call Back Later': return `<span class="bg-amber-100 text-amber-800 px-2 py-0.5 rounded text-[10px] font-bold">Call Back</span>`;
+                case 'Not Interested': return `<span class="bg-rose-100 text-rose-800 px-2 py-0.5 rounded text-[10px] font-bold">Not Interested</span>`;
+                case 'No Answer / Busy': return `<span class="bg-slate-200 text-slate-700 px-2 py-0.5 rounded text-[10px] font-bold">No Answer</span>`;
+                default: return `<span class="bg-slate-100 text-slate-500 px-2 py-0.5 rounded text-[10px]">Pending</span>`;
+            }
+        }
+
+        function highlightActiveRow() {
+            leadsQueue.forEach((_, idx) => {
+                const el = document.getElementById(`row-${idx}`);
+                if(el) {
+                    if(idx === activeIndex) el.classList.add('bg-indigo-50/60');
+                    else el.classList.remove('bg-indigo-50/60');
+                }
+            });
+        }
+
+        function jumpToContact(index) {
+            clearInterval(timerInterval);
+            document.getElementById('autoTimerContainer').classList.add('hidden');
+            activeIndex = index;
+            loadActiveContact();
+        }
+
+        function updateStats() {
+            document.getElementById('statTotal').innerText = leadsQueue.length;
+            document.getElementById('statInterested').innerText = leadsQueue.filter(i => i.status === 'Interested').length;
+            document.getElementById('statCallback').innerText = leadsQueue.filter(i => i.status === 'Call Back Later').length;
+            document.getElementById('statRejected').innerText = leadsQueue.filter(i => i.status === 'Not Interested').length;
+        }
+
+        function exportCSVResults() {
+            if(leadsQueue.length === 0) {
+                alert('No data to export.');
+                return;
+            }
+            let csvContent = "data:text/csv;charset=utf-8,Name,Phone,Disposition,Notes\n";
+            leadsQueue.forEach(row => {
+                csvContent += `"${row.name}","${row.phone}","${row.status}","${row.callNotes}"\n`;
+            });
+            const encodedUri = encodeURI(csvContent);
+            const link = document.createElement("a");
+            link.setAttribute("href", encodedUri);
+            link.setAttribute("download", "dialer_results_export.csv");
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+
+        function clearAllData() {
+            if(confirm("Are you sure you want to clear all contacts?")) {
+                leadsQueue = [];
+                activeIndex = 0;
+                renderQueueTable();
+                loadActiveContact();
+                updateStats();
+            }
+        }
+
+        function filterQueueTable() {
+            const q = document.getElementById('queueSearch').value.toLowerCase();
+            leadsQueue.forEach((item, idx) => {
+                const row = document.getElementById(`row-${idx}`);
+                if(row) {
+                    if(item.name.toLowerCase().includes(q) || item.phone.includes(q)) {
+                        row.style.display = '';
+                    } else {
+                        row.style.display = 'none';
+                    }
+                }
+            });
+        }
+    </script>
 </body>
 </html>
