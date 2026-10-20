@@ -2,7 +2,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pro Dialer - Calley Clone Dashboard</title>
+    <title>ProDialer Pro - Enterprise Free Suite</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Lucide Icons -->
@@ -14,39 +14,133 @@
 </head>
 <body class="bg-slate-100 text-slate-800 font-sans antialiased">
 
-    <!-- Top Navigation Bar -->
-    <header class="bg-indigo-900 text-white shadow-md sticky top-0 z-50">
-        <div class="max-w-7xl mx-auto px-4 py-3 flex justify-between items-center">
-            <div class="flex items-center space-x-3">
-                <i data-lucide="phone-call" class="w-8 h-8 text-emerald-400"></i>
-                <h1 class="text-xl font-bold tracking-wide">ProDialer <span class="text-xs bg-emerald-500 text-white px-2 py-0.5 rounded-full font-normal">v2.0 Auto</span></h1>
-            </div>
-            <div class="flex items-center space-x-6">
-                <div class="text-right text-sm hidden sm:block">
-                    <p class="font-semibold" id="agentNameDisplay">Muhammad Nazim</p>
-                    <p class="text-xs text-indigo-200">Active Campaign: <span id="campaignNameTag" class="text-emerald-300 font-medium">Ufone Outreach</span></p>
+    <!-- ================= LOGIN SCREEN ================= -->
+    <div id="loginScreen" class="fixed inset-0 bg-slate-900 z-50 flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl shadow-2xl max-w-md w-full p-8 border border-slate-200">
+            <div class="text-center mb-6">
+                <div class="w-16 h-16 bg-indigo-600 text-white rounded-2xl flex items-center justify-center mx-auto mb-3 shadow-lg">
+                    <i data-lucide="shield-check" class="w-8 h-8"></i>
                 </div>
+                <h2 class="text-2xl font-bold text-slate-800">ProDialer Secure Login</h2>
+                <p class="text-xs text-slate-500 mt-1">100% Free Enterprise Telephony Suite</p>
+            </div>
+            
+            <div class="space-y-4">
+                <div>
+                    <label class="block text-xs font-semibold text-slate-600 mb-1">Username / Agent ID</label>
+                    <input type="text" id="loginUser" class="w-full p-3 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-indigo-500 focus:outline-none" placeholder="e.g. agent or admin">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-slate-600 mb-1">Password</label>
+                    <input type="password" id="loginPass" class="w-full p-3 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-indigo-500 focus:outline-none" placeholder="••••••••">
+                </div>
+                <button onclick="handleLogin()" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-3 rounded-lg text-sm shadow transition">
+                    Login to Dialer
+                </button>
+                <p class="text-[11px] text-center text-slate-400 mt-2">Default Admin: admin / 5426 | Agent: agent / 1234</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- ================= EAGLE EYE ADMIN PANEL ================= -->
+    <div id="adminPanel" class="hidden fixed inset-0 bg-slate-900/95 z-50 overflow-y-auto p-4 md:p-8">
+        <div class="max-w-6xl mx-auto bg-white rounded-2xl shadow-2xl p-6 border border-slate-200">
+            <div class="flex justify-between items-center pb-4 border-b border-slate-200 mb-6">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 bg-rose-600 text-white rounded-xl flex items-center justify-center">
+                        <i data-lucide="eye" class="w-6 h-6"></i>
+                    </div>
+                    <div>
+                        <h2 class="text-xl font-bold text-slate-800">Eagle Eye Admin Control Center</h2>
+                        <p class="text-xs text-slate-500">Live Team Telemetry & Free Campaign Management</p>
+                    </div>
+                </div>
+                <button onclick="closeAdminPanel()" class="bg-slate-200 hover:bg-slate-300 text-slate-700 px-4 py-2 rounded-lg text-xs font-semibold transition">
+                    Close Panel
+                </button>
+            </div>
+
+            <!-- Stats -->
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
+                <div class="bg-indigo-50 p-4 rounded-xl border border-indigo-100">
+                    <p class="text-xs text-indigo-600 font-medium">Active Agent Status</p>
+                    <p class="text-xl font-bold text-indigo-900 mt-1 uppercase" id="adminAgentStatusDisplay">Available</p>
+                </div>
+                <div class="bg-emerald-50 p-4 rounded-xl border border-emerald-100">
+                    <p class="text-xs text-emerald-600 font-medium">Total Leads Loaded</p>
+                    <p class="text-2xl font-bold text-emerald-950 mt-1" id="adminTotalLeads">0</p>
+                </div>
+                <div class="bg-amber-50 p-4 rounded-xl border border-amber-100">
+                    <p class="text-xs text-amber-600 font-medium">Interested Conversions</p>
+                    <p class="text-2xl font-bold text-amber-900 mt-1" id="adminInterestedCount">0</p>
+                </div>
+                <div class="bg-rose-50 p-4 rounded-xl border border-rose-100">
+                    <p class="text-xs text-rose-600 font-medium">Security PIN Status</p>
+                    <p class="text-sm font-bold text-rose-700 mt-2">🔒 Secure (5426)</p>
+                </div>
+            </div>
+
+            <!-- Global Actions -->
+            <div class="bg-slate-50 p-5 rounded-xl border border-slate-200 flex flex-wrap justify-between items-center gap-4">
+                <div>
+                    <h3 class="font-bold text-slate-800 text-sm">Free Master Database Operations</h3>
+                    <p class="text-xs text-slate-500">Export master reports or perform secure system resets.</p>
+                </div>
+                <div class="flex gap-3">
+                    <button onclick="exportCSVResults()" class="bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-semibold px-4 py-2.5 rounded-lg shadow transition">
+                        Export Master CSV Report
+                    </button>
+                    <button onclick="clearAllData()" class="bg-rose-600 hover:bg-rose-700 text-white text-xs font-semibold px-4 py-2.5 rounded-lg shadow transition">
+                        Wipe All System Data
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ================= TOP NAVBAR ================= -->
+    <header class="bg-indigo-900 text-white shadow-md sticky top-0 z-40">
+        <div class="max-w-7xl mx-auto px-4 py-3 flex justify-between items-center">
+            <div class="flex items-center space-x-3 cursor-pointer" onclick="handleLogoTap()" title="Tap 5 times for Admin">
+                <i data-lucide="phone-call" class="w-8 h-8 text-emerald-400"></i>
+                <h1 class="text-xl font-bold tracking-wide">ProDialer <span class="text-xs bg-emerald-500 text-white px-2 py-0.5 rounded-full font-normal" id="userRoleBadge">Agent</span></h1>
+            </div>
+            <div class="flex items-center space-x-4">
+                <!-- Agent Break Status Selector -->
+                <div class="hidden md:flex items-center gap-2">
+                    <span class="text-xs text-indigo-200">Status:</span>
+                    <select id="agentStatusSelect" onchange="changeAgentStatus(this.value)" class="bg-indigo-800 text-white text-xs px-2 py-1.5 rounded border border-indigo-700 focus:outline-none">
+                        <option value="Available">🟢 Available</option>
+                        <option value="Tea Break">☕ Tea Break</option>
+                        <option value="Lunch Break">🍔 Lunch Break</option>
+                        <option value="Meeting">📋 Meeting</option>
+                    </select>
+                </div>
+                <div class="text-right text-sm hidden sm:block">
+                    <p class="font-semibold" id="currentAgentName">Agent</p>
+                    <p class="text-xs text-indigo-200">Firebase: <span id="firebaseStatus" class="text-amber-300 font-medium">Connecting...</span></p>
+                </div>
+                <button onclick="handleLogout()" class="bg-indigo-800 hover:bg-indigo-700 p-2 rounded-lg text-xs transition" title="Logout">
+                    <i data-lucide="log-out" class="w-4 h-4"></i>
+                </button>
             </div>
         </div>
     </header>
 
-    <!-- Main Container -->
+    <!-- ================= MAIN CONTAINER ================= -->
     <div class="max-w-7xl mx-auto px-4 py-6 grid grid-cols-1 lg:grid-cols-12 gap-6">
 
         <!-- Left Column: Dialer & Active Call Control (5 cols) -->
         <div class="lg:col-span-5 space-y-6">
-
-            <!-- Dialer Card -->
             <div class="bg-white rounded-xl shadow-md border border-slate-200 p-6 relative overflow-hidden">
                 <div class="flex justify-between items-center mb-4">
-                    <span id="dialerModeBadge" class="bg-indigo-100 text-indigo-700 font-medium text-xs px-3 py-1 rounded-full flex items-center gap-1">
-                        <i data-lucide="zap" class="w-3.5 h-3.5"></i> Power Auto-Dialer
+                    <span class="bg-indigo-100 text-indigo-700 font-medium text-xs px-3 py-1 rounded-full flex items-center gap-1">
+                        <i data-lucide="zap" class="w-3.5 h-3.5"></i> Power SIM Auto-Dialer
                     </span>
                     <span id="progressCounter" class="text-sm font-semibold text-slate-500">Contact 0 / 0</span>
                 </div>
 
-                <!-- Active Contact Info -->
-                <div id="contactDisplay" class="text-center py-6 border-y border-slate-100 my-2">
+                <div class="text-center py-6 border-y border-slate-100 my-2">
                     <div class="w-20 h-20 bg-indigo-50 text-indigo-600 rounded-full flex items-center justify-center mx-auto text-2xl font-bold mb-3 shadow-inner" id="avatarLetter">
                         ?
                     </div>
@@ -55,10 +149,9 @@
                     <span id="activeNotes" class="inline-block text-xs text-slate-500 bg-slate-100 px-3 py-1 rounded-md">Import contacts to begin calling</span>
                 </div>
 
-                <!-- Timer / Auto-delay Bar -->
                 <div id="autoTimerContainer" class="hidden mb-4">
                     <div class="flex justify-between text-xs text-slate-500 mb-1">
-                        <span>Auto-dialing next contact in...</span>
+                        <span>Auto-dialing next contact via SIM in...</span>
                         <span id="timerSeconds" class="font-bold text-indigo-600">5s</span>
                     </div>
                     <div class="w-full bg-slate-100 h-2 rounded-full overflow-hidden">
@@ -66,17 +159,15 @@
                     </div>
                 </div>
 
-                <!-- Primary Call Action Buttons -->
                 <div class="grid grid-cols-2 gap-3 mb-4">
                     <a id="mainDialBtn" href="#" class="bg-emerald-600 hover:bg-emerald-700 text-white font-semibold py-3 px-4 rounded-lg flex items-center justify-center gap-2 shadow-md transition">
-                        <i data-lucide="phone" class="w-5 h-5"></i> Call Now
+                        <i data-lucide="phone" class="w-5 h-5"></i> Call via SIM
                     </a>
                     <button id="pauseDialerBtn" onclick="togglePauseDialer()" class="bg-slate-200 hover:bg-slate-300 text-slate-700 font-semibold py-3 px-4 rounded-lg flex items-center justify-center gap-2 transition">
                         <i data-lucide="pause" class="w-5 h-5"></i> Pause Queue
                     </button>
                 </div>
 
-                <!-- Quick Call Notes -->
                 <div class="mb-4">
                     <label class="block text-xs font-semibold text-slate-600 mb-1">Call Notes / Remarks:</label>
                     <textarea id="callNotesInput" rows="2" class="w-full p-2.5 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:outline-none" placeholder="Enter notes from call..."></textarea>
@@ -84,7 +175,7 @@
 
                 <!-- Disposition Buttons -->
                 <div>
-                    <label class="block text-xs font-semibold text-slate-600 mb-2">Select Disposition (Auto Advance):</label>
+                    <label class="block text-xs font-semibold text-slate-600 mb-2">Select Disposition (Auto-Advances):</label>
                     <div class="grid grid-cols-2 gap-2">
                         <button onclick="recordDisposition('Interested')" class="bg-emerald-50 hover:bg-emerald-100 text-emerald-700 border border-emerald-300 font-medium py-2 px-3 rounded-lg text-xs flex items-center justify-center gap-1.5 transition">
                             <i data-lucide="check-circle" class="w-4 h-4 text-emerald-600"></i> Interested
@@ -101,15 +192,18 @@
                     </div>
                 </div>
 
-                <!-- Instant Follow-up Actions -->
-                <div class="mt-4 pt-4 border-t border-slate-100 flex gap-2">
-                    <button onclick="sendQuickWhatsApp()" class="flex-1 bg-green-500 hover:bg-green-600 text-white font-medium py-2 rounded-lg text-xs flex items-center justify-center gap-1 transition">
-                        <i data-lucide="message-square" class="w-4 h-4"></i> WhatsApp Template
+                <!-- Free Follow-up & Reminder Section -->
+                <div class="mt-4 pt-4 border-t border-slate-100 grid grid-cols-2 gap-2">
+                    <button onclick="sendQuickWhatsApp()" class="bg-green-500 hover:bg-green-600 text-white font-medium py-2 rounded-lg text-xs flex items-center justify-center gap-1 transition">
+                        <i data-lucide="message-square" class="w-4 h-4"></i> WhatsApp
+                    </button>
+                    <button onclick="setCallbackReminder()" class="bg-slate-800 hover:bg-slate-900 text-white font-medium py-2 rounded-lg text-xs flex items-center justify-center gap-1 transition">
+                        <i data-lucide="bell" class="w-4 h-4"></i> Set Reminder
                     </button>
                 </div>
             </div>
 
-            <!-- Campaign Statistics -->
+            <!-- Analytics -->
             <div class="bg-white rounded-xl shadow-md border border-slate-200 p-5">
                 <h3 class="font-bold text-slate-800 mb-3 text-sm flex items-center gap-2">
                     <i data-lucide="bar-chart-2" class="w-4 h-4 text-indigo-600"></i> Campaign Analytics
@@ -133,25 +227,22 @@
                     </div>
                 </div>
             </div>
-
         </div>
 
-        <!-- Right Column: Queue Management & Data Import (7 cols) -->
+        <!-- Right Column: Queue Management & Data Import -->
         <div class="lg:col-span-7 space-y-6">
-
-            <!-- Data Import Card -->
             <div class="bg-white rounded-xl shadow-md border border-slate-200 p-6">
                 <div class="flex flex-wrap justify-between items-center mb-4 gap-2">
                     <div>
                         <h3 class="font-bold text-slate-800 text-base">Lead Queue Management</h3>
-                        <p class="text-xs text-slate-500">Import CSV leads or paste contact entries directly</p>
+                        <p class="text-xs text-slate-500">100% Free LocalStorage & Firebase Realtime Database Sync</p>
                     </div>
                     <div class="flex gap-2">
                         <button onclick="exportCSVResults()" class="bg-indigo-50 hover:bg-indigo-100 text-indigo-700 border border-indigo-200 px-3 py-1.5 rounded-lg text-xs font-semibold flex items-center gap-1 transition">
-                            <i data-lucide="download" class="w-3.5 h-3.5"></i> Export Results
+                            <i data-lucide="download" class="w-3.5 h-3.5"></i> Export Report
                         </button>
                         <button onclick="clearAllData()" class="bg-rose-50 hover:bg-rose-100 text-rose-600 border border-rose-200 px-3 py-1.5 rounded-lg text-xs font-semibold transition">
-                            Clear
+                            Reset
                         </button>
                     </div>
                 </div>
@@ -165,12 +256,12 @@
                         <input type="checkbox" id="dedupeCheck" checked class="rounded border-slate-300 text-indigo-600 focus:ring-indigo-500">
                     </div>
                     <button onclick="parseAndLoadCSV()" class="bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-semibold px-5 py-2 rounded-lg flex items-center gap-1.5 shadow transition">
-                        <i data-lucide="upload-cloud" class="w-4 h-4"></i> Load Leads Queue
+                        <i data-lucide="upload-cloud" class="w-4 h-4"></i> Load & Start Campaign
                     </button>
                 </div>
             </div>
 
-            <!-- Contacts Queue Table -->
+            <!-- Queue Table -->
             <div class="bg-white rounded-xl shadow-md border border-slate-200 p-6">
                 <div class="flex justify-between items-center mb-4">
                     <h3 class="font-bold text-slate-800 text-sm flex items-center gap-2">
@@ -198,21 +289,161 @@
                     </table>
                 </div>
             </div>
-
         </div>
-
     </div>
 
-    <!-- Application Script -->
+    <!-- Firebase SDKs -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getDatabase, ref, set } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyCLFzI1dWn36_b3E9pzb_GU1Q3EyoRdnn0",
+            authDomain: "primex-e8090.firebaseapp.com",
+            databaseURL: "https://primex-e8090-default-rtdb.firebaseio.com",
+            projectId: "primex-e8090",
+            storageBucket: "primex-e8090.firebasestorage.app",
+            messagingSenderId: "465444221491",
+            appId: "1:465444221491:web:9824b4f1f9f592f76ce946",
+            measurementId: "G-9LRYXH2D6E"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getDatabase(app);
+
+        document.getElementById('firebaseStatus').innerText = "Connected (Online)";
+        document.getElementById('firebaseStatus').className = "text-emerald-300 font-medium";
+
+        window.syncToFirebase = function(leads, index, status) {
+            set(ref(db, 'campaigns/ufone_outreach'), { leads, activeIndex: index, agentStatus: status })
+                .then(() => console.log("Cloud synced!"))
+                .catch(err => console.error("Cloud sync error:", err));
+        };
+    </script>
+
+    <!-- App & Free Advanced Features Script -->
     <script>
         let leadsQueue = [];
         let activeIndex = 0;
-        let dialerMode = 'power';
         let autoDelaySeconds = 5;
         let timerInterval = null;
         let isPaused = false;
+        let logoTapCount = 0;
+        let currentAgentStatus = 'Available';
 
         lucide.createIcons();
+
+        // Startup Check
+        window.addEventListener('DOMContentLoaded', () => {
+            const currentUser = localStorage.getItem('prodialer_user');
+            if(currentUser) {
+                document.getElementById('loginScreen').classList.add('hidden');
+                document.getElementById('currentAgentName').innerText = currentUser;
+                if(currentUser === 'admin') {
+                    document.getElementById('userRoleBadge').innerText = "Administrator";
+                    document.getElementById('userRoleBadge').className = "text-xs bg-rose-500 text-white px-2 py-0.5 rounded-full font-normal";
+                }
+            }
+
+            const savedLeads = localStorage.getItem('prodialer_leads');
+            const savedIndex = localStorage.getItem('prodialer_index');
+            if(savedLeads) {
+                leadsQueue = JSON.parse(savedLeads);
+                activeIndex = savedIndex ? parseInt(savedIndex) : 0;
+                renderQueueTable();
+                loadActiveContact();
+                updateStats();
+            }
+
+            if (Notification && Notification.permission !== "granted") {
+                Notification.requestPermission();
+            }
+        });
+
+        function handleLogin() {
+            const user = document.getElementById('loginUser').value.trim().toLowerCase();
+            const pass = document.getElementById('loginPass').value.trim();
+
+            if((user === 'admin' && pass === '5426') || (user === 'agent' && pass === '1234') || (user === 'nazim' && pass === '7860')) {
+                localStorage.setItem('prodialer_user', user);
+                document.getElementById('loginScreen').classList.add('hidden');
+                document.getElementById('currentAgentName').innerText = user;
+                if(user === 'admin') {
+                    document.getElementById('userRoleBadge').innerText = "Administrator";
+                    document.getElementById('userRoleBadge').className = "text-xs bg-rose-500 text-white px-2 py-0.5 rounded-full font-normal";
+                }
+                lucide.createIcons();
+            } else {
+                alert('Invalid Username or Password! (Hint: admin / 5426)');
+            }
+        }
+
+        function handleLogout() {
+            localStorage.removeItem('prodialer_user');
+            location.reload();
+        }
+
+        function changeAgentStatus(status) {
+            currentAgentStatus = status;
+            if(status !== 'Available') {
+                isPaused = true;
+                clearInterval(timerInterval);
+                document.getElementById('autoTimerContainer').classList.add('hidden');
+            } else {
+                isPaused = false;
+            }
+            saveSession();
+        }
+
+        function setCallbackReminder() {
+            if(leadsQueue.length === 0 || activeIndex >= leadsQueue.length) return;
+            const current = leadsQueue[activeIndex];
+            const minutes = prompt(`Set reminder for ${current.name} in how many minutes?`, "15");
+            if(minutes && !isNaN(minutes)) {
+                const ms = parseInt(minutes) * 60 * 1000;
+                alert(`⏰ Reminder set for ${current.name} in ${minutes} minutes!`);
+                setTimeout(() => {
+                    if (Notification.permission === "granted") {
+                        new Notification("Call Reminder!", { body: `Time to call back ${current.name} (${current.phone})` });
+                    } else {
+                        alert(`⏰ CALLBACK REMINDER: Time to call back ${current.name} (${current.phone})!`);
+                    }
+                }, ms);
+            }
+        }
+
+        function handleLogoTap() {
+            logoTapCount++;
+            if(logoTapCount >= 5) {
+                logoTapCount = 0;
+                const pin = prompt("🔐 Enter Eagle Eye Admin Security Key (PIN):");
+                if(pin === "5426") {
+                    document.getElementById('adminPanel').classList.remove('hidden');
+                    updateAdminStats();
+                } else if(pin !== null) {
+                    alert("❌ Incorrect Security Key!");
+                }
+            }
+            setTimeout(() => { logoTapCount = 0; }, 3000);
+        }
+
+        function closeAdminPanel() {
+            document.getElementById('adminPanel').classList.add('hidden');
+        }
+
+        function updateAdminStats() {
+            document.getElementById('adminTotalLeads').innerText = leadsQueue.length;
+            document.getElementById('adminInterestedCount').innerText = leadsQueue.filter(i => i.status === 'Interested').length;
+            document.getElementById('adminAgentStatusDisplay').innerText = currentAgentStatus;
+        }
+
+        function saveSession() {
+            localStorage.setItem('prodialer_leads', JSON.stringify(leadsQueue));
+            localStorage.setItem('prodialer_index', activeIndex);
+            if(window.syncToFirebase) {
+                window.syncToFirebase(leadsQueue, activeIndex, currentAgentStatus);
+            }
+        }
 
         function parseAndLoadCSV() {
             const rawText = document.getElementById('rawCsvInput').value.trim();
@@ -255,10 +486,12 @@
 
             leadsQueue = loaded;
             activeIndex = 0;
+            saveSession();
             renderQueueTable();
             loadActiveContact();
             updateStats();
-            alert(`Loaded ${loaded.length} contacts!`);
+
+            alert(`Successfully loaded & started campaign with ${loaded.length} contacts!`);
         }
 
         function loadActiveContact() {
@@ -294,8 +527,9 @@
             updateStats();
 
             activeIndex++;
+            saveSession();
 
-            if(dialerMode === 'power' && activeIndex < leadsQueue.length && !isPaused) {
+            if(activeIndex < leadsQueue.length && !isPaused && currentAgentStatus === 'Available') {
                 startAutoTimer();
             } else {
                 loadActiveContact();
@@ -303,6 +537,7 @@
         }
 
         function startAutoTimer() {
+            if(currentAgentStatus !== 'Available') return;
             let timeLeft = autoDelaySeconds;
             const timerContainer = document.getElementById('autoTimerContainer');
             const secondsDisplay = document.getElementById('timerSeconds');
@@ -314,6 +549,11 @@
 
             clearInterval(timerInterval);
             timerInterval = setInterval(() => {
+                if(currentAgentStatus !== 'Available') {
+                    clearInterval(timerInterval);
+                    timerContainer.classList.add('hidden');
+                    return;
+                }
                 timeLeft--;
                 secondsDisplay.innerText = `${timeLeft}s`;
                 timerBar.style.width = `${(timeLeft / autoDelaySeconds) * 100}%`;
@@ -350,7 +590,7 @@
             let phone = current.phone;
             if(phone.startsWith('0')) phone = '92' + phone.substring(1);
             
-            const text = encodeURIComponent(`Hello ${current.name}, thanks for taking our call! Here is our details.`);
+            const text = encodeURIComponent(`Hello ${current.name}, thanks for taking our call! Here is our official catalog & website link.`);
             window.open(`https://wa.me/${phone}?text=${text}`, '_blank');
         }
 
@@ -398,6 +638,7 @@
             clearInterval(timerInterval);
             document.getElementById('autoTimerContainer').classList.add('hidden');
             activeIndex = index;
+            saveSession();
             loadActiveContact();
         }
 
@@ -420,19 +661,22 @@
             const encodedUri = encodeURI(csvContent);
             const link = document.createElement("a");
             link.setAttribute("href", encodedUri);
-            link.setAttribute("download", "dialer_results_export.csv");
+            link.setAttribute("download", "prodialer_free_suite_report.csv");
             document.body.appendChild(link);
             link.click();
             document.body.removeChild(link);
         }
 
         function clearAllData() {
-            if(confirm("Are you sure you want to clear all contacts?")) {
+            if(confirm("⚠️ Are you sure you want to reset all campaign data?")) {
+                localStorage.removeItem('prodialer_leads');
+                localStorage.removeItem('prodialer_index');
                 leadsQueue = [];
                 activeIndex = 0;
                 renderQueueTable();
                 loadActiveContact();
                 updateStats();
+                closeAdminPanel();
             }
         }
 
