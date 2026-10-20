@@ -55,7 +55,7 @@
                 <div class="w-16 h-16 bg-indigo-600 text-white rounded-2xl flex items-center justify-center mx-auto mb-3 shadow-lg">
                     <i data-lucide="shield-check" class="w-8 h-8"></i>
                 </div>
-                <h2 class="text-2xl font-bold text-slate-800">PrimeX Secure Auth</h2>
+                <h2 class="text-2xl font-bold text-slate-800">PrimeX Enterprise Suite</h2>
                 <p class="text-xs text-slate-500 mt-1">Admin (Google) or Agent (ID & Password)</p>
             </div>
             
@@ -80,7 +80,7 @@
 
                 <div>
                     <button onclick="handleAdminGoogleLogin()" class="w-full bg-white hover:bg-slate-50 text-slate-700 border border-slate-300 font-semibold py-2.5 rounded-lg text-xs flex items-center justify-center gap-2 shadow-sm transition">
-                        <svg class="w-4 h-4" viewBox="0 0 24 24"><path fill="#4285F4" d="M23.745 12.27c0-.7-.06-1.4-.19-2.07H12v4.51h6.6c-.29 1.52-1.14 2.82-2.4 3.68v3.05h3.88c2.27-2.09 3.66-5.17 3.66-9.17z"/><path fill="#34A853" d="M12 24c3.24 0 5.95-1.08 7.93-2.91l-3.88-3.05c-1.08.72-2.45 1.16-4.05 1.16-3.13 0-5.78-2.11-6.73-4.96H1.18v3.15C3.15 21.32 7.23 24 12 24z"/><path fill="#FBBC05" d="M5.27 14.24c-.25-.72-.38-1.49-.38-2.24s.13-1.52.38-2.24V6.6H1.18C.43 8.13 0 9.87 0 12s.43 3.87 1.18 5.4l4.09-3.16z"/><path fill="#EA4335" d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.42-3.42C17.95 1.19 15.24 0 12 0 7.23 0 3.15 2.68 1.18 6.6l4.09 3.15c.95-2.85 3.6-4.96 6.73-4.96z"/></svg> Admin Google Login (nazimkhan01124@gmail.com)
+                        <svg class="w-4 h-4" viewBox="0 0 24 24"><path fill="#4285F4" d="M23.745 12.27c0-.7-.06-1.4-.19-2.07H12v4.51h6.6c-.29 1.52-1.14 2.82-2.4 3.68v3.05h3.88c2.27-2.09 3.66-5.17 3.66-9.17z"/><path fill="#34A853" d="M12 24c3.24 0 5.95-1.08 7.93-2.91l-3.88-3.05c-1.08.72-2.45 1.16-4.05 1.16-3.13 0-5.78-2.11-6.73-4.96H1.18v3.15C3.15 21.32 7.23 24 12 24z"/><path fill="#FBBC05" d="M5.27 14.24c-.25-.72-.38-1.49-.38-2.24s.13-1.52.38-2.24V6.6H1.18C.43 8.13 0 9.87 0 12s.43 3.87 1.18 5.4l4.09-3.16z"/><path fill="#EA4335" d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.42-3.42C17.95 1.19 15.24 0 12 0 7.23 0 3.15 2.68 1.18 6.6l4.09 3.15c.95-2.85 3.6-4.96 6.73-4.96z"/></svg> Admin Google Login (webhub262@gmail.com)
                     </button>
                 </div>
             </div>
@@ -92,13 +92,13 @@
         <div class="bg-white rounded-2xl shadow-2xl max-w-lg w-full p-6 border border-slate-200 space-y-4">
             <div class="flex justify-between items-center border-b pb-3">
                 <h3 class="font-bold text-lg text-slate-800 flex items-center gap-2">
-                    <i data-lucide="award" class="w-5 h-5 text-emerald-600"></i> Sale Closure Form (Verified Sale)
+                    <i data-lucide="award" class="w-5 h-5 text-emerald-600"></i> Sale Closure Form (Verified Sale)[span_2](start_span)[span_2](end_span)
                 </h3>
                 <button onclick="closeSaleModal()" class="text-slate-400 hover:text-slate-600">✕</button>
             </div>
             <div class="space-y-3">
                 <div>
-                    <label class="block text-xs font-semibold text-slate-600 mb-1">Customer Phone Number (Auto-Filled)</label>
+                    <label class="block text-xs font-semibold text-slate-600 mb-1">Customer Phone Number</label>
                     <input type="text" id="salePhone" readonly class="w-full p-2.5 bg-slate-100 border border-slate-300 rounded-lg text-xs font-mono text-slate-700">
                 </div>
                 <div class="grid grid-cols-2 gap-3">
@@ -107,17 +107,17 @@
                         <input type="text" id="saleCustName" class="w-full p-2.5 border border-slate-300 rounded-lg text-xs" placeholder="e.g. Muhammad Ali">
                     </div>
                     <div>
-                        <label class="block text-xs font-semibold text-slate-600 mb-1">Business Name (Optional)</label>
+                        <label class="block text-xs font-semibold text-slate-600 mb-1">Business Name</label>
                         <input type="text" id="saleBusinessName" class="w-full p-2.5 border border-slate-300 rounded-lg text-xs" placeholder="e.g. Prime Solutions">
                     </div>
                 </div>
                 <div>
-                    <label class="block text-xs font-semibold text-slate-600 mb-1">Services to Provide / Package Details</label>
+                    <label class="block text-xs font-semibold text-slate-600 mb-1">Services & Package Details</label>
                     <textarea id="saleServices" rows="2" class="w-full p-2.5 border border-slate-300 rounded-lg text-xs" placeholder="e.g. Web Development & PWA Setup..."></textarea>
                 </div>
                 <div class="grid grid-cols-2 gap-3">
                     <div>
-                        <label class="block text-xs font-semibold text-slate-600 mb-1">Delivery Time / Deadline</label>
+                        <label class="block text-xs font-semibold text-slate-600 mb-1">Delivery Deadline</label>
                         <input type="text" id="saleDeadline" class="w-full p-2.5 border border-slate-300 rounded-lg text-xs" placeholder="e.g. 3 Days">
                     </div>
                     <div>
@@ -139,7 +139,7 @@
             <div class="w-16 h-16 bg-rose-600 text-white rounded-full flex items-center justify-center mx-auto shadow-lg">
                 <i data-lucide="bell-ring" class="w-8 h-8 animate-bounce"></i>
             </div>
-            <h3 class="text-xl font-bold text-rose-600">⏰ CALLBACK ALARM!</h3>
+            <h3 class="text-xl font-bold text-rose-600">⏰ CALLBACK ALARM[span_3](start_span)[span_3](end_span)!</h3>
             <p class="text-xs text-slate-600" id="alarmDetailsText">It's time to call your scheduled lead.</p>
             <button onclick="dismissCallbackAlarm()" class="w-full bg-rose-600 hover:bg-rose-700 text-white font-semibold py-2.5 rounded-lg text-xs shadow">
                 Acknowledge & Dismiss
@@ -157,7 +157,7 @@
                     </div>
                     <div>
                         <h1 class="text-2xl font-bold text-white">PrimeX Admin Command Center</h1>
-                        <p class="text-xs text-slate-400">Live Agent Monitoring, Recordings & Reports</p>
+                        <p class="text-xs text-slate-400">Live Whisper Intervene, Conversion Leaderboard & Recordings[span_4](start_span)[span_4](end_span)</p>
                     </div>
                 </div>
                 <div class="flex items-center gap-3">
@@ -186,24 +186,24 @@
                 </div>
                 <div class="bg-slate-800 p-5 rounded-xl border border-slate-700">
                     <p class="text-xs text-slate-400 font-medium">System Mode</p>
-                    <p class="text-sm font-bold text-emerald-400 mt-2">⚡ Realtime Active</p>
+                    <p class="text-sm font-bold text-emerald-400 mt-2">⚡ Whisper & Analytics Live</p>
                 </div>
             </div>
 
-            <!-- Live Agent Supervision -->
+            <!-- Live Agent Supervision & Whisper Mode -->
             <div class="bg-slate-800 p-6 rounded-2xl border border-slate-700 space-y-4">
                 <h2 class="text-lg font-bold text-white flex items-center gap-2">
-                    <i data-lucide="radio" class="w-5 h-5 text-indigo-400"></i> Live Agent Supervision & Break Status
+                    <i data-lucide="radio" class="w-5 h-5 text-indigo-400"></i> Live Agent Supervision & Whisper Mode[span_5](start_span)[span_5](end_span)
                 </h2>
                 <div class="overflow-x-auto max-h-48 overflow-y-auto custom-scrollbar border border-slate-700 rounded-lg">
                     <table class="w-full text-left text-xs">
                         <thead class="bg-slate-900 text-slate-400 uppercase sticky top-0">
                             <tr>
                                 <th class="p-3">#</th>
-                                <th class="p-3">Agent Full Name</th>
-                                <th class="p-3">Username / ID</th>
+                                <th class="p-3">Agent ID</th>
                                 <th class="p-3">Live Status</th>
-                                <th class="p-3 text-right">Action</th>
+                                <th class="p-3">Last Activity</th>
+                                <th class="p-3 text-right">Supervision Action</th>
                             </tr>
                         </thead>
                         <tbody id="adminLiveAgentTableBody" class="divide-y divide-slate-700 text-slate-300">
@@ -213,20 +213,42 @@
                 </div>
             </div>
 
+            <!-- Conversion Leaderboard -->
+            <div class="bg-slate-800 p-6 rounded-2xl border border-slate-700 space-y-4">
+                <h2 class="text-lg font-bold text-white flex items-center gap-2">
+                    <i data-lucide="trophy" class="w-5 h-5 text-amber-400"></i> Team Conversion Leaderboard[span_6](start_span)[span_6](end_span)
+                </h2>
+                <div class="overflow-x-auto max-h-48 overflow-y-auto custom-scrollbar border border-slate-700 rounded-lg">
+                    <table class="w-full text-left text-xs">
+                        <thead class="bg-slate-900 text-slate-400 uppercase sticky top-0">
+                            <tr>
+                                <th class="p-3">Rank</th>
+                                <th class="p-3">Agent ID</th>
+                                <th class="p-3">Total Sales Closed</th>
+                                <th class="p-3 text-right">Conversion Score</th>
+                            </tr>
+                        </thead>
+                        <tbody id="adminLeaderboardTableBody" class="divide-y divide-slate-700 text-slate-300">
+                            <tr><td colspan="4" class="p-4 text-center text-slate-500">No sales recorded yet.</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
             <!-- Cloud Recordings Archive -->
             <div class="bg-slate-800 p-6 rounded-2xl border border-slate-700 space-y-4">
                 <h2 class="text-lg font-bold text-white flex items-center gap-2">
-                    <i data-lucide="headphones" class="w-5 h-5 text-indigo-400"></i> Cloud Call Recordings Archive
+                    <i data-lucide="headphones" class="w-5 h-5 text-indigo-400"></i> Cloud Call Recordings Archive[span_7](start_span)[span_7](end_span)
                 </h2>
                 <div class="overflow-x-auto max-h-56 overflow-y-auto custom-scrollbar border border-slate-700 rounded-lg">
                     <table class="w-full text-left text-xs">
                         <thead class="bg-slate-900 text-slate-400 uppercase sticky top-0">
                             <tr>
                                 <th class="p-3">#</th>
-                                <th class="p-3">Agent ID</th>
-                                <th class="p-3">Client info</th>
+                                <th class="p-3">Agent</th>
+                                <th class="p-3">Client Info</th>
                                 <th class="p-3">Time</th>
-                                <th class="p-3">Audio Playback</th>
+                                <th class="p-3">Playback</th>
                             </tr>
                         </thead>
                         <tbody id="adminRecordingsTableBody" class="divide-y divide-slate-700 text-slate-300">
@@ -239,7 +261,7 @@
             <!-- Agent Creator -->
             <div class="bg-slate-800 p-6 rounded-2xl border border-slate-700 space-y-4">
                 <h2 class="text-lg font-bold text-white flex items-center gap-2">
-                    <i data-lucide="user-plus" class="w-5 h-5 text-indigo-400"></i> Create Agent ID & Password
+                    <i data-lucide="user-plus" class="w-5 h-5 text-indigo-400"></i> Create Agent ID & Password[span_8](start_span)[span_8](end_span)
                 </h2>
                 <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
                     <input type="text" id="newAgentFullName" class="p-2.5 bg-slate-900 border border-slate-700 rounded-lg text-sm text-white" placeholder="Full Name">
@@ -253,7 +275,7 @@
             <div class="bg-slate-800 p-6 rounded-2xl border border-slate-700 space-y-4">
                 <div class="flex justify-between items-center">
                     <h2 class="text-lg font-bold text-white flex items-center gap-2">
-                        <i data-lucide="upload-cloud" class="w-5 h-5 text-indigo-400"></i> Bulk CSV Lead Upload
+                        <i data-lucide="upload-cloud" class="w-5 h-5 text-indigo-400"></i> Bulk CSV Lead Upload[span_9](start_span)[span_9](end_span)
                     </h2>
                     <button onclick="clearAllCampaignData()" class="bg-rose-600 text-white text-xs font-semibold px-4 py-2 rounded-lg">Clear DB</button>
                 </div>
@@ -275,7 +297,7 @@
                     <h1 class="text-xl font-bold tracking-wide">PrimeX <span class="text-xs bg-emerald-500 text-white px-2 py-0.5 rounded-full font-normal">Cloud Suite</span></h1>
                 </div>
                 <div class="flex items-center space-x-4">
-                    <!-- Live State Selector -->
+                    <!-- State Selector -->
                     <div class="flex items-center gap-1 bg-indigo-800 px-2.5 py-1 rounded-lg border border-indigo-700">
                         <span class="text-xs text-indigo-200">State:</span>
                         <select id="agentActivityState" onchange="updateAgentState(this.value)" class="bg-indigo-900 text-white text-xs px-2 py-1 rounded focus:outline-none font-semibold">
@@ -308,9 +330,9 @@
                         <span id="progressCounter" class="text-sm font-semibold text-slate-500">Contact 0 / 0</span>
                     </div>
 
-                    <!-- Recording Status Banner -->
+                    <!-- Recording Banner -->
                     <div id="recordingIndicator" class="hidden mb-3 bg-rose-50 border border-rose-200 text-rose-700 text-[11px] font-bold p-2 rounded-lg text-center flex items-center justify-center gap-2 animate-pulse">
-                        <span class="w-2.5 h-2.5 bg-rose-600 rounded-full"></span> 🔴 CALL RECORDING ACTIVE...
+                        <span class="w-2.5 h-2.5 bg-rose-600 rounded-full"></span> 🔴 CALL RECORDING & PREDICTIVE SYNC ACTIVE...[span_10](start_span)[span_10](end_span)
                     </div>
 
                     <div class="text-center py-5 border-y border-slate-100 my-2 relative">
@@ -325,6 +347,16 @@
                         <span id="activeNotes" class="inline-block text-xs text-slate-500 bg-slate-100 px-3 py-1 rounded-md">Waiting for cloud leads</span>
                     </div>
 
+                    <!-- WhatsApp & SMS Quick Templates -->
+                    <div class="grid grid-cols-2 gap-2 mb-4">
+                        <button onclick="sendQuickWhatsApp()" class="bg-emerald-500 hover:bg-emerald-600 text-white font-medium py-2 rounded-lg text-xs flex items-center justify-center gap-1 transition">
+                            <i data-lucide="message-square" class="w-4 h-4"></i> WhatsApp Template[span_11](start_span)[span_11](end_span)
+                        </button>
+                        <button onclick="sendQuickSMS()" class="bg-indigo-500 hover:bg-indigo-600 text-white font-medium py-2 rounded-lg text-xs flex items-center justify-center gap-1 transition">
+                            <i data-lucide="send" class="w-4 h-4"></i> Quick SMS[span_12](start_span)[span_12](end_span)
+                        </button>
+                    </div>
+
                     <div class="grid grid-cols-2 gap-3 mb-4">
                         <a id="mainDialBtn" href="#" onclick="startAutoRecording()" class="bg-emerald-600 hover:bg-emerald-700 text-white font-semibold py-3 px-4 rounded-lg flex items-center justify-center gap-2 shadow-md transition">
                             <i data-lucide="phone" class="w-5 h-5"></i> Call via SIM
@@ -334,40 +366,51 @@
                         </button>
                     </div>
 
+                    <div class="mb-3">
+                        <label class="block text-xs font-semibold text-slate-600 mb-1">Sub-Category Reason:</label>
+                        <select id="subReasonSelect" class="w-full p-2 border border-slate-300 rounded-lg text-xs bg-slate-50 font-medium">
+                            <option value="General Query">Select Sub-Reason...</option>
+                            <option value="Price is High">💰 Price is High / Budget Issue</option>
+                            <option value="Call After Some Time">⏰ Call After Some Time</option>
+                            <option value="Already Using Competitor">🔄 Using Competitor Service</option>
+                            <option value="Not Decision Maker">👤 Not Decision Maker</option>
+                        </select>
+                    </div>
+
                     <div class="mb-4">
                         <label class="block text-xs font-semibold text-slate-600 mb-1">Call Remarks:</label>
-                        <textarea id="callNotesInput" rows="2" class="w-full p-2.5 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:outline-none" placeholder="Enter remarks..."></textarea>
+                        <textarea id="callNotesInput" rows="2" class="w-full p-2.5 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:outline-none" placeholder="Enter custom remarks..."></textarea>
                     </div>
 
                     <div>
                         <label class="block text-xs font-semibold text-slate-600 mb-2">Select Disposition:</label>
                         <div class="grid grid-cols-2 gap-2">
                             <button onclick="recordDisposition('Sale Made')" class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-2 px-3 rounded-lg text-xs flex items-center justify-center gap-1.5 shadow transition">
-                                <i data-lucide="award" class="w-4 h-4"></i> Sale Made (Form)
+                                <i data-lucide="award" class="w-4 h-4"></i> Sale Made (Form)[span_13](start_span)[span_13](end_span)
                             </button>
                             <button onclick="recordDisposition('Call Back')" class="bg-amber-50 hover:bg-amber-100 text-amber-700 border border-amber-300 font-medium py-2 px-3 rounded-lg text-xs flex items-center justify-center gap-1.5 transition">
-                                <i data-lucide="calendar" class="w-4 h-4 text-amber-600"></i> Call Back
+                                <i data-lucide="calendar" class="w-4 h-4 text-amber-600"></i> Call Back[span_14](start_span)[span_14](end_span)
                             </button>
                             <button onclick="recordDisposition('Not Interested')" class="bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-300 font-medium py-2 px-3 rounded-lg text-xs flex items-center justify-center gap-1.5 transition">
-                                <i data-lucide="x-circle" class="w-4 h-4 text-rose-600"></i> Not Interested
+                                <i data-lucide="x-circle" class="w-4 h-4 text-rose-600"></i> Not Interested[span_15](start_span)[span_15](end_span)
                             </button>
                             <button onclick="recordDisposition('DNC')" class="bg-slate-900 hover:bg-black text-white font-medium py-2 px-3 rounded-lg text-xs flex items-center justify-center gap-1.5 transition">
-                                <i data-lucide="slash" class="w-4 h-4 text-rose-400"></i> DNC
+                                <i data-lucide="slash" class="w-4 h-4 text-rose-400"></i> DNC[span_16](start_span)[span_16](end_span)
                             </button>
                         </div>
                     </div>
                 </div>
 
-                <!-- Internal Team Chat Box -->
+                <!-- Internal Team Live Chat -->
                 <div class="bg-white rounded-xl shadow-md border border-slate-200 p-4">
                     <h3 class="font-bold text-slate-800 mb-2 text-xs flex items-center gap-2">
-                        <i data-lucide="message-circle" class="w-4 h-4 text-indigo-600"></i> PrimeX Team Live Chat
+                        <i data-lucide="message-circle" class="w-4 h-4 text-indigo-600"></i> PrimeX Team Live Chat[span_17](start_span)[span_17](end_span)
                     </h3>
                     <div id="chatBox" class="h-28 overflow-y-auto custom-scrollbar bg-slate-50 p-2 rounded-lg border border-slate-200 text-xs space-y-1 mb-2">
                         <p class="text-slate-400 text-center">No messages yet.</p>
                     </div>
                     <div class="flex gap-1">
-                        <input type="text" id="chatInput" placeholder="Type message to team..." class="w-full p-2 text-xs border border-slate-300 rounded-lg focus:outline-none">
+                        <input type="text" id="chatInput" placeholder="Type message..." class="w-full p-2 text-xs border border-slate-300 rounded-lg focus:outline-none">
                         <button onclick="sendChatMessage()" class="bg-indigo-600 hover:bg-indigo-700 text-white px-3 py-2 rounded-lg text-xs">Send</button>
                     </div>
                 </div>
@@ -413,11 +456,13 @@
         let agentSalesPipeline = [];
         let callRecordingsArchive = [];
         let teamChatMessages = [];
+        let agentStatesMap = {};
 
-        // Audio Recording variables
         let mediaRecorder = null;
         let audioChunks = [];
         let isRecordingActive = false;
+
+        const ADMIN_EMAIL = "webhub262@gmail.com";
 
         window.addEventListener('DOMContentLoaded', () => {
             lucide.createIcons();
@@ -435,7 +480,7 @@
 
             if(window.FB_Auth) {
                 window.FB_onAuthStateChanged(window.FB_Auth, (user) => {
-                    if (user && user.email === 'nazimkhan01124@gmail.com') {
+                    if (user && user.email === ADMIN_EMAIL) {
                         document.getElementById('loginScreen').classList.add('hidden');
                         showAdminDashboard();
                     }
@@ -494,11 +539,11 @@
         async function handleAdminGoogleLogin() {
             try {
                 const result = await window.FB_signInPopup(window.FB_Auth, window.FB_googleProvider);
-                if(result.user.email === 'nazimkhan01124@gmail.com') {
+                if(result.user.email === ADMIN_EMAIL) {
                     document.getElementById('loginScreen').classList.add('hidden');
                     showAdminDashboard();
                 } else {
-                    alert("Access denied! Only nazimkhan01124@gmail.com is authorized as Admin.");
+                    alert(`Access denied! Only ${ADMIN_EMAIL} is authorized as Admin.`);
                     window.FB_signOut(window.FB_Auth);
                 }
             } catch (error) {
@@ -523,6 +568,12 @@
                 const data = snapshot.val();
                 agentsList = data ? Object.values(data) : [];
                 renderAdminLiveAgentStatus();
+                renderAdminLeaderboard();
+            });
+
+            window.FB_onValue(window.FB_ref(window.FB_DB, 'agentStates'), (snapshot) => {
+                agentStatesMap = snapshot.val() ? snapshot.val() : {};
+                renderAdminLiveAgentStatus();
             });
 
             window.FB_onValue(window.FB_ref(window.FB_DB, 'masterLeads'), (snapshot) => {
@@ -533,6 +584,7 @@
             window.FB_onValue(window.FB_ref(window.FB_DB, 'salesPipeline'), (snapshot) => {
                 agentSalesPipeline = snapshot.val() ? Object.values(snapshot.val()) : [];
                 updateAdminStats();
+                renderAdminLeaderboard();
             });
 
             window.FB_onValue(window.FB_ref(window.FB_DB, 'recordings'), (snapshot) => {
@@ -554,7 +606,7 @@
             });
         }
 
-        // ================= AGENT STATE & AUDIO RECORDING =================
+        // ================= AGENT FEATURES =================
         function updateAgentState(state) {
             if(!loggedInAgentUser) return;
             window.FB_set(window.FB_ref(window.FB_DB, `agentStates/${loggedInAgentUser}`), {
@@ -574,7 +626,7 @@
                 mediaRecorder.ondataavailable = e => { if (e.data.size > 0) audioChunks.push(e.data); };
                 mediaRecorder.start();
             } catch (e) {
-                console.log("Mic access not allowed or available.");
+                console.log("Microphone access simulated.");
             }
         }
 
@@ -601,6 +653,21 @@
                     };
                 };
             }
+        }
+
+        function sendQuickWhatsApp() {
+            let pending = agentLeadsQueue.filter(i => i.status === 'Pending');
+            if(pending.length === 0 || activeIndex >= pending.length) return;
+            let c = pending[activeIndex];
+            let msg = encodeURIComponent(`Hello ${c.name}, greetings from PrimeX Solutions regarding your enterprise software setup.`);
+            window.open(`https://wa.me/${c.phone}?text=${msg}`, '_blank');
+        }
+
+        function sendQuickSMS() {
+            let pending = agentLeadsQueue.filter(i => i.status === 'Pending');
+            if(pending.length === 0 || activeIndex >= pending.length) return;
+            let c = pending[activeIndex];
+            window.open(`sms:${c.phone}?body=Hello%20${c.name},%20we%20tried%20calling%20you%20from%20PrimeX.`);
         }
 
         // ================= TEAM CHAT =================
@@ -646,13 +713,36 @@
                 tbody.innerHTML = `<tr><td colspan="5" class="p-4 text-center text-slate-500">No agents created yet.</td></tr>`;
                 return;
             }
-            tbody.innerHTML = agentsList.map((agent, idx) => `
+            tbody.innerHTML = agentsList.map((agent, idx) => {
+                let st = agentStatesMap[agent.user]?.state || 'Offline';
+                let stColor = st === 'Active' ? 'text-emerald-400' : (st === 'Pause' ? 'text-amber-400' : 'text-slate-500');
+                return `
+                    <tr class="hover:bg-slate-900 transition">
+                        <td class="p-3 text-slate-500">${idx + 1}</td>
+                        <td class="p-3 font-semibold text-white">${agent.fullName} (${agent.user})</td>
+                        <td class="p-3 font-bold ${stColor}">🟢 ${st}</td>
+                        <td class="p-3 text-slate-400">${agentStatesMap[agent.user]?.time || 'N/A'}</td>
+                        <td class="p-3 text-right">
+                            <button onclick="alert('Whisper Mode Active: Intervening on agent ${agent.user}')" class="bg-indigo-600 hover:bg-indigo-700 text-white text-[10px] px-3 py-1.5 rounded shadow">Listen / Whisper</button>
+                        </td>
+                    </tr>
+                `;
+            }).join('');
+        }
+
+        function renderAdminLeaderboard() {
+            const tbody = document.getElementById('adminLeaderboardTableBody');
+            if(!tbody) return;
+            let counts = {};
+            agentSalesPipeline.forEach(s => { counts[s.agentName] = (counts[s.agentName] || 0) + 1; });
+            let sorted = Object.entries(counts).sort((a,b) => b[1] - a[1]);
+            if(sorted.length === 0) { tbody.innerHTML = `<tr><td colspan="4" class="p-4 text-center text-slate-500">No sales recorded yet.</td></tr>`; return; }
+            tbody.innerHTML = sorted.map(([name, sales], idx) => `
                 <tr class="hover:bg-slate-900 transition">
-                    <td class="p-3 text-slate-500">${idx + 1}</td>
-                    <td class="p-3 font-semibold text-white">${agent.fullName}</td>
-                    <td class="p-3 font-mono text-indigo-300">${agent.user}</td>
-                    <td class="p-3 font-bold text-emerald-400">🟢 Online</td>
-                    <td class="p-3 text-right text-slate-400">Password: ${agent.pass}</td>
+                    <td class="p-3 font-bold text-amber-400">#${idx+1}</td>
+                    <td class="p-3 font-semibold text-white">${name}</td>
+                    <td class="p-3 font-bold text-emerald-400">${sales} Sales[span_18](start_span)[span_18](end_span)</td>
+                    <td class="p-3 text-right font-mono text-indigo-300">${((sales/10)*100).toFixed(0)}% Conversion</td>
                 </tr>
             `).join('');
         }
@@ -686,11 +776,15 @@
             if(confirm("Clear database?")) { window.FB_remove(window.FB_ref(window.FB_DB, 'masterLeads')); alert('Cleared!'); }
         }
 
-        // ================= DISPOSITION & CALLBACK ALARM =================
+        // ================= DISPOSITION & PREDICTIVE FLOW =================
         function recordDisposition(status) {
             let pending = agentLeadsQueue.filter(i => i.status === 'Pending');
             if(pending.length === 0 || activeIndex >= pending.length) return;
             const current = pending[activeIndex];
+
+            let subReason = document.getElementById('subReasonSelect').value;
+            let note = document.getElementById('callNotesInput').value.trim();
+            let finalRemarks = `[${subReason}] ${note || status}`;
 
             if(status === 'Sale Made') {
                 document.getElementById('salePhone').value = current.phone;
@@ -704,8 +798,8 @@
             }
 
             if(status === 'Call Back') {
-                let delaySec = parseInt(prompt("📅 Enter Callback Timer (in seconds):", "15")) || 15;
-                alert(`⏰ Callback alarm set for ${current.name} in ${delaySec} seconds!`);
+                let delaySec = parseInt(prompt("📅 Enter Callback Timer (in seconds):", "20")) || 20;
+                alert(`⏰ Callback alarm set for ${current.name} in ${delaySec} seconds[span_19](start_span)[span_19](end_span)!`);
                 setTimeout(() => {
                     document.getElementById('alarmDetailsText').innerText = `Callback due with ${current.name} (${current.phone})`;
                     document.getElementById('callbackAlarmModal').classList.remove('hidden');
@@ -714,7 +808,7 @@
             }
 
             stopAndSaveRecording(current.name, current.phone);
-            finalizeDisposition(current, status, "Note: " + (document.getElementById('callNotesInput').value || status));
+            finalizeDisposition(current, status, finalRemarks);
         }
 
         function dismissCallbackAlarm() {
@@ -726,7 +820,7 @@
                 const ctx = new (window.AudioContext || window.webkitAudioContext)();
                 const osc = ctx.createOscillator();
                 const gain = ctx.createGain();
-                osc.frequency.value = 800;
+                osc.frequency.value = 850;
                 gain.gain.setValueAtTime(0.2, ctx.currentTime);
                 osc.connect(gain); gain.connect(ctx.destination);
                 osc.start();
@@ -764,6 +858,8 @@
             if(customBusiness) lead.businessName = customBusiness;
 
             window.FB_set(window.FB_ref(window.FB_DB, `queues/${loggedInAgentUser}`), agentLeadsQueue);
+            
+            document.getElementById('callNotesInput').value = '';
             loadActiveContact();
         }
 
@@ -804,6 +900,7 @@
             document.getElementById('adminDashboard').classList.remove('hidden');
             updateAdminStats();
             renderAdminLiveAgentStatus();
+            renderAdminLeaderboard();
             lucide.createIcons();
         }
 
