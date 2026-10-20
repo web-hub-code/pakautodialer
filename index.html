@@ -509,7 +509,7 @@
 
             setTimeout(() => {
                 initFirebaseRealtimeSync();
-            }, 1000);
+            }, 800);
 
             const currentUser = localStorage.getItem('prodialer_user');
             if(currentUser) {
@@ -528,7 +528,15 @@
             if(!window.FB_DB) return;
 
             window.FB_onValue(window.FB_ref(window.FB_DB, 'agents'), (snapshot) => {
-                agentsList = snapshot.val() ? Object.values(snapshot.val()) : [{ fullName: "System Admin", user: "admin", pass: "5426", delay: 5 }];
+                const data = snapshot.val();
+                if(data) {
+                    agentsList = Object.values(data);
+                } else {
+                    // Seed default admin if agents node is completely empty
+                    const defaultAdmin = { fullName: "System Admin", user: "admin", pass: "5426", delay: 5 };
+                    window.FB_set(window.FB_ref(window.FB_DB, 'agents/admin'), defaultAdmin);
+                    agentsList = [defaultAdmin];
+                }
                 renderAdminLiveAgentStatus();
                 renderAdminLeaderboard();
             });
@@ -575,7 +583,10 @@
             const tbody = document.getElementById('adminLiveAgentTableBody');
             if(!tbody) return;
             let normalAgents = agentsList.filter(a => a.user !== 'admin');
-            if(normalAgents.length === 0) return;
+            if(normalAgents.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="5" class="p-4 text-center text-slate-500">No agents online.</td></tr>`;
+                return;
+            }
 
             tbody.innerHTML = normalAgents.map((agent, idx) => `
                 <tr class="hover:bg-slate-900 transition">
@@ -591,7 +602,7 @@
         }
 
         function adminWhisperIntervene(agentName) {
-            alert(`🎧 Connected to ${agentName}'s live call channel in Whisper Mode. You can now speak to the agent privately without the customer hearing.`);
+            alert(`🎧 Connected to ${agentName}'s live call channel in Whisper Mode.`);
         }
 
         function renderAdminLeaderboard() {
@@ -609,7 +620,7 @@
             let sorted = Object.entries(counts).sort((a,b) => b[1] - a[1]);
 
             tbody.innerHTML = sorted.map(([name, sales], idx) => {
-                let score = ((sales / 10) * 100).toFixed(0); // Demo conversion score
+                let score = ((sales / 10) * 100).toFixed(0);
                 return `
                     <tr class="hover:bg-slate-900 transition">
                         <td class="p-3 font-bold text-amber-400">${idx === 0 && sales > 0 ? '👑 #' + (idx+1) : '#' + (idx+1)}</td>
@@ -652,10 +663,9 @@
             }
 
             if(status === 'Call Back') {
-                let cbTime = prompt("📅 Enter Callback Alarm Time (e.g., 5 seconds for demo, or time):", "10");
+                let cbTime = prompt("📅 Enter Callback Alarm Time (seconds):", "10");
                 let delaySec = parseInt(cbTime) || 10;
-                alert(`⏰ Callback alarm successfully set for ${current.name} in ${delaySec} seconds!`);
-                
+                alert(`⏰ Callback alarm set for ${current.name} in ${delaySec} seconds!`);
                 setTimeout(() => {
                     document.getElementById('alarmDetailsText').innerText = `Callback due with ${current.name} (${current.phone})`;
                     document.getElementById('callbackAlarmModal').classList.remove('hidden');
@@ -667,9 +677,7 @@
             finalizeDisposition(current, status, "Note: " + (document.getElementById('callNotesInput').value || status));
         }
 
-        function dismissCallbackAlarm() {
-            document.getElementById('callbackAlarmModal').classList.add('hidden');
-        }
+        function dismissCallbackAlarm() { document.getElementById('callbackAlarmModal').classList.add('hidden'); }
 
         function submitSaleForm() {
             let pending = agentLeadsQueue.filter(i => i.status === 'Pending');
@@ -879,7 +887,7 @@
                 document.getElementById('loginScreen').classList.add('hidden');
                 if(u === 'admin') showAdminDashboard();
                 else { document.getElementById('currentAgentName').innerText = `${found.fullName} (${u})`; document.getElementById('agentDashboard').classList.remove('hidden'); }
-            } else { alert('Invalid credentials!'); }
+            } else { alert('Invalid credentials! Default Admin: admin / 5426'); }
         }
 
         function createNewAgent() {
