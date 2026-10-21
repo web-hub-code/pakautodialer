@@ -2,7 +2,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PrimeX Ultimate Enterprise Cloud Dialer</title>
+    <title>PrimeX Enterprise Cloud Dialer - Master Lead Trail Edition</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Lucide Icons -->
@@ -53,9 +53,9 @@
         <div class="bg-white rounded-2xl shadow-2xl max-w-md w-full p-8 border border-slate-200">
             <div class="text-center mb-6">
                 <div class="w-16 h-16 bg-indigo-600 text-white rounded-2xl flex items-center justify-center mx-auto mb-3 shadow-lg">
-                    <i data-lucide="shield-check" class="w-8 h-8"></i>
+                    <i data-lucide="headphones" class="w-8 h-8"></i>
                 </div>
-                <h2 class="text-2xl font-bold text-slate-800">PrimeX Enterprise Suite</h2>
+                <h2 class="text-2xl font-bold text-slate-800">PrimeX Master Suite</h2>
                 <p class="text-xs text-slate-500 mt-1">Admin (Google) or Agent (ID & Password)</p>
             </div>
             
@@ -92,13 +92,13 @@
         <div class="bg-white rounded-2xl shadow-2xl max-w-lg w-full p-6 border border-slate-200 space-y-4">
             <div class="flex justify-between items-center border-b pb-3">
                 <h3 class="font-bold text-lg text-slate-800 flex items-center gap-2">
-                    <i data-lucide="award" class="w-5 h-5 text-emerald-600"></i> Sale Closure Form
+                    <i data-lucide="award" class="w-5 h-5 text-emerald-600"></i> Sale Closure Form (Pending Approval)
                 </h3>
                 <button onclick="closeSaleModal()" class="text-slate-400 hover:text-slate-600">✕</button>
             </div>
             <div class="space-y-3">
                 <div>
-                    <label class="block text-xs font-semibold text-slate-600 mb-1">Customer Phone Number</label>
+                    <label class="block text-xs font-semibold text-slate-600 mb-1">Customer Phone Number (Auto-Filled)</label>
                     <input type="text" id="salePhone" readonly class="w-full p-2.5 bg-slate-100 border border-slate-300 rounded-lg text-xs font-mono text-slate-700">
                 </div>
                 <div class="grid grid-cols-2 gap-3">
@@ -112,13 +112,13 @@
                     </div>
                 </div>
                 <div>
-                    <label class="block text-xs font-semibold text-slate-600 mb-1">Services Details</label>
-                    <textarea id="saleServices" rows="2" class="w-full p-2.5 border border-slate-300 rounded-lg text-xs" placeholder="e.g. Web Development..."></textarea>
+                    <label class="block text-xs font-semibold text-slate-600 mb-1">Services Needed (Kya chahiye CX ko)</label>
+                    <textarea id="saleServices" rows="2" class="w-full p-2.5 border border-slate-300 rounded-lg text-xs" placeholder="e.g. Web development..."></textarea>
                 </div>
                 <div class="grid grid-cols-2 gap-3">
                     <div>
-                        <label class="block text-xs font-semibold text-slate-600 mb-1">Deadline</label>
-                        <input type="text" id="saleDeadline" class="w-full p-2.5 border border-slate-300 rounded-lg text-xs" placeholder="e.g. 3 Days">
+                        <label class="block text-xs font-semibold text-slate-600 mb-1">Deadline (Kab chahiye)</label>
+                        <input type="text" id="saleDeadline" class="w-full p-2.5 border border-slate-300 rounded-lg text-xs" placeholder="e.g. Within 3 Days">
                     </div>
                     <div>
                         <label class="block text-xs font-semibold text-slate-600 mb-1">Amount</label>
@@ -128,7 +128,7 @@
             </div>
             <div class="flex justify-end gap-2 pt-3 border-t">
                 <button onclick="closeSaleModal()" class="px-4 py-2 bg-slate-200 text-slate-700 rounded-lg text-xs font-semibold">Cancel</button>
-                <button onclick="submitSaleForm()" class="px-5 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg text-xs font-semibold shadow">Confirm Sale</button>
+                <button onclick="submitSaleForm()" class="px-5 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg text-xs font-semibold shadow">Submit for Admin Approval</button>
             </div>
         </div>
     </div>
@@ -143,55 +143,114 @@
                     </div>
                     <div>
                         <h1 class="text-2xl font-bold text-white">PrimeX Admin Command Center</h1>
-                        <p class="text-xs text-slate-400">Live Monitoring & Analytics</p>
+                        <p class="text-xs text-slate-400">Agent Credentials, Live Status & Lead Trail Audit</p>
                     </div>
                 </div>
                 <div class="flex items-center gap-3">
-                    <button onclick="switchViewToAgent()" class="bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-semibold px-4 py-2.5 rounded-lg transition shadow">Switch to Agent View</button>
+                    <button onclick="toggleCampaignStatus()" id="campaignToggleBtn" class="bg-amber-600 hover:bg-amber-700 text-white text-xs font-semibold px-4 py-2.5 rounded-lg transition shadow">Pause Campaign</button>
+                    <button onclick="recyclePendingLeads()" class="bg-purple-600 hover:bg-purple-700 text-white text-xs font-semibold px-4 py-2.5 rounded-lg transition shadow">♻️ Recycle Leads</button>
+                    <button onclick="downloadAdminReportCSV()" class="bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-semibold px-4 py-2.5 rounded-lg transition shadow flex items-center gap-1">
+                        <i data-lucide="download" class="w-4 h-4"></i> Export Report
+                    </button>
+                    <button onclick="switchViewToAgent()" class="bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-semibold px-4 py-2.5 rounded-lg transition shadow">Agent View</button>
                     <button onclick="handleLogout()" class="bg-rose-600 hover:bg-rose-700 text-white text-xs font-semibold px-4 py-2.5 rounded-lg transition shadow">Logout</button>
                 </div>
             </div>
 
+            <!-- Global Broadcast Banner Sender -->
+            <div class="bg-slate-800 p-4 rounded-2xl border border-slate-700 flex items-center gap-3">
+                <i data-lucide="megaphone" class="w-6 h-6 text-indigo-400 flex-shrink-0"></i>
+                <input type="text" id="adminBroadcastInput" class="w-full p-2.5 bg-slate-900 border border-slate-700 rounded-lg text-xs text-white" placeholder="Broadcast announcement message to all active agents...">
+                <button onclick="sendAdminBroadcast()" class="bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-2.5 px-5 rounded-lg text-xs shadow flex-shrink-0">Broadcast</button>
+            </div>
+
             <!-- Metrics -->
-            <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
-                <div class="bg-slate-800 p-5 rounded-xl border border-slate-700">
-                    <p class="text-xs text-slate-400 font-medium">Registered Agents</p>
-                    <p class="text-3xl font-bold text-indigo-400 mt-1" id="adminAgentCount">0</p>
+            <div class="grid grid-cols-1 md:grid-cols-5 gap-4">
+                <div class="bg-slate-800 p-4 rounded-xl border border-slate-700">
+                    <p class="text-xs text-slate-400 font-medium">Total Agents</p>
+                    <p class="text-2xl font-bold text-indigo-400 mt-1" id="metricTotalAgents">0</p>
                 </div>
-                <div class="bg-slate-800 p-5 rounded-xl border border-slate-700">
-                    <p class="text-xs text-slate-400 font-medium">Total Master Leads</p>
-                    <p class="text-3xl font-bold text-emerald-400 mt-1" id="adminTotalLeads">0</p>
+                <div class="bg-slate-800 p-4 rounded-xl border border-slate-700">
+                    <p class="text-xs text-slate-400 font-medium">Active Agents</p>
+                    <p class="text-2xl font-bold text-emerald-400 mt-1" id="metricActiveAgents">0</p>
                 </div>
-                <div class="bg-slate-800 p-5 rounded-xl border border-slate-700">
-                    <p class="text-xs text-slate-400 font-medium">Successful Sales</p>
-                    <p class="text-3xl font-bold text-amber-400 mt-1" id="adminApprovedSales">0</p>
+                <div class="bg-slate-800 p-4 rounded-xl border border-slate-700">
+                    <p class="text-xs text-slate-400 font-medium">Pause Agents</p>
+                    <p class="text-2xl font-bold text-amber-400 mt-1" id="metricPauseAgents">0</p>
                 </div>
-                <div class="bg-slate-800 p-5 rounded-xl border border-slate-700">
-                    <p class="text-xs text-slate-400 font-medium">System Mode</p>
-                    <p class="text-sm font-bold text-emerald-400 mt-2">⚡ Live Active</p>
+                <div class="bg-slate-800 p-4 rounded-xl border border-slate-700">
+                    <p class="text-xs text-slate-400 font-medium">Logout / Offline</p>
+                    <p class="text-2xl font-bold text-rose-400 mt-1" id="metricLogoutAgents">0</p>
+                </div>
+                <div class="bg-slate-800 p-4 rounded-xl border border-slate-700">
+                    <p class="text-xs text-slate-400 font-medium">Approved Sales</p>
+                    <p class="text-2xl font-bold text-purple-400 mt-1" id="adminApprovedSales">0</p>
                 </div>
             </div>
 
-            <!-- Agent Supervision -->
+            <!-- AGENT CREDENTIALS & LIVE STATUS DIRECTORY -->
             <div class="bg-slate-800 p-6 rounded-2xl border border-slate-700 space-y-4">
                 <h2 class="text-lg font-bold text-white flex items-center gap-2">
-                    <i data-lucide="radio" class="w-5 h-5 text-indigo-400"></i> Live Agent Supervision
+                    <i data-lucide="users" class="w-5 h-5 text-indigo-400"></i> Agents Directory & Credentials Master List
                 </h2>
-                <div class="overflow-x-auto max-h-48 overflow-y-auto custom-scrollbar border border-slate-700 rounded-lg">
+                <div class="overflow-x-auto max-h-56 overflow-y-auto custom-scrollbar border border-slate-700 rounded-lg">
                     <table class="w-full text-left text-xs">
                         <thead class="bg-slate-900 text-slate-400 uppercase sticky top-0">
                             <tr>
                                 <th class="p-3">#</th>
-                                <th class="p-3">Agent ID</th>
-                                <th class="p-3">Status</th>
-                                <th class="p-3">Time</th>
-                                <th class="p-3 text-right">Action</th>
+                                <th class="p-3">Full Name</th>
+                                <th class="p-3">Agent ID / Username</th>
+                                <th class="p-3">Password</th>
+                                <th class="p-3">Live Status</th>
+                                <th class="p-3 text-right">Last Updated</th>
                             </tr>
                         </thead>
-                        <tbody id="adminLiveAgentTableBody" class="divide-y divide-slate-700 text-slate-300">
-                            <tr><td colspan="5" class="p-4 text-center text-slate-500">No agents online.</td></tr>
+                        <tbody id="adminAgentDirectoryTableBody" class="divide-y divide-slate-700 text-slate-300">
+                            <tr><td colspan="6" class="p-4 text-center text-slate-500">No agents created yet.</td></tr>
                         </tbody>
                     </table>
+                </div>
+            </div>
+
+            <!-- Sales Verification & Approval Queue -->
+            <div class="bg-slate-800 p-6 rounded-2xl border border-slate-700 space-y-4">
+                <h2 class="text-lg font-bold text-white flex items-center gap-2">
+                    <i data-lucide="check-circle" class="w-5 h-5 text-emerald-400"></i> Sales Verification & Approval Queue
+                </h2>
+                <div class="overflow-x-auto max-h-56 overflow-y-auto custom-scrollbar border border-slate-700 rounded-lg">
+                    <table class="w-full text-left text-xs">
+                        <thead class="bg-slate-900 text-slate-400 uppercase sticky top-0">
+                            <tr>
+                                <th class="p-3">Agent</th>
+                                <th class="p-3">Client</th>
+                                <th class="p-3">Phone</th>
+                                <th class="p-3">Services & Requirements</th>
+                                <th class="p-3">Amount</th>
+                                <th class="p-3">Status</th>
+                                <th class="p-3 text-right">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="adminSalesApprovalTableBody" class="divide-y divide-slate-700 text-slate-300">
+                            <tr><td colspan="7" class="p-4 text-center text-slate-500">No pending sales to approve.</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- TEAM CHAT SYSTEM COMPONENT (Admin View) -->
+            <div class="bg-slate-800 p-6 rounded-2xl border border-slate-700 space-y-4">
+                <div class="flex justify-between items-center">
+                    <h2 class="text-lg font-bold text-white flex items-center gap-2">
+                        <i data-lucide="message-square" class="w-5 h-5 text-emerald-400"></i> Enterprise Issue Discussion Chat Hub
+                    </h2>
+                    <button onclick="clearAllChatMessages()" class="bg-rose-600 hover:bg-rose-700 text-white text-xs font-semibold px-3 py-1.5 rounded-lg transition shadow">Clear Chat History</button>
+                </div>
+                <div id="adminChatFeedContainer" class="h-48 overflow-y-auto custom-scrollbar bg-slate-900 p-4 rounded-xl border border-slate-700 space-y-3 text-xs text-slate-200">
+                    <p class="text-slate-500 text-center">Loading team chat...</p>
+                </div>
+                <div class="flex gap-2">
+                    <input type="text" id="adminChatInput" onkeypress="handleAdminChatKey(event)" class="flex-1 p-3 bg-slate-900 border border-slate-700 rounded-lg text-xs text-white focus:outline-none" placeholder="Type admin message...">
+                    <button onclick="sendAdminChatMessage()" class="bg-indigo-600 hover:bg-indigo-700 text-white font-semibold px-5 py-3 rounded-lg text-xs shadow">Send</button>
                 </div>
             </div>
 
@@ -208,18 +267,18 @@
                 </div>
             </div>
 
-            <!-- Bulk CSV Upload -->
+            <!-- Bulk CSV Upload with Strict 11-Digit Validation -->
             <div class="bg-slate-800 p-6 rounded-2xl border border-slate-700 space-y-4">
                 <div class="flex justify-between items-center">
                     <h2 class="text-lg font-bold text-white flex items-center gap-2">
-                        <i data-lucide="upload-cloud" class="w-5 h-5 text-indigo-400"></i> Bulk CSV Lead Upload
+                        <i data-lucide="upload-cloud" class="w-5 h-5 text-indigo-400"></i> Bulk CSV Lead Upload (Strict 11-Digit Number Validation)
                     </h2>
                     <button onclick="clearAllCampaignData()" class="bg-rose-600 text-white text-xs font-semibold px-4 py-2 rounded-lg">Clear DB</button>
                 </div>
-                <textarea id="adminCsvInput" rows="3" class="w-full p-3 bg-slate-900 border border-slate-700 rounded-lg text-xs font-mono text-white focus:outline-none" placeholder="Paste CSV (Name, Phone, Business Name)..."></textarea>
+                <textarea id="adminCsvInput" rows="3" class="w-full p-3 bg-slate-900 border border-slate-700 rounded-lg text-xs font-mono text-white focus:outline-none" placeholder="Paste CSV format (Name (Optional), 11-Digit Phone [Mandatory], Business (Optional), Priority)..."></textarea>
                 <div class="flex justify-between items-center">
                     <button onclick="downloadCSVTemplate()" class="bg-indigo-600 text-white text-xs font-semibold px-4 py-2 rounded-lg">Download Template</button>
-                    <button onclick="distributeLeadsToAgents()" class="bg-emerald-600 text-white text-xs font-semibold px-5 py-2 rounded-lg shadow">Upload Leads</button>
+                    <button onclick="distributeLeadsToAgents()" class="bg-emerald-600 text-white text-xs font-semibold px-5 py-2 rounded-lg shadow">Validate & Distribute Leads</button>
                 </div>
             </div>
         </div>
@@ -230,8 +289,8 @@
         <header class="bg-indigo-900 text-white shadow-md sticky top-0 z-40">
             <div class="max-w-7xl mx-auto px-4 py-3 flex justify-between items-center">
                 <div class="flex items-center space-x-3">
-                    <i data-lucide="phone-call" class="w-8 h-8 text-emerald-400"></i>
-                    <h1 class="text-xl font-bold tracking-wide">PrimeX <span class="text-xs bg-emerald-500 text-white px-2 py-0.5 rounded-full">Cloud Suite</span></h1>
+                    <i data-lucide="headphones" class="w-8 h-8 text-emerald-400"></i>
+                    <h1 class="text-xl font-bold tracking-wide">PrimeX <span class="text-xs bg-emerald-500 text-white px-2 py-0.5 rounded-full">WebRTC Softphone</span></h1>
                 </div>
                 <div class="flex items-center space-x-4">
                     <div class="flex items-center gap-1 bg-indigo-800 px-2.5 py-1 rounded-lg border border-indigo-700">
@@ -243,7 +302,7 @@
                     </div>
                     <div class="text-right text-sm hidden sm:block">
                         <p class="font-semibold" id="currentAgentName">Agent</p>
-                        <p class="text-xs text-indigo-200">Queue: <span id="waitingQueueCount" class="text-amber-300 font-bold">0</span></p>
+                        <p class="text-xs text-indigo-200">Pending: <span id="waitingQueueCount" class="text-amber-300 font-bold">0</span> | Sales: <span id="agentSalesCount" class="text-emerald-300 font-bold">0</span></p>
                     </div>
                     <button onclick="handleLogout()" class="bg-indigo-800 hover:bg-indigo-700 p-2 rounded-lg text-xs transition" title="Logout">
                         <i data-lucide="log-out" class="w-4 h-4"></i>
@@ -252,60 +311,175 @@
             </div>
         </header>
 
+        <!-- Broadcast Notification Banner for Agents -->
+        <div id="broadcastBanner" class="hidden bg-amber-500 text-slate-950 font-bold px-4 py-2 text-center text-xs flex items-center justify-center gap-2">
+            <i data-lucide="megaphone" class="w-4 h-4"></i> Announcement from Admin: <span id="broadcastText">---</span>
+        </div>
+
         <div class="max-w-7xl mx-auto px-4 py-6 grid grid-cols-1 lg:grid-cols-12 gap-6">
             <div class="lg:col-span-5 space-y-6">
-                <div class="bg-white rounded-xl shadow-md border border-slate-200 p-6">
-                    <div class="flex justify-between items-center mb-4">
-                        <span class="bg-indigo-100 text-indigo-700 font-medium text-xs px-3 py-1 rounded-full">My Queue</span>
-                        <span id="progressCounter" class="text-sm font-semibold text-slate-500">0 / 0</span>
+                <!-- Predictive / Power Dialing Mode Switch -->
+                <div class="bg-indigo-50 border border-indigo-200 p-3 rounded-xl flex items-center justify-between">
+                    <div class="flex items-center gap-2">
+                        <i data-lucide="zap" class="w-5 h-5 text-indigo-600"></i>
+                        <span class="text-xs font-bold text-indigo-900">Predictive / Auto-Dialer Mode</span>
+                    </div>
+                    <label class="relative inline-flex items-center cursor-pointer">
+                        <input type="checkbox" id="powerModeToggle" class="sr-only peer">
+                        <div class="w-9 h-5 bg-slate-300 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-indigo-600"></div>
+                    </label>
+                </div>
+
+                <!-- Target Progress Bar -->
+                <div class="bg-white rounded-xl shadow-md border border-slate-200 p-4">
+                    <div class="flex justify-between text-xs font-semibold text-slate-600 mb-1">
+                        <span>Daily Sales Goal (Target: 5 Sales)</span>
+                        <span id="targetPercentText">0%</span>
+                    </div>
+                    <div class="w-full bg-slate-200 h-2.5 rounded-full overflow-hidden">
+                        <div id="targetProgressBar" class="bg-emerald-500 h-2.5 w-0 transition-all duration-500"></div>
+                    </div>
+                </div>
+
+                <!-- Wrap-up Timer Banner -->
+                <div id="wrapupTimerBox" class="hidden bg-indigo-50 border border-indigo-200 text-indigo-800 text-xs font-bold p-3 rounded-xl text-center flex items-center justify-center gap-2">
+                    <i data-lucide="clock" class="w-4 h-4 animate-spin"></i> Next lead loading automatically in <span id="wrapupCountdown" class="font-mono text-sm text-indigo-600">3</span>s...
+                </div>
+
+                <!-- WebRTC Softphone Dialing Card -->
+                <div class="bg-white rounded-xl shadow-md border border-slate-200 p-6 relative">
+                    <div class="flex justify-between items-center mb-3">
+                        <span id="leadPriorityBadge" class="bg-rose-100 text-rose-700 font-bold text-xs px-3 py-1 rounded-full">🔥 HOT LEAD</span>
+                        <span id="progressCounter" class="text-sm font-bold text-indigo-600">Lead 0 / 0</span>
                     </div>
 
-                    <div class="text-center py-5 border-y border-slate-100 my-2">
-                        <h2 class="text-xl font-bold text-slate-800 mb-1" id="activeName">No Leads</h2>
-                        <p class="text-lg font-mono text-indigo-600 font-semibold mb-2" id="activePhone">0300 0000000</p>
-                        <div class="text-xs text-slate-600 mb-2">Business: <span id="leadBusiness" class="font-bold text-slate-800">---</span></div>
+                    <!-- Lead Trail Notification (Previous Agent Audit) -->
+                    <div id="leadTrailBanner" class="hidden mb-3 bg-amber-50 border border-amber-200 text-amber-800 text-[11px] font-semibold p-2 rounded-lg flex items-center gap-1.5">
+                        <i data-lucide="history" class="w-4 h-4 text-amber-600 flex-shrink-0"></i>
+                        <span id="leadTrailText">Previous talk history...</span>
                     </div>
 
-                    <div class="grid grid-cols-2 gap-2 mb-4">
-                        <button onclick="sendQuickWhatsApp()" class="bg-emerald-500 hover:bg-emerald-600 text-white font-medium py-2 rounded-lg text-xs flex items-center justify-center gap-1">WhatsApp</button>
-                        <button onclick="sendQuickSMS()" class="bg-indigo-500 hover:bg-indigo-600 text-white font-medium py-2 rounded-lg text-xs flex items-center justify-center gap-1">SMS</button>
+                    <!-- WebRTC Call State & Stopwatch -->
+                    <div id="callTimerBox" class="hidden mb-3 bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs font-bold p-2 rounded-lg text-center flex items-center justify-center gap-2">
+                        <i data-lucide="mic" class="w-4 h-4 animate-pulse text-emerald-600"></i> WebRTC Call Live: <span id="stopwatchDisplay" class="font-mono text-sm">00:00</span>
                     </div>
 
+                    <div class="text-center py-4 border-y border-slate-100 my-2">
+                        <h2 class="text-xl font-bold text-slate-800 mb-1" id="activeName">No Leads Assigned</h2>
+                        <p class="text-2xl font-mono text-indigo-600 font-bold mb-2" id="activePhone">0300 0000000</p>
+                        <div class="text-xs text-slate-600 bg-slate-50 p-2 rounded">Business / Details: <span id="leadBusiness" class="font-bold text-slate-800">---</span></div>
+                    </div>
+
+                    <div class="grid grid-cols-3 gap-2 mb-3">
+                        <button onclick="sendQuickWhatsApp()" class="bg-emerald-500 hover:bg-emerald-600 text-white font-medium py-2 rounded-lg text-xs flex items-center justify-center gap-1">
+                            <i data-lucide="message-square" class="w-3 h-3"></i> WhatsApp
+                        </button>
+                        <button onclick="sendQuickSMS()" class="bg-indigo-500 hover:bg-indigo-600 text-white font-medium py-2 rounded-lg text-xs flex items-center justify-center gap-1">
+                            <i data-lucide="send" class="w-3 h-3"></i> SMS
+                        </button>
+                        <button onclick="copyEmailTemplate()" class="bg-slate-700 hover:bg-slate-800 text-white font-medium py-2 rounded-lg text-xs flex items-center justify-center gap-1">
+                            <i data-lucide="copy" class="w-3 h-3"></i> Copy
+                        </button>
+                    </div>
+
+                    <!-- WebRTC Softphone Call & Disconnect Controls -->
                     <div class="grid grid-cols-2 gap-3 mb-4">
-                        <a id="mainDialBtn" href="#" class="bg-emerald-600 hover:bg-emerald-700 text-white font-semibold py-3 px-4 rounded-lg flex items-center justify-center gap-2 shadow-md">Call via SIM</a>
-                        <button onclick="recordDisposition('No Answer')" class="bg-slate-200 hover:bg-slate-300 text-slate-700 font-semibold py-3 px-4 rounded-lg">Skip</button>
+                        <button id="webRTCStartBtn" onclick="startWebRTCCall()" class="bg-emerald-600 hover:bg-emerald-700 text-white font-semibold py-3 px-4 rounded-lg flex items-center justify-center gap-2 shadow-md">
+                            <i data-lucide="phone-call" class="w-4 h-4"></i> WebRTC Call
+                        </button>
+                        <button onclick="skipLead()" class="bg-slate-200 hover:bg-slate-300 text-slate-700 font-semibold py-3 px-4 rounded-lg flex items-center justify-center gap-2">
+                            <i data-lucide="skip-forward" class="w-4 h-4"></i> Skip Lead
+                        </button>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="block text-xs font-semibold text-slate-600 mb-1">Call Remarks / History Notes:</label>
+                        <input type="text" id="callNotesInput" class="w-full p-2 text-xs border border-slate-300 rounded-lg focus:outline-none" placeholder="Enter remarks...">
                     </div>
 
                     <div>
-                        <label class="block text-xs font-semibold text-slate-600 mb-2">Disposition:</label>
-                        <div class="grid grid-cols-2 gap-2">
-                            <button onclick="recordDisposition('Sale Made')" class="bg-emerald-600 text-white font-bold py-2 px-3 rounded-lg text-xs">Sale Made</button>
-                            <button onclick="recordDisposition('Call Back')" class="bg-amber-100 text-amber-700 font-medium py-2 px-3 rounded-lg text-xs">Call Back</button>
-                            <button onclick="recordDisposition('Not Interested')" class="bg-rose-100 text-rose-700 font-medium py-2 px-3 rounded-lg text-xs">Not Interested</button>
-                            <button onclick="recordDisposition('DNC')" class="bg-slate-900 text-white font-medium py-2 px-3 rounded-lg text-xs">DNC</button>
+                        <label class="block text-xs font-semibold text-slate-600 mb-2">Select Disposition (Auto-Jump & Filter):</label>
+                        <div class="grid grid-cols-2 gap-2 text-xs">
+                            <button onclick="recordDisposition('Sale Made')" class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-2 px-2 rounded-lg flex items-center justify-center gap-1">
+                                <i data-lucide="award" class="w-3.5 h-3.5"></i> Sale Made
+                            </button>
+                            <button onclick="recordDisposition('Call Back')" class="bg-amber-100 hover:bg-amber-200 text-amber-800 font-medium py-2 px-2 rounded-lg flex items-center justify-center gap-1">
+                                <i data-lucide="calendar" class="w-3.5 h-3.5"></i> Call Back
+                            </button>
+                            <button onclick="recordDisposition('No Answer')" class="bg-yellow-100 hover:bg-yellow-200 text-yellow-800 font-medium py-2 px-2 rounded-lg flex items-center justify-center gap-1">
+                                <i data-lucide="phone-off" class="w-3.5 h-3.5"></i> No Answer
+                            </button>
+                            <button onclick="recordDisposition('Hang-up')" class="bg-orange-100 hover:bg-orange-200 text-orange-800 font-medium py-2 px-2 rounded-lg flex items-center justify-center gap-1">
+                                <i data-lucide="phone-outgoing" class="w-3.5 h-3.5"></i> Hang-up
+                            </button>
+                            <button onclick="recordDisposition('Busy')" class="bg-purple-100 hover:bg-purple-200 text-purple-800 font-medium py-2 px-2 rounded-lg flex items-center justify-center gap-1">
+                                <i data-lucide="clock" class="w-3.5 h-3.5"></i> Busy
+                            </button>
+                            <button onclick="recordDisposition('Not Interested')" class="bg-rose-100 hover:bg-rose-200 text-rose-800 font-medium py-2 px-2 rounded-lg flex items-center justify-center gap-1">
+                                <i data-lucide="x-circle" class="w-3.5 h-3.5"></i> Not Interested
+                            </button>
+                            <button onclick="recordDisposition('DNC')" class="col-span-2 bg-slate-900 hover:bg-black text-white font-medium py-2 px-2 rounded-lg flex items-center justify-center gap-1">
+                                <i data-lucide="slash" class="w-3.5 h-3.5"></i> DNC (Do Not Call)
+                            </button>
                         </div>
+                    </div>
+                </div>
+
+                <!-- Session History -->
+                <div class="bg-white rounded-xl shadow-md border border-slate-200 p-4">
+                    <div class="flex justify-between items-center mb-2">
+                        <h3 class="font-bold text-slate-800 text-xs flex items-center gap-2">
+                            <i data-lucide="history" class="w-4 h-4 text-indigo-600"></i> Session Summary & History
+                        </h3>
+                        <span id="sessionOutcomeStats" class="text-[11px] font-semibold text-slate-500">Calls: 0 | Sales: 0</span>
+                    </div>
+                    <div id="sessionHistoryBox" class="h-28 overflow-y-auto custom-scrollbar bg-slate-50 p-2 rounded-lg border border-slate-200 text-xs space-y-1">
+                        <p class="text-slate-400 text-center">No calls dialed yet.</p>
                     </div>
                 </div>
             </div>
 
+            <!-- Right: Queue Table & Team Chat Component -->
             <div class="lg:col-span-7 space-y-6">
                 <div class="bg-white rounded-xl shadow-md border border-slate-200 p-6">
-                    <h3 class="font-bold text-slate-800 text-sm mb-4">Pending Queue</h3>
-                    <div class="overflow-x-auto max-h-[520px] overflow-y-auto custom-scrollbar border border-slate-100 rounded-lg">
+                    <div class="flex flex-col sm:flex-row justify-between items-center mb-4 gap-3">
+                        <h3 class="font-bold text-slate-800 text-sm flex items-center gap-2">
+                            <i data-lucide="list-ordered" class="w-4 h-4 text-indigo-600"></i> My Assigned Unique Queue
+                        </h3>
+                        <input type="text" id="queueSearchInput" onkeyup="filterQueueTable()" placeholder="Search by name or phone..." class="p-2 text-xs border border-slate-300 rounded-lg w-full sm:w-64 focus:outline-none">
+                    </div>
+                    <div class="overflow-x-auto max-h-[300px] overflow-y-auto custom-scrollbar border border-slate-100 rounded-lg">
                         <table class="w-full text-left text-xs">
                             <thead class="bg-slate-50 text-slate-600 font-semibold uppercase sticky top-0">
                                 <tr>
                                     <th class="p-3">#</th>
                                     <th class="p-3">Name</th>
                                     <th class="p-3">Phone</th>
-                                    <th class="p-3">Business</th>
+                                    <th class="p-3">Priority</th>
                                     <th class="p-3 text-right">Action</th>
                                 </tr>
                             </thead>
                             <tbody id="queueTableBody" class="divide-y divide-slate-100 text-slate-700">
-                                <tr><td colspan="5" class="p-6 text-center text-slate-400">No contacts.</td></tr>
+                                <tr><td colspan="5" class="p-6 text-center text-slate-400">No pending contacts.</td></tr>
                             </tbody>
                         </table>
+                    </div>
+                </div>
+
+                <!-- REAL-TIME TEAM CHAT SYSTEM (Agent View) -->
+                <div class="bg-white rounded-xl shadow-md border border-slate-200 p-4 flex flex-col h-[280px]">
+                    <div class="flex justify-between items-center border-b pb-2 mb-2">
+                        <h3 class="font-bold text-slate-800 text-xs flex items-center gap-1.5">
+                            <i data-lucide="message-square" class="w-4 h-4 text-indigo-600"></i> Team Issue Discussion Hub
+                        </h3>
+                        <span class="text-[10px] text-slate-400">Live Sync</span>
+                    </div>
+                    <div id="agentChatFeedContainer" class="flex-1 overflow-y-auto custom-scrollbar space-y-2 bg-slate-50 p-2 rounded-lg text-xs">
+                        <p class="text-slate-400 text-center py-4">Loading chat...</p>
+                    </div>
+                    <div class="pt-2 flex gap-2">
+                        <input type="text" id="agentChatInput" onkeypress="handleAgentChatKey(event)" class="flex-1 p-2 border border-slate-300 rounded-lg text-xs focus:outline-none" placeholder="Discuss issue with team...">
+                        <button onclick="sendAgentChatMessage()" class="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-lg text-xs font-semibold shadow">Send</button>
                     </div>
                 </div>
             </div>
@@ -317,18 +491,63 @@
         let agentLeadsQueue = [];
         let activeIndex = 0;
         let loggedInAgentUser = '';
+        let loggedInAgentFullName = 'Agent';
         let agentsList = [];
         let masterLeads = [];
+        let allDispositions = [];
+        let salesPipelineData = [];
         let agentStatesMap = {};
+        let sessionHistory = [];
+        let agentSalesCount = 0;
+        let totalCallsMade = 0;
+        let isCampaignPaused = false;
+        
+        let stopwatchInterval = null;
+        let stopwatchSeconds = 0;
+        let isWebRTCActive = false;
+
         const ADMIN_EMAIL = "webhub262@gmail.com";
+
+        function playAudioTone(freq, type, duration) {
+            try {
+                const AudioContext = window.AudioContext || window.webkitAudioContext;
+                if(!AudioContext) return;
+                const ctx = new AudioContext();
+                const osc = ctx.createOscillator();
+                const gain = ctx.createGain();
+                osc.type = type || 'sine';
+                osc.frequency.value = freq || 600;
+                gain.gain.setValueAtTime(0.15, ctx.currentTime);
+                osc.connect(gain);
+                gain.connect(ctx.destination);
+                osc.start();
+                setTimeout(() => { osc.stop(); }, duration || 200);
+            } catch(e) {}
+        }
+
+        function playLoginSound() {
+            playAudioTone(523.25, 'sine', 150);
+            setTimeout(() => playAudioTone(659.25, 'sine', 150), 160);
+            setTimeout(() => playAudioTone(783.99, 'sine', 250), 320);
+        }
+
+        function playHangupSound() {
+            playAudioTone(440, 'sawtooth', 200);
+            setTimeout(() => playAudioTone(330, 'sawtooth', 300), 220);
+        }
+
+        function playDialSound() { playAudioTone(880, 'sine', 100); }
+        function playSuccessSound() { playAudioTone(587.33, 'triangle', 150); setTimeout(() => playAudioTone(880, 'triangle', 300), 160); }
 
         window.addEventListener('DOMContentLoaded', () => {
             lucide.createIcons();
             const savedAgent = localStorage.getItem('primex_agent_user');
+            const savedAgentName = localStorage.getItem('primex_agent_name');
             if (savedAgent) {
                 loggedInAgentUser = savedAgent;
+                loggedInAgentFullName = savedAgentName || savedAgent;
                 document.getElementById('loginScreen').classList.add('hidden');
-                document.getElementById('currentAgentName').innerText = `Agent (${savedAgent})`;
+                document.getElementById('currentAgentName').innerText = loggedInAgentFullName;
                 document.getElementById('agentDashboard').classList.remove('hidden');
                 initFirebaseRealtimeSync();
                 loadAgentQueue(savedAgent);
@@ -360,13 +579,16 @@
                 }
                 if (foundAgent && foundAgent.pass === p) {
                     loggedInAgentUser = foundAgent.user;
+                    loggedInAgentFullName = foundAgent.fullName || foundAgent.user;
                     localStorage.setItem('primex_agent_user', loggedInAgentUser);
+                    localStorage.setItem('primex_agent_name', loggedInAgentFullName);
                     document.getElementById('loginScreen').classList.add('hidden');
-                    document.getElementById('currentAgentName').innerText = `Agent (${foundAgent.fullName || foundAgent.user})`;
+                    document.getElementById('currentAgentName').innerText = loggedInAgentFullName;
                     document.getElementById('agentDashboard').classList.remove('hidden');
                     initFirebaseRealtimeSync();
                     loadAgentQueue(loggedInAgentUser);
                     updateAgentState('Active');
+                    playLoginSound();
                     lucide.createIcons();
                 } else {
                     alert("Invalid Agent ID or Password.");
@@ -380,6 +602,7 @@
                 if(result.user.email === ADMIN_EMAIL) {
                     document.getElementById('loginScreen').classList.add('hidden');
                     showAdminDashboard();
+                    playLoginSound();
                 } else {
                     alert(`Access denied! Only ${ADMIN_EMAIL} is Admin.`);
                     window.FB_signOut(window.FB_Auth);
@@ -388,22 +611,49 @@
         }
 
         function handleLogout() {
-            if(loggedInAgentUser) updateAgentState('Offline');
+            if(loggedInAgentUser) updateAgentState('Logout');
+            playHangupSound();
             localStorage.removeItem('primex_agent_user');
+            localStorage.removeItem('primex_agent_name');
             if(window.FB_Auth) window.FB_signOut(window.FB_Auth);
             location.reload();
         }
 
         function initFirebaseRealtimeSync() {
             if(!window.FB_DB) return;
-            window.FB_onValue(window.FB_ref(window.FB_DB, 'agents'), s => { agentsList = s.val() ? Object.values(s.val()) : []; renderAdminLiveAgentStatus(); });
-            window.FB_onValue(window.FB_ref(window.FB_DB, 'agentStates'), s => { agentStatesMap = s.val() ? s.val() : {}; renderAdminLiveAgentStatus(); });
+            window.FB_onValue(window.FB_ref(window.FB_DB, 'agents'), s => { agentsList = s.val() ? Object.values(s.val()) : []; renderAdminAgentDirectory(); updateAdminStats(); });
+            window.FB_onValue(window.FB_ref(window.FB_DB, 'agentStates'), s => { agentStatesMap = s.val() ? s.val() : {}; renderAdminAgentDirectory(); updateAdminStats(); });
             window.FB_onValue(window.FB_ref(window.FB_DB, 'masterLeads'), s => { masterLeads = s.val() ? Object.values(s.val()) : []; updateAdminStats(); });
+            window.FB_onValue(window.FB_ref(window.FB_DB, 'salesPipeline'), s => {
+                salesPipelineData = s.val() ? Object.values(s.val()) : [];
+                renderAdminSalesApprovalTable();
+                renderAdminLeaderboard();
+            });
+            window.FB_onValue(window.FB_ref(window.FB_DB, 'dispositions'), s => {
+                allDispositions = s.val() ? Object.values(s.val()) : [];
+                loadActiveContact(); // To re-check lead trail audit
+            });
+            window.FB_onValue(window.FB_ref(window.FB_DB, 'campaignStatus'), s => {
+                isCampaignPaused = s.val() ? s.val().paused : false;
+                updateCampaignStatusUI();
+            });
+            window.FB_onValue(window.FB_ref(window.FB_DB, 'broadcastMessage'), s => {
+                let msg = s.val() ? s.val().message : '';
+                const banner = document.getElementById('broadcastBanner');
+                if(msg && banner) {
+                    document.getElementById('broadcastText').innerText = msg;
+                    banner.classList.remove('hidden');
+                }
+            });
+
+            window.FB_onValue(window.FB_ref(window.FB_DB, 'teamChatMessages'), s => {
+                renderChatFeeds(s.val());
+            });
         }
 
         function loadAgentQueue(agentId) {
             window.FB_onValue(window.FB_ref(window.FB_DB, `queues/${agentId}`), s => {
-                agentLeadsQueue = s.val() ? s.val() : masterLeads;
+                agentLeadsQueue = s.val() ? s.val() : [];
                 renderQueueTable();
                 loadActiveContact();
             });
@@ -411,7 +661,90 @@
 
         function updateAgentState(st) {
             if(!loggedInAgentUser) return;
-            window.FB_set(window.FB_ref(window.FB_DB, `agentStates/${loggedInAgentUser}`), { user: loggedInAgentUser, state: st, time: new Date().toLocaleTimeString() });
+            window.FB_set(window.FB_ref(window.FB_DB, `agentStates/${loggedInAgentUser}`), { user: loggedInAgentUser, name: loggedInAgentFullName, state: st, time: new Date().toLocaleTimeString() });
+        }
+
+        // WebRTC Softphone Call
+        function startWebRTCCall() {
+            if(isCampaignPaused) { alert("Campaign is currently paused by admin!"); return; }
+            playDialSound();
+            isWebRTCActive = true;
+            document.getElementById('callTimerBox').classList.remove('hidden');
+            document.getElementById('webRTCStartBtn').innerText = "🔴 End WebRTC Call";
+            document.getElementById('webRTCStartBtn').className = "bg-rose-600 hover:bg-rose-700 text-white font-semibold py-3 px-4 rounded-lg flex items-center justify-center gap-2 shadow-md";
+            document.getElementById('webRTCStartBtn').setAttribute("onclick", "endWebRTCCall()");
+
+            stopwatchSeconds = 0;
+            if(stopwatchInterval) clearInterval(stopwatchInterval);
+            stopwatchInterval = setInterval(() => {
+                stopwatchSeconds++;
+                let mins = Math.floor(stopwatchSeconds / 60).toString().padStart(2, '0');
+                let secs = (stopwatchSeconds % 60).toString().padStart(2, '0');
+                document.getElementById('stopwatchDisplay').innerText = `${mins}:${secs}`;
+            }, 1000);
+        }
+
+        function endWebRTCCall() {
+            playHangupSound();
+            isWebRTCActive = false;
+            if(stopwatchInterval) clearInterval(stopwatchInterval);
+            document.getElementById('callTimerBox').classList.add('hidden');
+            document.getElementById('webRTCStartBtn').innerText = "📞 WebRTC Call";
+            document.getElementById('webRTCStartBtn').className = "bg-emerald-600 hover:bg-emerald-700 text-white font-semibold py-3 px-4 rounded-lg flex items-center justify-center gap-2 shadow-md";
+            document.getElementById('webRTCStartBtn').setAttribute("onclick", "startWebRTCCall()");
+        }
+
+        // Chat Logic
+        function renderChatFeeds(data) {
+            const adminFeed = document.getElementById('adminChatFeedContainer');
+            const agentFeed = document.getElementById('agentChatFeedContainer');
+            if(!adminFeed && !agentFeed) return;
+
+            if(!data) {
+                if(adminFeed) adminFeed.innerHTML = `<p class="text-slate-500 text-center">No chat messages yet.</p>`;
+                if(agentFeed) agentFeed.innerHTML = `<p class="text-slate-400 text-center py-4">No chat messages yet.</p>`;
+                return;
+            }
+
+            let html = Object.values(data).map(m => `
+                <div class="flex flex-col">
+                    <span class="text-[10px] text-indigo-400 font-semibold">${m.sender} (${m.role}) • ${m.time}</span>
+                    <span class="bg-slate-800 text-slate-100 p-2 rounded-lg mt-0.5">${m.text}</span>
+                </div>
+            `).join('');
+
+            if(adminFeed) { adminFeed.innerHTML = html; adminFeed.scrollTop = adminFeed.scrollHeight; }
+            if(agentFeed) { agentFeed.innerHTML = html; agentFeed.scrollTop = agentFeed.scrollHeight; }
+        }
+
+        function sendAdminChatMessage() {
+            const input = document.getElementById('adminChatInput');
+            let txt = input.value.trim();
+            if(!txt) return;
+            let mId = Date.now();
+            window.FB_set(window.FB_ref(window.FB_DB, `teamChatMessages/${mId}`), { id: mId, sender: 'Admin', role: 'Admin', text: txt, time: new Date().toLocaleTimeString() });
+            input.value = '';
+        }
+
+        function sendAgentChatMessage() {
+            const input = document.getElementById('agentChatInput');
+            let txt = input.value.trim();
+            if(!txt) return;
+            let mId = Date.now();
+            window.FB_set(window.FB_ref(window.FB_DB, `teamChatMessages/${mId}`), { id: mId, sender: loggedInAgentFullName, role: 'Agent', text: txt, time: new Date().toLocaleTimeString() });
+            input.value = '';
+        }
+
+        function handleAdminChatKey(e) { if(e.key === 'Enter') sendAdminChatMessage(); }
+        function handleAgentChatKey(e) { if(e.key === 'Enter') sendAgentChatMessage(); }
+        function clearAllChatMessages() { if(confirm("Clear chat history?")) window.FB_remove(window.FB_ref(window.FB_DB, 'teamChatMessages')); }
+
+        function sendAdminBroadcast() {
+            let msg = document.getElementById('adminBroadcastInput').value.trim();
+            if(!msg) { alert('Enter broadcast message.'); return; }
+            window.FB_set(window.FB_ref(window.FB_DB, 'broadcastMessage'), { message: msg, time: new Date().toLocaleTimeString() });
+            alert('Broadcast sent successfully!');
+            document.getElementById('adminBroadcastInput').value = '';
         }
 
         function createNewAgent() {
@@ -420,44 +753,356 @@
             let fullName = document.getElementById('newAgentFullName').value.trim();
             if(!u || !p || !fullName) { alert("Fill all fields."); return; }
             window.FB_set(window.FB_ref(window.FB_DB, `agents/${u}`), { fullName, user: u, pass: p });
+            playSuccessSound();
             alert('Agent created successfully!');
             document.getElementById('newAgentUser').value = '';
             document.getElementById('newAgentPass').value = '';
             document.getElementById('newAgentFullName').value = '';
         }
 
-        function renderAdminLiveAgentStatus() {
-            const tbody = document.getElementById('adminLiveAgentTableBody');
+        // Render Agent Directory & Live Status Counts for Admin
+        function renderAdminAgentDirectory() {
+            const tbody = document.getElementById('adminAgentDirectoryTableBody');
             if(!tbody) return;
-            if(agentsList.length === 0) { tbody.innerHTML = `<tr><td colspan="5" class="p-4 text-center text-slate-500">No agents yet.</td></tr>`; return; }
+            if(agentsList.length === 0) { tbody.innerHTML = `<tr><td colspan="6" class="p-4 text-center text-slate-500">No agents registered.</td></tr>`; return; }
+
+            let activeCount = 0, pauseCount = 0, logoutCount = 0;
+
             tbody.innerHTML = agentsList.map((ag, idx) => {
-                let st = agentStatesMap[ag.user]?.state || 'Offline';
-                return `<tr class="hover:bg-slate-900 transition"><td class="p-3">${idx+1}</td><td class="p-3 font-semibold text-white">${ag.fullName} (${ag.user})</td><td class="p-3 font-bold text-emerald-400">🟢 ${st}</td><td class="p-3 text-slate-400">${agentStatesMap[ag.user]?.time || 'N/A'}</td><td class="p-3 text-right">Online</td></tr>`;
+                let stateObj = agentStatesMap[ag.user];
+                let st = stateObj ? stateObj.state : 'Logout';
+                let timeStr = stateObj ? stateObj.time : 'N/A';
+
+                if(st === 'Active') activeCount++;
+                else if(st === 'Pause') pauseCount++;
+                else logoutCount++;
+
+                let badgeColor = "bg-slate-700 text-slate-300";
+                if(st === 'Active') badgeColor = "bg-emerald-500/20 text-emerald-400 border border-emerald-500/30";
+                else if(st === 'Pause') badgeColor = "bg-amber-500/20 text-amber-400 border border-amber-500/30";
+                else badgeColor = "bg-rose-500/20 text-rose-400 border border-rose-500/30";
+
+                return `
+                    <tr class="hover:bg-slate-900 transition">
+                        <td class="p-3">${idx+1}</td>
+                        <td class="p-3 font-semibold text-white">${ag.fullName}</td>
+                        <td class="p-3 font-mono text-indigo-300">${ag.user}</td>
+                        <td class="p-3 font-mono text-amber-300">${ag.pass}</td>
+                        <td class="p-3"><span class="px-2.5 py-1 rounded-full text-xs font-bold ${badgeColor}">● ${st}</span></td>
+                        <td class="p-3 text-right text-slate-400">${timeStr}</td>
+                    </tr>
+                `;
             }).join('');
+
+            document.getElementById('metricTotalAgents').innerText = agentsList.length;
+            document.getElementById('metricActiveAgents').innerText = activeCount;
+            document.getElementById('metricPauseAgents').innerText = pauseCount;
+            document.getElementById('metricLogoutAgents').innerText = logoutCount;
+        }
+
+        function renderAdminLeaderboard() {
+            const tbody = document.getElementById('adminLeaderboardTableBody');
+            if(!tbody) return;
+            let counts = {};
+            salesPipelineData.forEach(s => {
+                if(s.status === 'Approved') {
+                    counts[s.agentName] = (counts[s.agentName] || 0) + 1;
+                }
+            });
+            let sorted = Object.entries(counts).sort((a,b) => b[1] - a[1]);
+            if(sorted.length === 0) { tbody.innerHTML = `<tr><td colspan="4" class="p-4 text-center text-slate-500">No approved sales recorded yet.</td></tr>`; return; }
+            tbody.innerHTML = sorted.map(([name, sales], idx) => `
+                <tr class="hover:bg-slate-900 transition">
+                    <td class="p-3 font-bold text-amber-400">#${idx+1}</td>
+                    <td class="p-3 font-semibold text-white">${name}</td>
+                    <td class="p-3 font-bold text-emerald-400">${sales} Approved Sales</td>
+                    <td class="p-3 text-right font-mono text-indigo-300">${((sales/5)*100).toFixed(0)}% Score</td>
+                </tr>
+            `).join('');
+        }
+
+        function renderAdminSalesApprovalTable() {
+            const tbody = document.getElementById('adminSalesApprovalTableBody');
+            if(!tbody) return;
+            let pendingSales = salesPipelineData.filter(s => s.status === 'Pending Verification' || s.status === 'Pending');
+            if(pendingSales.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="7" class="p-4 text-center text-slate-500">No pending sales to approve.</td></tr>`;
+                return;
+            }
+            tbody.innerHTML = pendingSales.map(s => `
+                <tr class="hover:bg-slate-900 transition">
+                    <td class="p-3 font-semibold text-indigo-300">${s.agentName}</td>
+                    <td class="p-3 text-white">${s.client}</td>
+                    <td class="p-3 font-mono">${s.phone}</td>
+                    <td class="p-3 text-slate-300">${s.services} (Due: ${s.deadline})</td>
+                    <td class="p-3 font-bold text-emerald-400">${s.amount}</td>
+                    <td class="p-3 font-bold text-amber-400">⏳ Pending Verification</td>
+                    <td class="p-3 text-right space-x-2">
+                        <button onclick="updateSaleStatus('${s.id}', 'Approved')" class="bg-emerald-600 hover:bg-emerald-700 text-white px-2.5 py-1 rounded text-xs font-semibold">Approve</button>
+                        <button onclick="updateSaleStatus('${s.id}', 'Rejected')" class="bg-rose-600 hover:bg-rose-700 text-white px-2.5 py-1 rounded text-xs font-semibold">Reject</button>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        function updateSaleStatus(saleId, status) {
+            let item = salesPipelineData.find(s => s.id == saleId);
+            if(item) {
+                item.status = status;
+                window.FB_set(window.FB_ref(window.FB_DB, `salesPipeline/${saleId}`), item);
+                playSuccessSound();
+                alert(`Sale successfully marked as ${status}!`);
+            }
+        }
+
+        function toggleCampaignStatus() {
+            isCampaignPaused = !isCampaignPaused;
+            window.FB_set(window.FB_ref(window.FB_DB, 'campaignStatus'), { paused: isCampaignPaused });
+        }
+
+        function recyclePendingLeads() {
+            if(agentsList.length === 0) { alert('No agents available for recycling.'); return; }
+            let pendingLeads = masterLeads.filter(l => l.status === 'Pending' || l.status === 'Skipped');
+            if(pendingLeads.length === 0) { alert('No pending leads to recycle.'); return; }
+
+            let agentQueues = {};
+            agentsList.forEach(ag => { agentQueues[ag.user] = []; });
+            pendingLeads.forEach((lead, idx) => {
+                let targetAgent = agentsList[idx % agentsList.length].user;
+                agentQueues[targetAgent].push(lead);
+            });
+
+            Object.keys(agentQueues).forEach(agentUser => {
+                window.FB_set(window.FB_ref(window.FB_DB, `queues/${agentUser}`), agentQueues[agentUser]);
+            });
+
+            playSuccessSound();
+            alert('♻️ Pending and skipped leads successfully recycled among agents!');
+        }
+
+        function updateCampaignStatusUI() {
+            const btn = document.getElementById('campaignToggleBtn');
+            const txt = document.getElementById('campaignStateText');
+            if(btn && txt) {
+                if(isCampaignPaused) {
+                    btn.innerText = "Resume Campaign";
+                    btn.className = "bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-semibold px-4 py-2.5 rounded-lg transition shadow";
+                    txt.innerText = "⏸️ Paused by Admin";
+                    txt.className = "text-sm font-bold text-amber-400 mt-2";
+                } else {
+                    btn.innerText = "Pause Campaign";
+                    btn.className = "bg-amber-600 hover:bg-amber-700 text-white text-xs font-semibold px-4 py-2.5 rounded-lg transition shadow";
+                    txt.innerText = "🟢 Running";
+                    txt.className = "text-sm font-bold text-emerald-400 mt-2";
+                }
+            }
         }
 
         function distributeLeadsToAgents() {
             const raw = document.getElementById('adminCsvInput').value.trim();
-            if(!raw) { alert('Enter CSV.'); return; }
-            let loaded = raw.split('\n').map((l, i) => {
+            if(!raw) { alert('Enter CSV data.'); return; }
+            if(agentsList.length === 0) { alert('Please create agents first before uploading leads!'); return; }
+
+            let lines = raw.split('\n');
+            let parsedLeads = [];
+            let invalidCount = 0;
+
+            lines.forEach((l, i) => {
                 let p = l.split(',');
-                return { id: i+1, name: p[0]?.trim()||'Client', phone: p[1]?.trim()||'', businessName: p[2]?.trim()||'Ind', status: 'Pending' };
+                let name = p[0]?.trim() || 'Valued Customer';
+                let phone = p[1]?.trim() || p[0]?.trim() || '';
+                let businessName = p[2]?.trim() || 'Independent';
+                let priority = p[3]?.trim() || 'Hot';
+
+                let cleanPhone = phone.replace(/\D/g, '');
+                if(cleanPhone.length === 11) {
+                    parsedLeads.push({
+                        id: parsedLeads.length + 1,
+                        name: p.length > 1 ? name : 'Valued Customer',
+                        phone: cleanPhone,
+                        businessName: p.length > 2 ? businessName : 'Independent',
+                        priority: priority,
+                        status: 'Pending'
+                    });
+                } else {
+                    invalidCount++;
+                }
             });
-            window.FB_set(window.FB_ref(window.FB_DB, 'masterLeads'), loaded);
-            alert('Leads uploaded!');
+
+            if(parsedLeads.length === 0) {
+                alert('Error: No valid 11-digit phone numbers found in CSV!');
+                return;
+            }
+
+            window.FB_set(window.FB_ref(window.FB_DB, 'masterLeads'), parsedLeads);
+
+            let agentQueues = {};
+            agentsList.forEach(ag => { agentQueues[ag.user] = []; });
+
+            parsedLeads.forEach((lead, idx) => {
+                let targetAgent = agentsList[idx % agentsList.length].user;
+                agentQueues[targetAgent].push(lead);
+            });
+
+            Object.keys(agentQueues).forEach(agentUser => {
+                window.FB_set(window.FB_ref(window.FB_DB, `queues/${agentUser}`), agentQueues[agentUser]);
+            });
+
+            playSuccessSound();
+            alert(`Success! Uploaded ${parsedLeads.length} valid 11-digit leads (${invalidCount} invalid skipped).`);
         }
 
         function clearAllCampaignData() {
-            if(confirm("Clear leads?")) { window.FB_remove(window.FB_ref(window.FB_DB, 'masterLeads')); alert('Cleared!'); }
+            if(confirm("Clear all campaign leads, queues, and dispositions?")) {
+                window.FB_remove(window.FB_ref(window.FB_DB, 'masterLeads'));
+                agentsList.forEach(ag => { window.FB_remove(window.FB_ref(window.FB_DB, `queues/${ag.user}`)); });
+                window.FB_remove(window.FB_ref(window.FB_DB, 'dispositions'));
+                window.FB_remove(window.FB_ref(window.FB_DB, 'salesPipeline'));
+                alert('Database cleared!');
+            }
         }
 
         function recordDisposition(status) {
             let pending = agentLeadsQueue.filter(i => i.status === 'Pending');
             if(pending.length === 0 || activeIndex >= pending.length) return;
             let current = pending[activeIndex];
+            let note = document.getElementById('callNotesInput').value.trim();
+
+            if(isWebRTCActive) endWebRTCCall();
+
+            if(status === 'Sale Made') {
+                playSuccessSound();
+                document.getElementById('salePhone').value = current.phone;
+                document.getElementById('saleCustName').value = current.name || '';
+                document.getElementById('saleBusinessName').value = current.businessName || '';
+                document.getElementById('saleModal').classList.remove('hidden');
+                return;
+            }
+
             current.status = status;
+            current.remarks = note;
+            totalCallsMade++;
+
+            let dispId = Date.now();
+            window.FB_set(window.FB_ref(window.FB_DB, `dispositions/${dispId}`), {
+                id: dispId,
+                agent: loggedInAgentFullName,
+                client: current.name,
+                phone: current.phone,
+                status: status,
+                remarks: note,
+                time: new Date().toLocaleString()
+            });
+
+            sessionHistory.unshift(`📞 ${current.name} (${current.phone}) - <span class="font-bold text-indigo-600">${status}</span>`);
+            renderSessionHistory();
+            updateSessionOutcomeStats();
+
             window.FB_set(window.FB_ref(window.FB_DB, `queues/${loggedInAgentUser}`), agentLeadsQueue);
-            loadActiveContact();
+            document.getElementById('callNotesInput').value = '';
+
+            let isPowerActive = document.getElementById('powerModeToggle').checked;
+            if(isPowerActive) {
+                loadActiveContact();
+            } else {
+                triggerWrapupCountdown(() => {
+                    loadActiveContact();
+                });
+            }
+        }
+
+        function submitSaleForm() {
+            let pending = agentLeadsQueue.filter(i => i.status === 'Pending');
+            if(pending.length === 0 || activeIndex >= pending.length) return;
+            let current = pending[activeIndex];
+            let custName = document.getElementById('saleCustName').value.trim() || current.name;
+            let busName = document.getElementById('saleBusinessName').value.trim() || current.businessName;
+            let services = document.getElementById('saleServices').value.trim();
+            let deadline = document.getElementById('saleDeadline').value.trim();
+            let amount = document.getElementById('saleAmount').value.trim();
+
+            if(!services || !deadline || !amount) { alert('Please fill all required sale details.'); return; }
+            document.getElementById('saleModal').classList.add('hidden');
+
+            current.status = 'Sale Made';
+            totalCallsMade++;
+            agentSalesCount++;
+            updateTargetProgress();
+
+            let dispId = Date.now();
+            window.FB_set(window.FB_ref(window.FB_DB, `dispositions/${dispId}`), {
+                id: dispId, agent: loggedInAgentFullName, client: custName, phone: current.phone, status: 'Sale Made', remarks: `Sold: ${services} (${amount})`, time: new Date().toLocaleString()
+            });
+
+            sessionHistory.unshift(`🎉 ${custName} (${current.phone}) - <span class="font-bold text-emerald-600">Sale Submitted (Pending Approval)</span>`);
+            renderSessionHistory();
+            updateSessionOutcomeStats();
+
+            window.FB_set(window.FB_ref(window.FB_DB, `queues/${loggedInAgentUser}`), agentLeadsQueue);
+            
+            let sId = Date.now();
+            window.FB_set(window.FB_ref(window.FB_DB, `salesPipeline/${sId}`), {
+                id: sId, agentName: loggedInAgentFullName, client: custName, phone: current.phone, business: busName, services, deadline, amount, status: 'Pending Verification'
+            });
+
+            let isPowerActive = document.getElementById('powerModeToggle').checked;
+            if(isPowerActive) {
+                loadActiveContact();
+            } else {
+                triggerWrapupCountdown(() => {
+                    loadActiveContact();
+                });
+            }
+        }
+
+        function closeSaleModal() { document.getElementById('saleModal').classList.add('hidden'); }
+
+        function skipLead() {
+            if(isWebRTCActive) endWebRTCCall();
+            let pending = agentLeadsQueue.filter(i => i.status === 'Pending');
+            if(pending.length === 0 || activeIndex >= pending.length) return;
+            let current = pending[activeIndex];
+            current.status = 'Skipped';
+            window.FB_set(window.FB_ref(window.FB_DB, `queues/${loggedInAgentUser}`), agentLeadsQueue);
+            triggerWrapupCountdown(() => {
+                loadActiveContact();
+            });
+        }
+
+        function triggerWrapupCountdown(callback) {
+            playHangupSound();
+            const wrapBox = document.getElementById('wrapupTimerBox');
+            const countdownEl = document.getElementById('wrapupCountdown');
+            wrapBox.classList.remove('hidden');
+            let timeLeft = 3;
+            countdownEl.innerText = timeLeft;
+
+            let timer = setInterval(() => {
+                timeLeft--;
+                countdownEl.innerText = timeLeft;
+                if(timeLeft <= 0) {
+                    clearInterval(timer);
+                    wrapBox.classList.add('hidden');
+                    if(callback) callback();
+                }
+            }, 1000);
+        }
+
+        function updateTargetProgress() {
+            document.getElementById('agentSalesCount').innerText = agentSalesCount;
+            let percent = Math.min((agentSalesCount / 5) * 100, 100);
+            document.getElementById('targetProgressBar').style.width = `${percent}%`;
+            document.getElementById('targetPercentText').innerText = `${percent}%`;
+        }
+
+        function updateSessionOutcomeStats() {
+            document.getElementById('sessionOutcomeStats').innerText = `Calls: ${totalCallsMade} | Sales: ${agentSalesCount}`;
+        }
+
+        function renderSessionHistory() {
+            const box = document.getElementById('sessionHistoryBox');
+            if(!box || sessionHistory.length === 0) return;
+            box.innerHTML = sessionHistory.map(h => `<div>${h}</div>`).join('');
         }
 
         function sendQuickWhatsApp() {
@@ -470,27 +1115,77 @@
             if(pending.length > 0 && activeIndex < pending.length) window.open(`sms:${pending[activeIndex].phone}`, '_blank');
         }
 
+        function copyEmailTemplate() {
+            let pending = agentLeadsQueue.filter(i => i.status === 'Pending');
+            if(pending.length === 0 || activeIndex >= pending.length) return;
+            let c = pending[activeIndex];
+            let template = `Hello ${c.name},\n\nIt was great speaking with you regarding your enterprise software setup with PrimeX Solutions. Please let us know when we can proceed further.\n\nBest Regards,\n${loggedInAgentFullName}`;
+            navigator.clipboard.writeText(template);
+            alert("📋 Professional follow-up template copied to clipboard!");
+        }
+
+        // Load Active Contact & Check Previous Lead Trail (Audit Trail)
         function loadActiveContact() {
             let pending = agentLeadsQueue.filter(i => i.status === 'Pending');
             document.getElementById('waitingQueueCount').innerText = pending.length;
+            
+            const trailBanner = document.getElementById('leadTrailBanner');
+            const trailText = document.getElementById('leadTrailText');
+
             if(pending.length === 0 || activeIndex >= pending.length) {
                 document.getElementById('activeName').innerText = "Queue Completed!";
                 document.getElementById('activePhone').innerText = "---";
+                document.getElementById('leadBusiness').innerText = "---";
+                document.getElementById('progressCounter').innerText = "Completed";
+                document.getElementById('leadPriorityBadge').innerText = "DONE";
+                if(trailBanner) trailBanner.classList.add('hidden');
                 return;
             }
+
             let active = pending[activeIndex];
-            document.getElementById('activeName').innerText = active.name;
+            document.getElementById('activeName').innerText = active.name || 'Valued Customer';
             document.getElementById('activePhone').innerText = active.phone;
-            document.getElementById('leadBusiness').innerText = active.businessName || 'Ind';
-            document.getElementById('mainDialBtn').href = `tel:${active.phone}`;
-            document.getElementById('progressCounter').innerText = `${activeIndex+1} / ${pending.length}`;
+            document.getElementById('leadBusiness').innerText = active.businessName || 'Independent';
+            document.getElementById('progressCounter').innerText = `Lead ${activeIndex+1} / ${pending.length}`;
+            
+            // Check previous dispositions for this phone number (Audit Trail)
+            let prevRecord = allDispositions.find(d => d.phone === active.phone);
+            if(prevRecord && trailBanner && trailText) {
+                trailText.innerText = `Previously contacted by ${prevRecord.agent} on ${prevRecord.time} | Disposition: ${prevRecord.status} (${prevRecord.remarks || 'No remarks'})`;
+                trailBanner.classList.remove('hidden');
+            } else if(trailBanner) {
+                trailBanner.classList.add('hidden');
+            }
+
+            let p = active.priority || 'Hot';
+            let badge = document.getElementById('leadPriorityBadge');
+            if(p === 'Hot') { badge.className = "bg-rose-100 text-rose-700 font-bold text-xs px-3 py-1 rounded-full"; badge.innerText = "🔥 HOT LEAD"; }
+            else if(p === 'Warm') { badge.className = "bg-amber-100 text-amber-700 font-bold text-xs px-3 py-1 rounded-full"; badge.innerText = "⚡ WARM LEAD"; }
+            else { badge.className = "bg-sky-100 text-sky-700 font-bold text-xs px-3 py-1 rounded-full"; badge.innerText = "❄️ COLD LEAD"; }
         }
 
         function renderQueueTable() {
             const tbody = document.getElementById('queueTableBody');
             let pending = agentLeadsQueue.filter(i => i.status === 'Pending');
             if(pending.length === 0) { tbody.innerHTML = `<tr><td colspan="5" class="p-6 text-center text-slate-400">No contacts.</td></tr>`; return; }
-            tbody.innerHTML = pending.map((item, idx) => `<tr class="hover:bg-slate-50 transition"><td class="p-3">${idx+1}</td><td class="p-3 font-semibold">${item.name}</td><td class="p-3 font-mono">${item.phone}</td><td class="p-3 text-amber-600">${item.businessName || 'N/A'}</td><td class="p-3 text-right"><button onclick="activeIndex=${idx}; loadActiveContact();" class="text-indigo-600 underline">Jump</button></td></tr>`).join('');
+            tbody.innerHTML = pending.map((item, idx) => `
+                <tr class="hover:bg-slate-50 transition">
+                    <td class="p-3">${idx+1}</td>
+                    <td class="p-3 font-semibold">${item.name || 'Customer'}</td>
+                    <td class="p-3 font-mono">${item.phone}</td>
+                    <td class="p-3 font-bold text-indigo-600">${item.priority || 'Hot'}</td>
+                    <td class="p-3 text-right"><button onclick="activeIndex=${idx}; loadActiveContact();" class="text-indigo-600 underline">Jump</button></td>
+                </tr>
+            `).join('');
+        }
+
+        function filterQueueTable() {
+            let q = document.getElementById('queueSearchInput').value.toLowerCase();
+            let rows = document.querySelectorAll('#queueTableBody tr');
+            rows.forEach(r => {
+                let txt = r.innerText.toLowerCase();
+                r.style.display = txt.includes(q) ? '' : 'none';
+            });
         }
 
         function showAdminDashboard() {
@@ -498,7 +1193,9 @@
             document.getElementById('agentDashboard').classList.add('hidden');
             document.getElementById('adminDashboard').classList.remove('hidden');
             updateAdminStats();
-            renderAdminLiveAgentStatus();
+            renderAdminAgentDirectory();
+            renderAdminSalesApprovalTable();
+            renderAdminLeaderboard();
             lucide.createIcons();
         }
 
@@ -510,13 +1207,14 @@
 
         function updateAdminStats() {
             document.getElementById('adminAgentCount').innerText = agentsList.length;
-            document.getElementById('adminTotalLeads').innerText = masterLeads.length;
+            let approvedCount = salesPipelineData.filter(s => s.status === 'Approved').length;
+            document.getElementById('adminApprovedSales').innerText = approvedCount;
         }
 
         function downloadCSVTemplate() {
-            const csv = "data:text/csv;charset=utf-8,Name,Phone,Business\nAli Khan,03001234567,Prime";
+            const csv = "data:text/csv;charset=utf-8,Name,Phone,Business,Priority\nMuhammad Ali,03001234567,Prime Solutions,Hot";
             const link = document.createElement("a");
-            link.href = encodeURI(csv); link.download = "template.csv"; link.click();
+            link.href = encodeURI(csv); link.download = "template_11digits.csv"; link.click();
         }
     </script>
 </body>
