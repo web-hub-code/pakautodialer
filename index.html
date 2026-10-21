@@ -87,6 +87,32 @@
         </div>
     </div>
 
+    <!-- CALLBACK SCHEDULE MODAL -->
+    <div id="callbackModal" class="hidden fixed inset-0 bg-slate-900/80 z-50 flex items-center justify-center p-4 backdrop-blur-sm">
+        <div class="bg-white rounded-2xl shadow-2xl max-w-md w-full p-6 border border-slate-200 space-y-4">
+            <div class="flex justify-between items-center border-b pb-3">
+                <h3 class="font-bold text-lg text-slate-800 flex items-center gap-2">
+                    <i data-lucide="calendar" class="w-5 h-5 text-amber-600"></i> Schedule Call Back Reminder
+                </h3>
+                <button onclick="closeCallbackModal()" class="text-slate-400 hover:text-slate-600">✕</button>
+            </div>
+            <div class="space-y-3">
+                <div>
+                    <label class="block text-xs font-semibold text-slate-600 mb-1">Select Date & Time</label>
+                    <input type="datetime-local" id="callbackDateTime" class="w-full p-2.5 border border-slate-300 rounded-lg text-xs">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-slate-600 mb-1">Reminder Notes</label>
+                    <textarea id="callbackNotes" rows="2" class="w-full p-2.5 border border-slate-300 rounded-lg text-xs" placeholder="e.g. Call back regarding pricing discussion..."></textarea>
+                </div>
+            </div>
+            <div class="flex justify-end gap-2 pt-3 border-t">
+                <button onclick="closeCallbackModal()" class="px-4 py-2 bg-slate-200 text-slate-700 rounded-lg text-xs font-semibold">Cancel</button>
+                <button onclick="saveCallbackSchedule()" class="px-5 py-2 bg-amber-600 hover:bg-amber-700 text-white rounded-lg text-xs font-semibold shadow">Save Schedule</button>
+            </div>
+        </div>
+    </div>
+
     <!-- SALE MODAL -->
     <div id="saleModal" class="hidden fixed inset-0 bg-slate-900/80 z-50 flex items-center justify-center p-4 backdrop-blur-sm">
         <div class="bg-white rounded-2xl shadow-2xl max-w-lg w-full p-6 border border-slate-200 space-y-4">
@@ -112,12 +138,12 @@
                     </div>
                 </div>
                 <div>
-                    <label class="block text-xs font-semibold text-slate-600 mb-1">Services Needed (Kya chahiye CX ko)</label>
-                    <textarea id="saleServices" rows="2" class="w-full p-2.5 border border-slate-300 rounded-lg text-xs" placeholder="e.g. Web development..."></textarea>
+                    <label class="block text-xs font-semibold text-slate-600 mb-1">Services Needed (Requirements)</label>
+                    <textarea id="saleServices" rows="2" class="w-full p-2.5 border border-slate-300 rounded-lg text-xs" placeholder="e.g. Custom Web Development..."></textarea>
                 </div>
                 <div class="grid grid-cols-2 gap-3">
                     <div>
-                        <label class="block text-xs font-semibold text-slate-600 mb-1">Deadline (Kab chahiye)</label>
+                        <label class="block text-xs font-semibold text-slate-600 mb-1">Deadline</label>
                         <input type="text" id="saleDeadline" class="w-full p-2.5 border border-slate-300 rounded-lg text-xs" placeholder="e.g. Within 3 Days">
                     </div>
                     <div>
@@ -136,7 +162,7 @@
     <!-- ADMIN DASHBOARD -->
     <div id="adminDashboard" class="hidden min-h-screen bg-slate-900 text-slate-100 p-4 md:p-8">
         <div class="max-w-7xl mx-auto space-y-6">
-            <div class="bg-slate-800 p-6 rounded-2xl border border-slate-700 flex justify-between items-center shadow-xl">
+            <div class="bg-slate-800 p-6 rounded-2xl border border-slate-700 flex flex-col md:flex-row justify-between items-center shadow-xl gap-4">
                 <div class="flex items-center gap-3">
                     <div class="w-12 h-12 bg-rose-600 text-white rounded-xl flex items-center justify-center">
                         <i data-lucide="shield-alert" class="w-7 h-7"></i>
@@ -144,14 +170,12 @@
                     <div>
                         <h1 class="text-2xl font-bold text-white">PrimeX Admin Command Center</h1>
                         <p class="text-xs text-slate-400">Agent Credentials, Live Status & Lead Trail Audit</p>
+                        <p id="campaignStateText" class="text-xs font-bold text-emerald-400 mt-1">🟢 Running</p>
                     </div>
                 </div>
-                <div class="flex items-center gap-3">
+                <div class="flex flex-wrap items-center gap-3">
                     <button onclick="toggleCampaignStatus()" id="campaignToggleBtn" class="bg-amber-600 hover:bg-amber-700 text-white text-xs font-semibold px-4 py-2.5 rounded-lg transition shadow">Pause Campaign</button>
                     <button onclick="recyclePendingLeads()" class="bg-purple-600 hover:bg-purple-700 text-white text-xs font-semibold px-4 py-2.5 rounded-lg transition shadow">♻️ Recycle Leads</button>
-                    <button onclick="downloadAdminReportCSV()" class="bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-semibold px-4 py-2.5 rounded-lg transition shadow flex items-center gap-1">
-                        <i data-lucide="download" class="w-4 h-4"></i> Export Report
-                    </button>
                     <button onclick="switchViewToAgent()" class="bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-semibold px-4 py-2.5 rounded-lg transition shadow">Agent View</button>
                     <button onclick="handleLogout()" class="bg-rose-600 hover:bg-rose-700 text-white text-xs font-semibold px-4 py-2.5 rounded-lg transition shadow">Logout</button>
                 </div>
@@ -169,6 +193,7 @@
                 <div class="bg-slate-800 p-4 rounded-xl border border-slate-700">
                     <p class="text-xs text-slate-400 font-medium">Total Agents</p>
                     <p class="text-2xl font-bold text-indigo-400 mt-1" id="metricTotalAgents">0</p>
+                    <span class="hidden" id="adminAgentCount">0</span>
                 </div>
                 <div class="bg-slate-800 p-4 rounded-xl border border-slate-700">
                     <p class="text-xs text-slate-400 font-medium">Active Agents</p>
@@ -237,6 +262,28 @@
                 </div>
             </div>
 
+            <!-- Agent Performance Leaderboard -->
+            <div class="bg-slate-800 p-6 rounded-2xl border border-slate-700 space-y-4">
+                <h2 class="text-lg font-bold text-white flex items-center gap-2">
+                    <i data-lucide="trophy" class="w-5 h-5 text-amber-400"></i> Agent Performance Leaderboard
+                </h2>
+                <div class="overflow-x-auto max-h-48 overflow-y-auto custom-scrollbar border border-slate-700 rounded-lg">
+                    <table class="w-full text-left text-xs">
+                        <thead class="bg-slate-900 text-slate-400 uppercase sticky top-0">
+                            <tr>
+                                <th class="p-3">Rank</th>
+                                <th class="p-3">Agent Name</th>
+                                <th class="p-3">Approved Sales</th>
+                                <th class="p-3 text-right">Score / Target</th>
+                            </tr>
+                        </thead>
+                        <tbody id="adminLeaderboardTableBody" class="divide-y divide-slate-700 text-slate-300">
+                            <tr><td colspan="4" class="p-4 text-center text-slate-500">No approved sales recorded yet.</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
             <!-- TEAM CHAT SYSTEM COMPONENT (Admin View) -->
             <div class="bg-slate-800 p-6 rounded-2xl border border-slate-700 space-y-4">
                 <div class="flex justify-between items-center">
@@ -267,15 +314,15 @@
                 </div>
             </div>
 
-            <!-- Bulk CSV Upload with Strict 11-Digit Validation -->
+            <!-- Bulk CSV Upload with Strict Phone Validation -->
             <div class="bg-slate-800 p-6 rounded-2xl border border-slate-700 space-y-4">
                 <div class="flex justify-between items-center">
                     <h2 class="text-lg font-bold text-white flex items-center gap-2">
-                        <i data-lucide="upload-cloud" class="w-5 h-5 text-indigo-400"></i> Bulk CSV Lead Upload (Strict 11-Digit Number Validation)
+                        <i data-lucide="upload-cloud" class="w-5 h-5 text-indigo-400"></i> Bulk CSV Lead Upload (Flexible Phone Validation)
                     </h2>
                     <button onclick="clearAllCampaignData()" class="bg-rose-600 text-white text-xs font-semibold px-4 py-2 rounded-lg">Clear DB</button>
                 </div>
-                <textarea id="adminCsvInput" rows="3" class="w-full p-3 bg-slate-900 border border-slate-700 rounded-lg text-xs font-mono text-white focus:outline-none" placeholder="Paste CSV format (Name (Optional), 11-Digit Phone [Mandatory], Business (Optional), Priority)..."></textarea>
+                <textarea id="adminCsvInput" rows="3" class="w-full p-3 bg-slate-900 border border-slate-700 rounded-lg text-xs font-mono text-white focus:outline-none" placeholder="Paste CSV format (Name (Optional), Phone [Mandatory], Business (Optional), Priority)..."></textarea>
                 <div class="flex justify-between items-center">
                     <button onclick="downloadCSVTemplate()" class="bg-indigo-600 text-white text-xs font-semibold px-4 py-2 rounded-lg">Download Template</button>
                     <button onclick="distributeLeadsToAgents()" class="bg-emerald-600 text-white text-xs font-semibold px-5 py-2 rounded-lg shadow">Validate & Distribute Leads</button>
@@ -310,6 +357,11 @@
                 </div>
             </div>
         </header>
+
+        <!-- Scheduled Callbacks Alert Banner -->
+        <div id="callbackAlertBanner" class="hidden bg-purple-600 text-white font-bold px-4 py-2 text-center text-xs flex items-center justify-center gap-2">
+            <i data-lucide="bell" class="w-4 h-4 animate-bounce"></i> Scheduled Callbacks Pending Today!
+        </div>
 
         <!-- Broadcast Notification Banner for Agents -->
         <div id="broadcastBanner" class="hidden bg-amber-500 text-slate-950 font-bold px-4 py-2 text-center text-xs flex items-center justify-center gap-2">
@@ -439,8 +491,19 @@
                 </div>
             </div>
 
-            <!-- Right: Queue Table & Team Chat Component -->
+            <!-- Right: Queue Table, Live Script Assistant & Team Chat -->
             <div class="lg:col-span-7 space-y-6">
+                <!-- IN-CALL SCRIPT ASSISTANT -->
+                <div class="bg-white rounded-xl shadow-md border border-slate-200 p-4">
+                    <h3 class="font-bold text-slate-800 text-xs flex items-center gap-2 mb-2 border-b pb-2">
+                        <i data-lucide="file-text" class="w-4 h-4 text-indigo-600"></i> Live Pitching Pitch & Sales Script Assistant
+                    </h3>
+                    <div class="bg-indigo-50/60 p-3 rounded-lg text-xs text-slate-700 space-y-2 border border-indigo-100">
+                        <p><strong>Greeting:</strong> "Assalam-o-Alaikum! My name is <span class="text-indigo-600 font-bold" id="scriptAgentName">Agent</span> calling from PrimeX Solutions. Am I speaking with <span class="text-indigo-600 font-bold" id="scriptCustName">Customer</span>?"</p>
+                        <p><strong>Value Pitch:</strong> "Hum aapki business website aur digital management tools ko automated aur secure banatay hain taake aapka revenue boost ho sake."</p>
+                    </div>
+                </div>
+
                 <div class="bg-white rounded-xl shadow-md border border-slate-200 p-6">
                     <div class="flex flex-col sm:flex-row justify-between items-center mb-4 gap-3">
                         <h3 class="font-bold text-slate-800 text-sm flex items-center gap-2">
@@ -448,7 +511,7 @@
                         </h3>
                         <input type="text" id="queueSearchInput" onkeyup="filterQueueTable()" placeholder="Search by name or phone..." class="p-2 text-xs border border-slate-300 rounded-lg w-full sm:w-64 focus:outline-none">
                     </div>
-                    <div class="overflow-x-auto max-h-[300px] overflow-y-auto custom-scrollbar border border-slate-100 rounded-lg">
+                    <div class="overflow-x-auto max-h-[220px] overflow-y-auto custom-scrollbar border border-slate-100 rounded-lg">
                         <table class="w-full text-left text-xs">
                             <thead class="bg-slate-50 text-slate-600 font-semibold uppercase sticky top-0">
                                 <tr>
@@ -467,7 +530,7 @@
                 </div>
 
                 <!-- REAL-TIME TEAM CHAT SYSTEM (Agent View) -->
-                <div class="bg-white rounded-xl shadow-md border border-slate-200 p-4 flex flex-col h-[280px]">
+                <div class="bg-white rounded-xl shadow-md border border-slate-200 p-4 flex flex-col h-[240px]">
                     <div class="flex justify-between items-center border-b pb-2 mb-2">
                         <h3 class="font-bold text-slate-800 text-xs flex items-center gap-1.5">
                             <i data-lucide="message-square" class="w-4 h-4 text-indigo-600"></i> Team Issue Discussion Hub
@@ -548,6 +611,7 @@
                 loggedInAgentFullName = savedAgentName || savedAgent;
                 document.getElementById('loginScreen').classList.add('hidden');
                 document.getElementById('currentAgentName').innerText = loggedInAgentFullName;
+                document.getElementById('scriptAgentName').innerText = loggedInAgentFullName;
                 document.getElementById('agentDashboard').classList.remove('hidden');
                 initFirebaseRealtimeSync();
                 loadAgentQueue(savedAgent);
@@ -584,6 +648,7 @@
                     localStorage.setItem('primex_agent_name', loggedInAgentFullName);
                     document.getElementById('loginScreen').classList.add('hidden');
                     document.getElementById('currentAgentName').innerText = loggedInAgentFullName;
+                    document.getElementById('scriptAgentName').innerText = loggedInAgentFullName;
                     document.getElementById('agentDashboard').classList.remove('hidden');
                     initFirebaseRealtimeSync();
                     loadAgentQueue(loggedInAgentUser);
@@ -628,10 +693,11 @@
                 salesPipelineData = s.val() ? Object.values(s.val()) : [];
                 renderAdminSalesApprovalTable();
                 renderAdminLeaderboard();
+                updateAdminStats();
             });
             window.FB_onValue(window.FB_ref(window.FB_DB, 'dispositions'), s => {
                 allDispositions = s.val() ? Object.values(s.val()) : [];
-                loadActiveContact(); // To re-check lead trail audit
+                loadActiveContact();
             });
             window.FB_onValue(window.FB_ref(window.FB_DB, 'campaignStatus'), s => {
                 isCampaignPaused = s.val() ? s.val().paused : false;
@@ -798,6 +864,7 @@
             document.getElementById('metricActiveAgents').innerText = activeCount;
             document.getElementById('metricPauseAgents').innerText = pauseCount;
             document.getElementById('metricLogoutAgents').innerText = logoutCount;
+            document.getElementById('adminAgentCount').innerText = agentsList.length;
         }
 
         function renderAdminLeaderboard() {
@@ -888,12 +955,12 @@
                     btn.innerText = "Resume Campaign";
                     btn.className = "bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-semibold px-4 py-2.5 rounded-lg transition shadow";
                     txt.innerText = "⏸️ Paused by Admin";
-                    txt.className = "text-sm font-bold text-amber-400 mt-2";
+                    txt.className = "text-xs font-bold text-amber-400 mt-1";
                 } else {
                     btn.innerText = "Pause Campaign";
                     btn.className = "bg-amber-600 hover:bg-amber-700 text-white text-xs font-semibold px-4 py-2.5 rounded-lg transition shadow";
                     txt.innerText = "🟢 Running";
-                    txt.className = "text-sm font-bold text-emerald-400 mt-2";
+                    txt.className = "text-xs font-bold text-emerald-400 mt-1";
                 }
             }
         }
@@ -907,7 +974,7 @@
             let parsedLeads = [];
             let invalidCount = 0;
 
-            lines.forEach((l, i) => {
+            lines.forEach((l) => {
                 let p = l.split(',');
                 let name = p[0]?.trim() || 'Valued Customer';
                 let phone = p[1]?.trim() || p[0]?.trim() || '';
@@ -915,7 +982,7 @@
                 let priority = p[3]?.trim() || 'Hot';
 
                 let cleanPhone = phone.replace(/\D/g, '');
-                if(cleanPhone.length === 11) {
+                if(cleanPhone.length >= 10 && cleanPhone.length <= 13) {
                     parsedLeads.push({
                         id: parsedLeads.length + 1,
                         name: p.length > 1 ? name : 'Valued Customer',
@@ -930,7 +997,7 @@
             });
 
             if(parsedLeads.length === 0) {
-                alert('Error: No valid 11-digit phone numbers found in CSV!');
+                alert('Error: No valid phone numbers found in CSV!');
                 return;
             }
 
@@ -949,7 +1016,7 @@
             });
 
             playSuccessSound();
-            alert(`Success! Uploaded ${parsedLeads.length} valid 11-digit leads (${invalidCount} invalid skipped).`);
+            alert(`Success! Uploaded ${parsedLeads.length} valid leads (${invalidCount} invalid skipped).`);
         }
 
         function clearAllCampaignData() {
@@ -976,6 +1043,11 @@
                 document.getElementById('saleCustName').value = current.name || '';
                 document.getElementById('saleBusinessName').value = current.businessName || '';
                 document.getElementById('saleModal').classList.remove('hidden');
+                return;
+            }
+
+            if(status === 'Call Back') {
+                document.getElementById('callbackModal').classList.remove('hidden');
                 return;
             }
 
@@ -1010,6 +1082,42 @@
                 });
             }
         }
+
+        function saveCallbackSchedule() {
+            let pending = agentLeadsQueue.filter(i => i.status === 'Pending');
+            if(pending.length === 0 || activeIndex >= pending.length) return;
+            let current = pending[activeIndex];
+            let dateTime = document.getElementById('callbackDateTime').value;
+            let notes = document.getElementById('callbackNotes').value.trim();
+
+            if(!dateTime) { alert("Please select a date and time!"); return; }
+
+            document.getElementById('callbackModal').classList.add('hidden');
+            current.status = 'Call Back Scheduled';
+            totalCallsMade++;
+
+            let cbId = Date.now();
+            window.FB_set(window.FB_ref(window.FB_DB, `callbacks/${cbId}`), {
+                id: cbId, agent: loggedInAgentFullName, phone: current.phone, name: current.name, time: dateTime, notes: notes
+            });
+
+            sessionHistory.unshift(`📅 ${current.name} (${current.phone}) - <span class="font-bold text-amber-600">Call Back Scheduled for ${dateTime}</span>`);
+            renderSessionHistory();
+            updateSessionOutcomeStats();
+
+            window.FB_set(window.FB_ref(window.FB_DB, `queues/${loggedInAgentUser}`), agentLeadsQueue);
+
+            let isPowerActive = document.getElementById('powerModeToggle').checked;
+            if(isPowerActive) {
+                loadActiveContact();
+            } else {
+                triggerWrapupCountdown(() => {
+                    loadActiveContact();
+                });
+            }
+        }
+
+        function closeCallbackModal() { document.getElementById('callbackModal').classList.add('hidden'); }
 
         function submitSaleForm() {
             let pending = agentLeadsQueue.filter(i => i.status === 'Pending');
@@ -1136,6 +1244,7 @@
                 document.getElementById('activeName').innerText = "Queue Completed!";
                 document.getElementById('activePhone').innerText = "---";
                 document.getElementById('leadBusiness').innerText = "---";
+                document.getElementById('scriptCustName').innerText = "Customer";
                 document.getElementById('progressCounter').innerText = "Completed";
                 document.getElementById('leadPriorityBadge').innerText = "DONE";
                 if(trailBanner) trailBanner.classList.add('hidden');
@@ -1144,6 +1253,7 @@
 
             let active = pending[activeIndex];
             document.getElementById('activeName').innerText = active.name || 'Valued Customer';
+            document.getElementById('scriptCustName').innerText = active.name || 'Valued Customer';
             document.getElementById('activePhone').innerText = active.phone;
             document.getElementById('leadBusiness').innerText = active.businessName || 'Independent';
             document.getElementById('progressCounter').innerText = `Lead ${activeIndex+1} / ${pending.length}`;
@@ -1206,15 +1316,15 @@
         }
 
         function updateAdminStats() {
-            document.getElementById('adminAgentCount').innerText = agentsList.length;
             let approvedCount = salesPipelineData.filter(s => s.status === 'Approved').length;
-            document.getElementById('adminApprovedSales').innerText = approvedCount;
+            const adminApprovedSalesEl = document.getElementById('adminApprovedSales');
+            if(adminApprovedSalesEl) adminApprovedSalesEl.innerText = approvedCount;
         }
 
         function downloadCSVTemplate() {
             const csv = "data:text/csv;charset=utf-8,Name,Phone,Business,Priority\nMuhammad Ali,03001234567,Prime Solutions,Hot";
             const link = document.createElement("a");
-            link.href = encodeURI(csv); link.download = "template_11digits.csv"; link.click();
+            link.href = encodeURI(csv); link.download = "template_leads.csv"; link.click();
         }
     </script>
 </body>
