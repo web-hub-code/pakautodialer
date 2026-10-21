@@ -358,11 +358,6 @@
             </div>
         </header>
 
-        <!-- Scheduled Callbacks Alert Banner -->
-        <div id="callbackAlertBanner" class="hidden bg-purple-600 text-white font-bold px-4 py-2 text-center text-xs flex items-center justify-center gap-2">
-            <i data-lucide="bell" class="w-4 h-4 animate-bounce"></i> Scheduled Callbacks Pending Today!
-        </div>
-
         <!-- Broadcast Notification Banner for Agents -->
         <div id="broadcastBanner" class="hidden bg-amber-500 text-slate-950 font-bold px-4 py-2 text-center text-xs flex items-center justify-center gap-2">
             <i data-lucide="megaphone" class="w-4 h-4"></i> Announcement from Admin: <span id="broadcastText">---</span>
@@ -604,6 +599,8 @@
 
         window.addEventListener('DOMContentLoaded', () => {
             lucide.createIcons();
+            initFirebaseRealtimeSync();
+
             const savedAgent = localStorage.getItem('primex_agent_user');
             const savedAgentName = localStorage.getItem('primex_agent_name');
             if (savedAgent) {
@@ -613,7 +610,6 @@
                 document.getElementById('currentAgentName').innerText = loggedInAgentFullName;
                 document.getElementById('scriptAgentName').innerText = loggedInAgentFullName;
                 document.getElementById('agentDashboard').classList.remove('hidden');
-                initFirebaseRealtimeSync();
                 loadAgentQueue(savedAgent);
             }
 
@@ -650,7 +646,6 @@
                     document.getElementById('currentAgentName').innerText = loggedInAgentFullName;
                     document.getElementById('scriptAgentName').innerText = loggedInAgentFullName;
                     document.getElementById('agentDashboard').classList.remove('hidden');
-                    initFirebaseRealtimeSync();
                     loadAgentQueue(loggedInAgentUser);
                     updateAgentState('Active');
                     playLoginSound();
@@ -686,23 +681,41 @@
 
         function initFirebaseRealtimeSync() {
             if(!window.FB_DB) return;
-            window.FB_onValue(window.FB_ref(window.FB_DB, 'agents'), s => { agentsList = s.val() ? Object.values(s.val()) : []; renderAdminAgentDirectory(); updateAdminStats(); });
-            window.FB_onValue(window.FB_ref(window.FB_DB, 'agentStates'), s => { agentStatesMap = s.val() ? s.val() : {}; renderAdminAgentDirectory(); updateAdminStats(); });
-            window.FB_onValue(window.FB_ref(window.FB_DB, 'masterLeads'), s => { masterLeads = s.val() ? Object.values(s.val()) : []; updateAdminStats(); });
+
+            window.FB_onValue(window.FB_ref(window.FB_DB, 'agents'), s => { 
+                agentsList = s.val() ? Object.values(s.val()) : []; 
+                renderAdminAgentDirectory(); 
+                updateAdminStats(); 
+            });
+
+            window.FB_onValue(window.FB_ref(window.FB_DB, 'agentStates'), s => { 
+                agentStatesMap = s.val() ? s.val() : {}; 
+                renderAdminAgentDirectory(); 
+                updateAdminStats(); 
+            });
+
+            window.FB_onValue(window.FB_ref(window.FB_DB, 'masterLeads'), s => { 
+                masterLeads = s.val() ? Object.values(s.val()) : []; 
+                updateAdminStats(); 
+            });
+
             window.FB_onValue(window.FB_ref(window.FB_DB, 'salesPipeline'), s => {
                 salesPipelineData = s.val() ? Object.values(s.val()) : [];
                 renderAdminSalesApprovalTable();
                 renderAdminLeaderboard();
                 updateAdminStats();
             });
+
             window.FB_onValue(window.FB_ref(window.FB_DB, 'dispositions'), s => {
                 allDispositions = s.val() ? Object.values(s.val()) : [];
                 loadActiveContact();
             });
+
             window.FB_onValue(window.FB_ref(window.FB_DB, 'campaignStatus'), s => {
                 isCampaignPaused = s.val() ? s.val().paused : false;
                 updateCampaignStatusUI();
             });
+
             window.FB_onValue(window.FB_ref(window.FB_DB, 'broadcastMessage'), s => {
                 let msg = s.val() ? s.val().message : '';
                 const banner = document.getElementById('broadcastBanner');
@@ -730,7 +743,6 @@
             window.FB_set(window.FB_ref(window.FB_DB, `agentStates/${loggedInAgentUser}`), { user: loggedInAgentUser, name: loggedInAgentFullName, state: st, time: new Date().toLocaleTimeString() });
         }
 
-        // WebRTC Softphone Call
         function startWebRTCCall() {
             if(isCampaignPaused) { alert("Campaign is currently paused by admin!"); return; }
             playDialSound();
@@ -760,7 +772,6 @@
             document.getElementById('webRTCStartBtn').setAttribute("onclick", "startWebRTCCall()");
         }
 
-        // Chat Logic
         function renderChatFeeds(data) {
             const adminFeed = document.getElementById('adminChatFeedContainer');
             const agentFeed = document.getElementById('agentChatFeedContainer');
@@ -826,7 +837,6 @@
             document.getElementById('newAgentFullName').value = '';
         }
 
-        // Render Agent Directory & Live Status Counts for Admin
         function renderAdminAgentDirectory() {
             const tbody = document.getElementById('adminAgentDirectoryTableBody');
             if(!tbody) return;
@@ -1232,7 +1242,6 @@
             alert("📋 Professional follow-up template copied to clipboard!");
         }
 
-        // Load Active Contact & Check Previous Lead Trail (Audit Trail)
         function loadActiveContact() {
             let pending = agentLeadsQueue.filter(i => i.status === 'Pending');
             document.getElementById('waitingQueueCount').innerText = pending.length;
@@ -1258,7 +1267,6 @@
             document.getElementById('leadBusiness').innerText = active.businessName || 'Independent';
             document.getElementById('progressCounter').innerText = `Lead ${activeIndex+1} / ${pending.length}`;
             
-            // Check previous dispositions for this phone number (Audit Trail)
             let prevRecord = allDispositions.find(d => d.phone === active.phone);
             if(prevRecord && trailBanner && trailText) {
                 trailText.innerText = `Previously contacted by ${prevRecord.agent} on ${prevRecord.time} | Disposition: ${prevRecord.status} (${prevRecord.remarks || 'No remarks'})`;
